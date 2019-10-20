@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: "jdbc:postgresql://ec2-54-83-55-125.compute-1.amazonaws.com:5432/d3v6cn6vg6oj80"
-    username: "ddzqucrjdnsrjr"
-    password: "5c5596e6244cadcef49044dbffb91a2b614a495b39f3ea9e3f5b4a5678c91068"
+    url: "jdbc:postgresql://localhost:5432/aluco"
+    username: "postgres"
+    password: "postgres"
     driver-class-name: org.postgresql.Driver
   jpa:
     database: "default"
