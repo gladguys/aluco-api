@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @EqualsAndHashCode
@@ -34,7 +34,7 @@ public @Data class Teacher {
 
 	@CreatedDate
 	@Column(name = "create_date")
-	private Date createDate;
+	private LocalDateTime createDate;
 
 	@OneToOne
 	@JoinColumn(name = "user_aluco_id")

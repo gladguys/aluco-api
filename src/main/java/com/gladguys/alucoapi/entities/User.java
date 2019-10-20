@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode
 @Entity(name = "user_aluco")
@@ -40,7 +38,7 @@ public @Data class User {
 
 	@CreatedDate
 	@Column(name = "create_date")
-	private Date createDate;
+	private LocalDateTime createDate;
 
 	@Column(name = "profile")
 	private ProfileEnum profileEnum;

@@ -4,20 +4,30 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import java.util.Date;
+import java.math.BigDecimal;
 
 @EqualsAndHashCode
-@Entity(name = "class_call")
-public @Data class ClassCall {
+@Entity(name = "grade")
+public @Data class Grade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date date;
+	private BigDecimal grade;
+
+	private Long weight;
+
+	@OneToOne
+	@JoinColumn(name = "exam_id")
+	private Exam exam;
 
 }
