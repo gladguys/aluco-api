@@ -6,13 +6,13 @@ public enum StatusEnum {
 	FALTA_JUSTIFICADA(2),
 	FERIADO(3);
 
-	Integer id;
+	Long id;
 
-	StatusEnum(Integer id) {
+	StatusEnum(Long id) {
 		this.id = id;
 	}
 
-	public static StatusEnum getStatus(Integer id) {
+	public static StatusEnum getStatus(Long id) {
 		switch (id) {
 			case 0: return PRESENTE;
 			case 1: return FALTA;

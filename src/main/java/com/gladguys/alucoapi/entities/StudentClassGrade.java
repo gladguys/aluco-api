@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public @Data class StudentClassGrade {
 
 	@Id
-	private Integer id;
+	private Long id;
 
 	private BigDecimal grade;
-	private Integer weight;
+	private Long weight;
 }

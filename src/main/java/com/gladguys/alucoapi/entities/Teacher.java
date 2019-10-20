@@ -21,7 +21,7 @@ public @Data class Teacher {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotBlank(message = "Nome deve ser informado.")
 	private String name;

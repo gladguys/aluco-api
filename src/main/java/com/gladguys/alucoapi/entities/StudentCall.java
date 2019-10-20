@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public @Data class StudentCall {
 
 	@Id
-	private Integer id;
+	private Long id;
 
 	private StatusEnum status;
 }

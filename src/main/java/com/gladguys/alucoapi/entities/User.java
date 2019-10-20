@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +25,7 @@ public @Data class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotBlank(message = "Username deve ser informado.")
 	private String username;
@@ -43,7 +45,7 @@ public @Data class User {
 	@Column(name = "profile")
 	private ProfileEnum profileEnum;
 
-	@OneToOne
+	@OneToOne(mappedBy = "user")
 	private Teacher teacher;
 
 }
