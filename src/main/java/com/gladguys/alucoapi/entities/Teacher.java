@@ -10,10 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @EqualsAndHashCode
 @Entity(name = "teacher")
@@ -36,5 +39,8 @@ public @Data class Teacher {
 	@OneToOne
 	@JoinColumn(name = "user_aluco_id")
 	private User user;
+
+	@OneToMany(mappedBy = "teacher")
+	private List<Student> students = new ArrayList<>();
 
 }
