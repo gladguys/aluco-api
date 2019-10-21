@@ -68,8 +68,10 @@ public @Data class Student {
 	)
 	private List<Call> calls = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_id")
+	@OneToMany(
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL,
+		orphanRemoval = true)
 	private List<Exam> exams = new ArrayList<>();
 
 }
