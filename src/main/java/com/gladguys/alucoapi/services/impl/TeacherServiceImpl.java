@@ -1,6 +1,7 @@
-package com.gladguys.alucoapi.services;
+package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Teacher;
+import com.gladguys.alucoapi.services.TeacherService;
 
 public class TeacherServiceImpl implements TeacherService {
 
@@ -18,4 +19,5 @@ public class TeacherServiceImpl implements TeacherService {
     public void deleteById(Long id) {
 
     }
+
 }
