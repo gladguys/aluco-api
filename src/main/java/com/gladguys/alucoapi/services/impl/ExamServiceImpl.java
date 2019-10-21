@@ -2,7 +2,9 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.services.ExamService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ExamServiceImpl implements ExamService {
 
 	@Override

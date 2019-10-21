@@ -2,7 +2,9 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.services.StudentService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StudentServiceImpl implements StudentService {
 
 	@Override
