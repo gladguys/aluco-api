@@ -10,10 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode
 @Entity(name = "exam")
@@ -36,10 +39,12 @@ public @Data class Exam {
 	private Class classExam;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_id")
-	private Student student;
+	@JoinColumn(name = "teacher_id")
+	private Teacher teacher;
 
-	@OneToOne(mappedBy = "exam")
-	private Grade grade;
+	@OneToMany(
+		mappedBy = "exam",
+		fetch = FetchType.LAZY)
+	private List<Grade> grades = new ArrayList<>();
 
 }
