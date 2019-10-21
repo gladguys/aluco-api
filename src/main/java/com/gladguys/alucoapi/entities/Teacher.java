@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode
 @Entity(name = "teacher")
 public @Data class Teacher {
 
@@ -42,8 +41,5 @@ public @Data class Teacher {
 
 	@OneToMany(mappedBy = "teacher")
 	private List<Student> students = new ArrayList<>();
-
-	@OneToMany(mappedBy = "teacher")
-	private List<Exam> exams = new ArrayList<>();
 
 }

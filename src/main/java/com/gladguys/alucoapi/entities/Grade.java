@@ -14,7 +14,6 @@ import javax.persistence.OneToOne;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode
 @Entity(name = "grade")
 public @Data class Grade {
 
@@ -26,11 +25,7 @@ public @Data class Grade {
 
 	private Long weight;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "class_id")
-	private Class classExam;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "student_id")
 	private Student student;
 

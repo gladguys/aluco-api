@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode
 @Entity(name = "student")
 public @Data class Student {
 
@@ -49,30 +48,6 @@ public @Data class Student {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
-
-	@ManyToMany(cascade = {
-			CascadeType.PERSIST,
-			CascadeType.MERGE
-	})
-	@JoinTable(name = "student_class",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "class_id")
-	)
-	private Set<Class> classes = new HashSet<>();
-
-	@OneToMany(
-		mappedBy = "student",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
-	)
-	private List<Call> calls = new ArrayList<>();
-
-	@OneToMany(
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true)
-	private List<Exam> exams = new ArrayList<>();
 
 }
 

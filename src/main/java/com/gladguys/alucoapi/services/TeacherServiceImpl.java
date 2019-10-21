@@ -1,7 +1,9 @@
 package com.gladguys.alucoapi.services;
 
 import com.gladguys.alucoapi.entities.Teacher;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TeacherServiceImpl implements TeacherService {
 
     @Override

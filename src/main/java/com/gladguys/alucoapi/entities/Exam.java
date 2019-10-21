@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode
 @Entity(name = "exam")
 public @Data class Exam {
 
@@ -38,13 +37,7 @@ public @Data class Exam {
 	@JoinColumn(name = "class_id")
 	private Class classExam;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "teacher_id")
-	private Teacher teacher;
-
-	@OneToMany(
-		mappedBy = "exam",
-		fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "exam")
 	private List<Grade> grades = new ArrayList<>();
 
 }

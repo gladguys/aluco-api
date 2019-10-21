@@ -31,15 +31,4 @@ public @Data class Call {
 
 	private StatusEnum status;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Call )) return false;
-		return id != null && id.equals(((Call) o).getId());
-	}
-
-	@Override
-	public int hashCode() {
-		return 31;
-	}
 }

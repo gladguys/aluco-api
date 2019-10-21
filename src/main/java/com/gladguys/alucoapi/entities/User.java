@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode
 @Entity(name = "user_aluco")
 public @Data class User {
 
