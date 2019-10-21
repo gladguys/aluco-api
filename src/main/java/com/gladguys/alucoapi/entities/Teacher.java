@@ -43,4 +43,7 @@ public @Data class Teacher {
 	@OneToMany(mappedBy = "teacher")
 	private List<Student> students = new ArrayList<>();
 
+	@OneToMany(mappedBy = "teacher")
+	private List<Exam> exams = new ArrayList<>();
+
 }
