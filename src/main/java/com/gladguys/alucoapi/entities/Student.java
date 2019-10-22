@@ -18,11 +18,9 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "student")
 public @Data class Student {
@@ -41,11 +39,11 @@ public @Data class Student {
 	private String photoURL;
 
 	@Column(name = "date_of_birth")
-	private LocalDateTime dateBirth;
+	private Date dateBirth;
 
 	private String phone;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
 

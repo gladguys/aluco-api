@@ -20,8 +20,8 @@ public class CallController {
         this.callService = callService;
     }
 
-    @GetMapping("/class/${classId}")
-    public ResponseEntity<Set<Call>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") LocalDate date) {
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<Set<Call>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") Date date) {
         try {
             Set<Call> calls = this.callService.getAllByClassAndDate(classId, date);
             return ResponseEntity.ok(calls);
@@ -50,7 +50,7 @@ public class CallController {
         }
     }
 
-    @GetMapping("/student/${studentId}")
+    @GetMapping("/student/{studentId}")
     public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
         try {
             Set<Call> calls = this.callService.getAllByStudent(studentId);

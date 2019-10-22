@@ -1,15 +1,35 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Student;
+import com.gladguys.alucoapi.repositories.StudentRepository;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	private StudentRepository studentRepository;
+
+	public StudentServiceImpl(StudentRepository studentRepository) {
+		this.studentRepository = studentRepository;
+	}
+
 	@Override
 	public Student getById(Long id) {
-		return null;
+
+		return this.studentRepository.getOne(id);
+	}
+
+	@Override
+	public Student save(Student student) {
+		return this.studentRepository.save(student);
+	}
+
+	@Override
+	public Set<Student> getAllByTeacher(Long teacherId) {
+		return this.studentRepository.findAllByTeacherIdOrderByName(teacherId);
 	}
 
 	@Override

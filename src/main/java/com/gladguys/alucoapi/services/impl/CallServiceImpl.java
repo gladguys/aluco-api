@@ -31,16 +31,16 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public Set<Call> getAllByClassAndDate(Long classId, LocalDate date) {
+    public Set<Call> getAllByClassAndDate(Long classId, Date date) {
 
     	if (classId == null) {
             return null;
         }
 
     	if (date == null) {
-			date = LocalDate.now();
+			date = new Date();
     	}
-    	return this.callRepository.findAllByClassAndDate(classId, date);
+    	return this.callRepository.findAllByClassCallIdAndDate(classId, date);
     }
 
     @Override
