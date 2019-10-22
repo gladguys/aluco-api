@@ -5,6 +5,9 @@ import com.gladguys.alucoapi.repositories.CallRepository;
 import com.gladguys.alucoapi.services.CallService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -28,10 +31,16 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public Set<Call> getAllByClassAndDate(Long classId, Date date) {
-        if (classId != null && date != null) {
-            return this.callRepository.findAllByClassAndDate(classId, date);
-        } else return null;
+    public Set<Call> getAllByClassAndDate(Long classId, LocalDate date) {
+
+    	if (classId == null) {
+            return null;
+        }
+
+    	if (date == null) {
+			date = LocalDate.now();
+    	}
+    	return this.callRepository.findAllByClassAndDate(classId, date);
     }
 
     @Override
