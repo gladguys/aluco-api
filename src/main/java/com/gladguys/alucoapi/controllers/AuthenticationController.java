@@ -2,17 +2,18 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.CurrentUser;
 import com.gladguys.alucoapi.entities.User;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.security.jwt.JwtAuthenticationRequest;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,7 +40,7 @@ public class AuthenticationController {
 	private UserService userService;
 
 	@PostMapping(value = "/api/auth")
-	public ResponseEntity<?> authenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<?> authenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
 		final Authentication authentication = authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -50,13 +51,11 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new CurrentUser(token, user));
 	}
 
-	private Authentication authenticate(String email, String password) throws Exception {
+	private Authentication authenticate(String email, String password) {
 		try {
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+		} catch (AuthenticationException e) {
+			throw new ResponseException("Invalid Credentials", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
