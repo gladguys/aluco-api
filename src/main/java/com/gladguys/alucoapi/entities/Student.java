@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities;
 
+import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,6 +43,21 @@ public @Data class Student {
 	private Date dateBirth;
 
 	private String phone;
+
+	private GenderEnum gender;
+
+	@Column(name = "responsible_name")
+	private String responsibleName;
+
+	@Column(name = "responsible_phone")
+	private String responsiblePhone;
+
+	private String address;
+
+	@Column(name = "previous_school")
+	private String previousSchool;
+
+	private String observation;
 
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
