@@ -68,8 +68,8 @@ public class StudentController {
         try {
             if(studentDTO == null) throw new Exception();
 
-            Student studentSaved = this.studentService.update(studentDTO.toEntity());
-            return ResponseEntity.ok(studentSaved);
+            Student studentUpdated = this.studentService.update(studentDTO.toEntity());
+            return ResponseEntity.ok(studentUpdated);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
