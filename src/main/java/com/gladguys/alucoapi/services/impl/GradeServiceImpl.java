@@ -37,6 +37,15 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
+	public Set<Grade> getAllGradesByStudent(Long studentId) throws Exception {
+
+		if(studentId == null) throw new Exception("id do aluno não informado");
+
+		return this.gradeRepository.getAllByStudentIdOrderByStudentNameAsc(studentId);
+
+	}
+
+	@Override
 	public Grade saveOrUpdate(GradeDTO gradeDTO) {
 		return this.gradeRepository.save(gradeDTO.toEntity());
 	}

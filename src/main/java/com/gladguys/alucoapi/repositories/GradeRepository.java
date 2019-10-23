@@ -10,4 +10,5 @@ import java.util.Set;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
 
     Set<Grade> getAllByExamIdOrderByStudentId(Long examId);
+    Set<Grade> getAllByStudentIdOrderByStudentNameAsc(Long examId);
 }
