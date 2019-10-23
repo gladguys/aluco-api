@@ -44,7 +44,34 @@ public class StudentController {
             if(dto == null) throw new Exception();
 
             Student studentSaved = this.studentService.save(dto.toEntity());
+            return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<Student> update(@RequestBody StudentDTO studentDTO) {
+        try {
+            if(studentDTO == null) throw new Exception();
+
+            Student studentSaved = this.studentService.update(studentDTO.toEntity());
             return ResponseEntity.ok(studentSaved);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @DeleteMapping("{studentId}")
+    public ResponseEntity<Student> delete(@PathVariable Long studentId) {
+        try {
+            Student student = this.studentService.getById(studentId);
+            if (student == null) throw new Exception();
+
+            this.studentService.deleteById(student.getId());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
