@@ -76,7 +76,7 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("{studentId}")
+    @DeleteMapping("/{studentId}")
     public ResponseEntity<Student> delete(@PathVariable Long studentId) {
         try {
             Student student = this.studentService.getById(studentId);
