@@ -5,6 +5,7 @@ import com.gladguys.alucoapi.repositories.StudentRepository;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,8 +19,12 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student getById(Long id) {
-
 		return this.studentRepository.getOne(id);
+	}
+
+	@Override
+	public List<Student> findAll() {
+		return this.studentRepository.findAll();
 	}
 
 	@Override
@@ -34,11 +39,11 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student update(Student student) {
-		return null;
+		return this.studentRepository.save(student);
 	}
 
 	@Override
 	public void deleteById(Long id) {
-
+		this.studentRepository.deleteById(id);
 	}
 }
