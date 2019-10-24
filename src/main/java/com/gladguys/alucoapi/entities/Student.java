@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity(name = "student")
@@ -33,7 +33,7 @@ public class Student {
 	private String photoURL;
 
 	@Column(name = "date_of_birth")
-	private Date dateBirth;
+	private LocalDate dateBirth;
 
 	private String phone;
 

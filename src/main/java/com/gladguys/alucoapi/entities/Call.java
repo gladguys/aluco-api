@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity(name = "call")
@@ -28,7 +28,7 @@ public class Call {
 	@JoinColumn(name = "class_id")
 	private Class classCall;
 
-	private Date date;
+	private LocalDate date;
 
 	private StatusEnum status;
 

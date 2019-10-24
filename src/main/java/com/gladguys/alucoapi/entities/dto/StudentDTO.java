@@ -6,7 +6,6 @@ import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 public class StudentDTO {
@@ -15,7 +14,7 @@ public class StudentDTO {
     private String name;
     private String email;
     private String photoUrl;
-    private Date dateBirth;
+    private LocalDate dateBirth;
     private String phone;
     private Long teacherId;
     private String responsibleName;
