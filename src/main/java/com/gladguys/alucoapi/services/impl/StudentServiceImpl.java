@@ -39,11 +39,11 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student update(Student student) {
-		return null;
+		return this.studentRepository.save(student);
 	}
 
 	@Override
 	public void deleteById(Long id) {
-
+		this.studentRepository.deleteById(id);
 	}
 }
