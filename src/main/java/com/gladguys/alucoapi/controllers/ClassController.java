@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.controllers;
 
+import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.services.ClassService;
@@ -34,6 +35,12 @@ public class ClassController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ClassDTO> getById(@PathVariable("id") Long id) throws Exception {
+		ClassDTO classFound = this.classService.getById(id);
+		return ResponseEntity.ok(classFound);
 	}
 
 	@PostMapping
