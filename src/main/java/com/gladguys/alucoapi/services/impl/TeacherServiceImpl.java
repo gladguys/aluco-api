@@ -26,9 +26,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional
     public Teacher createOrUpdate(Teacher teacher) {
-        User userCreated = this.userService.createOrUpdate(teacher.getUser());
-        userCreated.setPassword(null);
+        User userCreated = this.userService.createOrUpdate(teacher.getUser());;
         teacher.setUser(userCreated);
         return this.teacherRepository.save(teacher);
     }

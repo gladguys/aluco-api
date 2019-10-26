@@ -23,10 +23,12 @@ public class User {
 	private Long id;
 
 	@NotBlank(message = "Username deve ser informado.")
+	@Column(unique = true)
 	private String username;
 
 	@NotBlank(message = "Email deve ser informado.")
 	@Email
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank(message = "Password deve ser informado.")

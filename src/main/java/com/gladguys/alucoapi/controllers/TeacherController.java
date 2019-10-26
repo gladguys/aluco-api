@@ -27,6 +27,7 @@ public class TeacherController {
 
 		try {
 			Teacher teacherCreated = this.teacherService.createOrUpdate(newTeacher);
+			teacherCreated.hideUserPassword();
 			return ResponseEntity.ok(teacherCreated);
 
 		} catch (Exception e) {
