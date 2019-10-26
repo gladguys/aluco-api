@@ -1,12 +1,16 @@
 package com.gladguys.alucoapi.security.jwt;
 
+import com.gladguys.alucoapi.services.TeacherService;
+import com.gladguys.alucoapi.services.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +22,7 @@ public class JwtTokenUtil implements Serializable {
 	private static final long serialVersionUID = 1l;
 
 	static final String CLAIM_KEY_USERNAME ="sub";
+	static final String CLAIM_KEY_TEACHER ="teacherId";
 	static final String CLAIM_KEY_CREATED="created";
 	static final String CLAIM_KEY_EXPIRED ="exp";
 
@@ -28,6 +33,12 @@ public class JwtTokenUtil implements Serializable {
 	private Long expiration;
 
 	private Claims claims;
+
+	@Autowired
+	private UserService service;
+
+	public JwtTokenUtil() {
+	}
 
 	public String getUsernameFromToken(String token) {
 		String username;
@@ -50,7 +61,7 @@ public class JwtTokenUtil implements Serializable {
 		return expiration;
 	}
 
-	private Claims getClaimsFromToken(String token) {
+	public Claims getClaimsFromToken(String token) {
 		Claims claims;
 		try {
 			claims = Jwts.parser()
@@ -76,6 +87,11 @@ public class JwtTokenUtil implements Serializable {
 
 		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
 		claims.put(CLAIM_KEY_CREATED, new Date());
+
+		Long teacherId = this.service.getTeacherIdByUsername(userDetails.getUsername());
+		if(teacherId != null) {
+			claims.put(CLAIM_KEY_TEACHER,teacherId );
+		}
 
 		return doGenerateToken(claims);
 	}
@@ -118,4 +134,8 @@ public class JwtTokenUtil implements Serializable {
 		return ( username.equals(jwtUser.getUsername()) && isTokenExpired(token));
 	}
 
+	public Integer getTeacherIdFromToken(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		return (int) this.getClaimsFromToken(token).get("teacherId");
+	}
 }

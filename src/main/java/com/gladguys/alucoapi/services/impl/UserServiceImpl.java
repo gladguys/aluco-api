@@ -32,4 +32,10 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public Long getTeacherIdByUsername(String username) {
+		return this.userRepository.getTeacherIdByUsername(username);
+	}
+
+
 }
