@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 @RestController
@@ -21,14 +23,28 @@ import java.util.Set;
 public class ClassController {
 
 	private ClassService classService;
+	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService) {
+	public ClassController(ClassService classService, JwtTokenUtil jwtTokenUtil) {
+		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
 	}
 
 	@GetMapping("/teacher/{teacherId}")
 	public ResponseEntity<Set<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
 		try {
+			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
+			return ResponseEntity.ok(classes);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@GetMapping
+	public ResponseEntity<Set<ClassDTO>> getAll(HttpServletRequest request) {
+		try {
+			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
 			return ResponseEntity.ok(classes);
 
