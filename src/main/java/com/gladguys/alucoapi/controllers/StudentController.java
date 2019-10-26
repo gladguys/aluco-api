@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
@@ -23,15 +25,17 @@ import java.util.Set;
 public class StudentController {
 
     private StudentService studentService;
-
-    public StudentController(StudentService studentService) {
+    private JwtTokenUtil jwtTokenUtil;
+    public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
         this.studentService = studentService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAll() {
+    public ResponseEntity<Set<Student>> getAll(HttpServletRequest request) {
         try {
-            List<Student> students = this.studentService.findAll();
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+            Set<Student> students = this.studentService.getAllByTeacher(teacherId);
             return ResponseEntity.ok(students);
 
         } catch (Exception e) {
