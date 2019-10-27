@@ -11,7 +11,7 @@ import java.util.Set;
 public class ClassDTO {
 	private Long id;
 	private String name;
-	private String descripton;
+	private String description;
 	private LocalDate creationDate;
 	private Set<StudentDTO> students;
 	private Long teacherId;
@@ -20,7 +20,7 @@ public class ClassDTO {
 		Class c = new Class();
 		c.setId(id);
 		c.setName(name);
-		c.setDescription(descripton);
+		c.setDescription(description);
 		c.setCreationDate(creationDate);
 
 		Teacher teacher = new Teacher();
