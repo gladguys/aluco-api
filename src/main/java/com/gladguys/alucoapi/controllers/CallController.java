@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/calls")
+@RequestMapping("/api/calls")
 public class CallController {
 
     CallService callService;

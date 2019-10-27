@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		                "/webjars/**",
                         "/**/*.css",
                         "/**/*.js").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/teachers").permitAll()
                 .anyRequest().authenticated();
         httpSecurity.addFilterBefore(new CorsFilterConfig(), ChannelProcessingFilter.class);
