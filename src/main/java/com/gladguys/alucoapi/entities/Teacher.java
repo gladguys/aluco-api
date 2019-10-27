@@ -21,7 +21,6 @@ public class Teacher {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Nome deve ser informado.")
 	private String name;
 
 	@Column(name = "photo_url")

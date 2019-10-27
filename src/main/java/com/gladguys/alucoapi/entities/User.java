@@ -22,15 +22,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Username deve ser informado.")
+	@Column(unique = true)
 	private String username;
 
-	@NotBlank(message = "Email deve ser informado.")
 	@Email
+	@Column(unique = true)
 	private String email;
 
-	@NotBlank(message = "Password deve ser informado.")
-	@Size(min = 6)
 	private String password;
 
 	@CreatedDate
