@@ -1,5 +1,7 @@
 package com.gladguys.alucoapi.entities.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum GenderEnum {
 	MALE(0),
 	FEMALE(1);
@@ -24,5 +26,10 @@ public enum GenderEnum {
 			case FEMALE: return "Female";
 			default: return "Male";
 		}
+	}
+
+	@JsonValue
+	public Integer getCode() {
+		return this.id;
 	}
 }

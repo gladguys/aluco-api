@@ -15,5 +15,6 @@ public interface StudentService {
 	Set<Student> getAllByTeacher(Long teacherId);
 	Student update(Student student);
 	void deleteById(Long id);
+	boolean existsById(Long id);
 
 }

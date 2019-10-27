@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.Teacher;
 import com.gladguys.alucoapi.entities.enums.GenderEnum;
@@ -14,7 +15,10 @@ public class StudentDTO {
     private String name;
     private String email;
     private String photoUrl;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateBirth;
+
     private String phone;
     private Long teacherId;
     private String responsibleName;
@@ -29,7 +33,7 @@ public class StudentDTO {
         student.setId(id);
         student.setName(name);
         student.setEmail(email);
-        student.setPhotoURL(photoUrl);
+        student.setPhotoUrl(photoUrl);
         student.setDateBirth(dateBirth);
         student.setPhone(phone);
         student.setAddress(address);

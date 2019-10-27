@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
 
@@ -31,7 +32,7 @@ public class Student {
 	private String email;
 
 	@Column(name = "photo_url")
-	private String photoURL;
+	private String photoUrl;
 
 	@Column(name = "date_of_birth")
 	@JsonFormat(pattern = "dd-MM-yyyy")
@@ -54,6 +55,7 @@ public class Student {
 
 	private String observation;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;

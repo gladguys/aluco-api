@@ -4,7 +4,7 @@ import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+
 import java.util.Set;
 
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
 
-    private StudentService studentService;
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    private StudentService studentService;
 
     public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
         this.studentService = studentService;
@@ -44,9 +46,10 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/teacher/{teacherId}")
-    public ResponseEntity<Set<Student>> listAllByTeacher(@PathVariable("teacherId") Long teacherId) {
+    @GetMapping("/teacher")
+    public ResponseEntity<Set<Student>> listAllByTeacher(HttpServletRequest request) {
         try {
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             Set<Student> students = this.studentService.getAllByTeacher(teacherId);
             return ResponseEntity.ok(students);
 
@@ -56,9 +59,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> save(@RequestBody StudentDTO dto) {
+    public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
         try {
-            if(dto == null) throw new Exception();
+            if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+            dto.setTeacherId(teacherId);
 
             Student studentSaved = this.studentService.save(dto.toEntity());
             return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
@@ -69,9 +75,16 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> update(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
         try {
-            if(studentDTO == null) throw new Exception();
+            if(studentDTO == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+            boolean exists = this.studentService.existsById(studentDTO.getId());
+            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+            studentDTO.setTeacherId(teacherId);
 
             Student studentUpdated = this.studentService.update(studentDTO.toEntity());
             return ResponseEntity.ok(studentUpdated);
@@ -84,10 +97,10 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public ResponseEntity<Student> delete(@PathVariable Long studentId) {
         try {
-            Student student = this.studentService.getById(studentId);
-            if (student == null) throw new Exception();
+            boolean exists = this.studentService.existsById(studentId);
+            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
-            this.studentService.deleteById(student.getId());
+            this.studentService.deleteById(studentId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
         } catch (Exception e) {
