@@ -10,6 +10,7 @@ import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,11 +31,9 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public Set<ClassDTO> getAllByTeacher(Long teacherId) throws Exception {
-
+	public Set<ClassDTO> getAllByTeacher(Long teacherId) {
 		Set<ClassDTO> classesDTO = new HashSet<>();
 
-		if (teacherId == null) throw new Exception();
 		Set<Class> classes = this.classRepository.getAllByTeacherId(teacherId);
 		classes.forEach(c -> classesDTO.add(c.toDTO()));
 
@@ -49,7 +48,6 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public boolean exists(Long id) {
-
 		return this.classRepository.existsById(id);
 	}
 
@@ -61,7 +59,6 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	@Transactional
 	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception {
-
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(Exception::new);
 
 		Set<Student> students = new HashSet<>();
@@ -74,6 +71,4 @@ public class ClassServiceImpl implements ClassService {
 			this.classRepository.save(classToAddStudent);
 		}
 	}
-
-
 }

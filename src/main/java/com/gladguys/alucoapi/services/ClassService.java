@@ -1,6 +1,5 @@
 package com.gladguys.alucoapi.services;
 
-import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import org.springframework.stereotype.Component;
