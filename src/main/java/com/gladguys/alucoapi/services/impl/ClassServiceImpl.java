@@ -48,6 +48,17 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
+	public boolean exists(Long id) {
+
+		return this.classRepository.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		this.classRepository.deleteById(id);
+	}
+
+	@Override
 	@Transactional
 	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception {
 
@@ -63,5 +74,6 @@ public class ClassServiceImpl implements ClassService {
 			this.classRepository.save(classToAddStudent);
 		}
 	}
+
 
 }

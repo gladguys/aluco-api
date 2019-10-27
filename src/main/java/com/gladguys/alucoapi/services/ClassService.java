@@ -16,5 +16,9 @@ public interface ClassService {
 
 	ClassDTO saveOrUpdate(ClassDTO c);
 
+	boolean exists(Long id);
+
+	void deleteById(Long id);
+
 	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception;
 }

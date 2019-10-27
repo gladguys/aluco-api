@@ -26,6 +26,7 @@ public class StudentController {
 
     private StudentService studentService;
     private JwtTokenUtil jwtTokenUtil;
+
     public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
         this.studentService = studentService;
         this.jwtTokenUtil = jwtTokenUtil;

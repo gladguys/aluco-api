@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public class Student {
 	private String photoURL;
 
 	@Column(name = "date_of_birth")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dateBirth;
 
 	private String phone;

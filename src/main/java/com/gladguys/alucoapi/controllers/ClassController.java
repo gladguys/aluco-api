@@ -7,6 +7,7 @@ import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,22 +62,51 @@ public class ClassController {
 
 	@PostMapping
 	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto) {
-		ClassDTO classDTO = this.classService.saveOrUpdate(dto);
-		return  ResponseEntity.ok(classDTO);
+		try {
+			ClassDTO classDTO = this.classService.saveOrUpdate(dto);
+			return ResponseEntity.ok(classDTO);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 	}
 
 	@PutMapping
-	public ResponseEntity<ClassDTO> update(@RequestBody ClassDTO dto) {
-		ClassDTO classDTO = this.classService.saveOrUpdate(dto);
-		return  ResponseEntity.ok(classDTO);
+	public ResponseEntity<ClassDTO> update(@RequestBody ClassDTO dto, HttpServletRequest request) {
+
+		try {
+			boolean exists = this.classService.exists(dto.getId());
+			if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+			dto.setTeacherId(teacherId);
+
+			return ResponseEntity.ok(this.classService.saveOrUpdate(dto));
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+		try {
+			this.classService.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).body("turma removida com sucesso.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
 
 	@PostMapping("/{id}/students")
 	public ResponseEntity saveStudentsForClass(@PathVariable("id") Long id, @RequestBody StudentWrapper wrapper) {
-
 		try {
+			if(wrapper == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"não foi encontrado a lista de estudantes a adicionar");
+
 			this.classService.addStudentsIntoClass(wrapper.getStudentDTOS(), id);
-			return ResponseEntity.ok("estudantes adicionados a classe");
+			return ResponseEntity.ok("estudantes adicionados a classe ");
+
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
