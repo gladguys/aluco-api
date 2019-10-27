@@ -42,7 +42,7 @@ public class Class {
         ClassDTO dto = new ClassDTO();
         dto.setId(id);
         dto.setName(name);
-        dto.setDescripton(description);
+        dto.setDescription(description);
 
         return dto;
     }

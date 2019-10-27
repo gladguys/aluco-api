@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Teacher;
 import lombok.Data;
@@ -10,10 +11,16 @@ import java.util.Set;
 @Data
 public class ClassDTO {
 	private Long id;
+
 	private String name;
+
 	private String description;
+
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate creationDate;
+
 	private Set<StudentDTO> students;
+
 	private Long teacherId;
 
 	public Class toEntity() {
