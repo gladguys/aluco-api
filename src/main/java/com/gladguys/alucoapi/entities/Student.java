@@ -32,7 +32,7 @@ public class Student {
 	private String email;
 
 	@Column(name = "photo_url")
-	private String photoURL;
+	private String photoUrl;
 
 	@Column(name = "date_of_birth")
 	@JsonFormat(pattern = "dd-MM-yyyy")

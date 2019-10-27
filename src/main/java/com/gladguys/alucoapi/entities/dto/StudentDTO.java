@@ -29,7 +29,7 @@ public class StudentDTO {
         student.setId(id);
         student.setName(name);
         student.setEmail(email);
-        student.setPhotoURL(photoUrl);
+        student.setPhotoUrl(photoUrl);
         student.setDateBirth(dateBirth);
         student.setPhone(phone);
         student.setAddress(address);
