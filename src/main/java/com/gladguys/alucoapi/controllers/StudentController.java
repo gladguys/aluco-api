@@ -58,9 +58,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> save(@RequestBody StudentDTO dto) {
+    public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
         try {
             if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+            dto.setTeacherId(teacherId);
 
             Student studentSaved = this.studentService.save(dto.toEntity());
             return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
@@ -71,13 +74,16 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> update(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
         try {
             if(studentDTO == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
             boolean exists = this.studentService.existsById(studentDTO.getId());
             if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+            studentDTO.setTeacherId(teacherId);
 
             Student studentUpdated = this.studentService.update(studentDTO.toEntity());
             return ResponseEntity.ok(studentUpdated);
