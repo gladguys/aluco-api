@@ -4,7 +4,6 @@ import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +60,7 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<Student> save(@RequestBody StudentDTO dto) {
         try {
-            if(dto == null) throw new Exception();
+            if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
             Student studentSaved = this.studentService.save(dto.toEntity());
             return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
@@ -74,8 +73,11 @@ public class StudentController {
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody StudentDTO studentDTO) {
         try {
-            if(studentDTO == null) throw new Exception();
+            if(studentDTO == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+            boolean exists = this.studentService.existsById(studentDTO.getId());
+            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
             Student studentUpdated = this.studentService.update(studentDTO.toEntity());
             return ResponseEntity.ok(studentUpdated);
@@ -88,10 +90,10 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public ResponseEntity<Student> delete(@PathVariable Long studentId) {
         try {
-            Student student = this.studentService.getById(studentId);
-            if (student == null) throw new Exception();
+            boolean exists = this.studentService.existsById(studentId);
+            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
-            this.studentService.deleteById(student.getId());
+            this.studentService.deleteById(studentId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
         } catch (Exception e) {

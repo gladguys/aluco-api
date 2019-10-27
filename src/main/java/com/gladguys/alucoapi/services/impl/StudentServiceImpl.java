@@ -46,4 +46,10 @@ public class StudentServiceImpl implements StudentService {
 	public void deleteById(Long id) {
 		this.studentRepository.deleteById(id);
 	}
+
+	@Override
+	public boolean existsById(Long id) {
+		return this.studentRepository.existsById(id);
+	}
+
 }
