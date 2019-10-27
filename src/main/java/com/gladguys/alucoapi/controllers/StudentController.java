@@ -67,6 +67,7 @@ public class StudentController {
     public ResponseEntity<Student> update(@RequestBody StudentDTO studentDTO) {
         try {
             if(studentDTO == null) throw new Exception();
+            else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
             Student studentUpdated = this.studentService.update(studentDTO.toEntity());
             return ResponseEntity.ok(studentUpdated);
