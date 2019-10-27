@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Teacher;
+import com.gladguys.alucoapi.entities.dto.SignupDTO;
 import com.gladguys.alucoapi.services.TeacherService;
 import com.gladguys.alucoapi.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,12 @@ public class TeacherController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Teacher> signup(@RequestBody Teacher newTeacher) {
+	public ResponseEntity<Teacher> signup(@RequestBody SignupDTO sign) {
 
 		try {
-			Teacher teacherCreated = this.teacherService.createOrUpdate(newTeacher);
-			teacherCreated.hideUserPassword();
-			return ResponseEntity.ok(teacherCreated);
+			this.teacherService.createOrUpdate(sign);
 
+			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
