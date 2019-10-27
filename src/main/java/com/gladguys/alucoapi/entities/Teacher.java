@@ -21,7 +21,6 @@ public class Teacher {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Nome deve ser informado.")
 	private String name;
 
 	@Column(name = "photo_url")
@@ -35,7 +34,4 @@ public class Teacher {
 	@JoinColumn(name = "user_aluco_id")
 	private User user;
 
-	public void hideUserPassword() {
-		this.user.setPassword(null);
-	}
 }
