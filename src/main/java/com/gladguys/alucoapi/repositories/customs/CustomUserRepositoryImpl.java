@@ -1,3 +1,4 @@
+
 package com.gladguys.alucoapi.repositories.customs;
 
 import org.springframework.beans.factory.annotation.Autowired;

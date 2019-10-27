@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.enums.StatusEnum;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class Call {
 	@JoinColumn(name = "class_id")
 	private Class classCall;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate date;
 
 	private StatusEnum status;
