@@ -8,6 +8,7 @@ public class AlucoApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AlucoApiApplication.class, args);
+        
     }
 
 }
