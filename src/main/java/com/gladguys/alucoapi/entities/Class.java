@@ -52,6 +52,7 @@ public class Class {
         dto.setId(id);
         dto.setName(name);
         dto.setDescription(description);
+        dto.setCreationDate(creationDate);
 
         return dto;
     }
