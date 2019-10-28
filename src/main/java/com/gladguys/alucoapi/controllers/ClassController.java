@@ -70,9 +70,13 @@ public class ClassController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto) {
+	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto, HttpServletRequest request) {
 		try {
 			if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+			dto.setTeacherId(teacherId);
+
 			ClassDTO classDTO = this.classService.saveOrUpdate(dto);
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(classDTO);
