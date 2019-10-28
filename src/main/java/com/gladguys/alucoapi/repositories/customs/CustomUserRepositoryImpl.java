@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CustomUserRepositoryImpl implements CustomUserRepository {
 
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	public CustomUserRepositoryImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
