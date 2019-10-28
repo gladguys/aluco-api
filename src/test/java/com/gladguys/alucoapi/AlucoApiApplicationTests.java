@@ -8,6 +8,7 @@ class AlucoApiApplicationTests {
 
     @Test
     void contextLoads() {
+        
     }
 
 }
