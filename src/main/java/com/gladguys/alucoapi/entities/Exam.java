@@ -2,7 +2,6 @@ package com.gladguys.alucoapi.entities;
 
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +35,7 @@ public @Data class Exam {
 	@NotBlank(message = "Descrição deve ser informada.")
 	private String description;
 
-	private Date date;
+	private LocalDate date;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "class_id")

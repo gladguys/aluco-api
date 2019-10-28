@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.Grade;
@@ -14,16 +15,23 @@ import java.util.Set;
 public class ExamDTO {
 
     private Long id;
+
     private String name;
+
     private String description;
-    private Date date;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate date;
+
     private Long classId;
+
     private Long teacherId;
+
     private Set<GradeDTO> gradesDTO;
 
     public ExamDTO() {}
 
-    public ExamDTO(Long id, String name,  String description, Long classId, Long teacherId, Date date ) {
+    public ExamDTO(Long id, String name,  String description, Long classId, Long teacherId, LocalDate date ) {
         this.id = id;
         this.name = name;
         this.description = description;
