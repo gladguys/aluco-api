@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
+import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.repositories.ExamRepository;
 import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,9 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public List<ExamDTO> getAllByTeacherId(Long teacherId) throws Exception {
-		return null;
+	public List<ExamDTO> getAllByTeacherId(ExamFilter filter) throws Exception {
+
+		return this.examRepository.getByFilters(filter);
 	}
 
 	@Override
@@ -35,8 +37,15 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public void deleteById(Long id) {
-
+	public boolean exists(Long id) {
+		return this.examRepository.existsById(id);
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		this.examRepository.deleteById(id);
+	}
+
+
 
 }
