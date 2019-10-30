@@ -4,22 +4,16 @@ import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "exam")
@@ -37,7 +31,7 @@ public @Data class Exam {
 
 	private LocalDate date;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private Class classExam;
 
@@ -51,8 +45,8 @@ public @Data class Exam {
 		examDTO.setName(name);
 		examDTO.setDescription(description);
 		examDTO.setDate(date);
-		examDTO.setClassId(classExam.getId());
-		examDTO.setTeacherId(classExam.getTeacher().getId());
+		if(examDTO.getClassId() != null)
+			examDTO.setClassId(classExam.getId());
 		return examDTO;
 	}
 }

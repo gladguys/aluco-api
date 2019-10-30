@@ -34,7 +34,7 @@ public class ExamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExamDTO>> getAll(HttpServletRequest request,
+    public ResponseEntity<List<ExamDTO>> get(HttpServletRequest request,
                                                 @RequestParam(value = "name", required = false) String name,
                                                 @RequestParam(value = "classId", required = false) Long classId) {
         try {

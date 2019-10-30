@@ -31,15 +31,6 @@ public class ExamDTO {
 
     public ExamDTO() {}
 
-    public ExamDTO(Long id, String name,  String description, Long classId, Long teacherId, LocalDate date ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.date = date;
-        this.teacherId = teacherId;
-        this.classId = classId;
-    }
-
     public Exam toEntity() {
         Exam exam = new Exam();
         exam.setId(id);
