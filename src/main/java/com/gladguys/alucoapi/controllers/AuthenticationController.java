@@ -6,6 +6,7 @@ import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.security.jwt.JwtAuthenticationRequest;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 
+	@ApiOperation(value = "Autentica usuário e retorna seu token")
 	@PostMapping(value = "/api/auth")
 	public ResponseEntity<?> authenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
 		final Authentication authentication = authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
