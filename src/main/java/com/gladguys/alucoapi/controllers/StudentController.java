@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class StudentController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    @ApiOperation(value = "Retorna os estudantes do professor logado")
     @GetMapping
     public ResponseEntity<Set<Student>> getAll(HttpServletRequest request) {
         try {
@@ -46,18 +48,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/teacher")
-    public ResponseEntity<Set<Student>> listAllByTeacher(HttpServletRequest request) {
-        try {
-            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            Set<Student> students = this.studentService.getAllByTeacher(teacherId);
-            return ResponseEntity.ok(students);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
+    @ApiOperation(value = "Cadastra um estudante")
     @PostMapping
     public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
         try {
@@ -74,6 +65,7 @@ public class StudentController {
         }
     }
 
+    @ApiOperation(value = "Atualiza um estudante")
     @PutMapping
     public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
         try {
@@ -94,6 +86,7 @@ public class StudentController {
         }
     }
 
+    @ApiOperation(value = "Deleta um estudante")
     @DeleteMapping("/{studentId}")
     public ResponseEntity<Student> delete(@PathVariable Long studentId) {
         try {

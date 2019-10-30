@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.services.ExamService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class ExamController {
         this.examService = examService;
     }
 
+    @ApiOperation(value = "Retorna as provas de um professor específico")
     @GetMapping("/teacher/{teacherId}")
     public ResponseEntity<List<ExamDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
         try {
@@ -35,6 +37,7 @@ public class ExamController {
         }
     }
 
+    @ApiOperation(value = "Cadastra uma prova")
     @PostMapping
     public ResponseEntity<ExamDTO> save(@RequestBody ExamDTO examDTO) {
         try {
