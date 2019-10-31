@@ -11,9 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 
+@Table(
+		uniqueConstraints=
+		@UniqueConstraint(columnNames={"student_id", "exam_id"})
+)
 @Entity(name = "grade")
 public @Data class Grade {
 
