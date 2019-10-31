@@ -48,9 +48,8 @@ public class GradeController {
     public ResponseEntity<Grade> save(@RequestBody GradeDTO dto) {
 
         try {
-            Grade grade = this.gradeService.saveOrUpdate(dto);
-
-            return ResponseEntity.ok(grade);
+            //TODO: create a custom exception to know when creating a grade for a existing grade for student-class
+            return ResponseEntity.ok(this.gradeService.saveOrUpdate(dto));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
