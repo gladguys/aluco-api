@@ -35,9 +35,10 @@ public class CustomGradeRepositoryImpl implements CustomGradeRepository {
 	@Override
 	public List<GradeDTO> getAllGradesByStudent(Long studentId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT g.id, g.grade, stu.name as nameStudent, student_id as studentId, exam_id as examId " +
+		sql.append(" SELECT g.id, g.grade, stu.name as nameStudent, student_id as studentId, exam_id as examId, e.name as examName " +
 				" FROM grade g ");
 		sql.append(" INNER JOIN student stu on stu.id = student_id ");
+		sql.append(" INNER JOIN exam e on e.id = exam_id ");
 		sql.append(" WHERE 1=1 ");
 		if (studentId != null) {
 			sql.append(" AND g.student_id = " + studentId);
