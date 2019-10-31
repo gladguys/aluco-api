@@ -15,7 +15,7 @@ public interface GradeService {
 
 	List<GradeDTO> getAllGradesByStudent(Long student) throws Exception;
 
-	Grade saveOrUpdate(GradeDTO gradeDTO);
+	Grade saveOrUpdate(GradeDTO gradeDTO) throws Exception;
 
 	void deleteById(Long id) throws Exception;
 

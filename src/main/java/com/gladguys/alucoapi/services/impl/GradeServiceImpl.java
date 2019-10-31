@@ -1,8 +1,11 @@
 package com.gladguys.alucoapi.services.impl;
 
+import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.Grade;
+import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.dto.GradeDTO;
 import com.gladguys.alucoapi.repositories.GradeRepository;
+import com.gladguys.alucoapi.services.ExamService;
 import com.gladguys.alucoapi.services.GradeService;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +15,11 @@ import java.util.List;
 public class GradeServiceImpl implements GradeService {
 
 	private GradeRepository gradeRepository;
+	private ExamService examService;
 
-	public GradeServiceImpl(GradeRepository gradeRepository) {
+	public GradeServiceImpl(GradeRepository gradeRepository, ExamService examService) {
 		this.gradeRepository = gradeRepository;
+		this.examService = examService;
 	}
 
 	@Override
@@ -45,9 +50,13 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
-	public Grade saveOrUpdate(GradeDTO gradeDTO) {
+	public Grade saveOrUpdate(GradeDTO gradeDTO) throws Exception {
 
-		return this.gradeRepository.save(gradeDTO.toEntity());
+		Grade grade = gradeDTO.toEntity();
+		ExamDTO examOfGrade = this.examService.getExamWithClassIdByExamId(gradeDTO.getExamId());
+		grade.setExam(examOfGrade.toEntity());
+
+		return this.gradeRepository.save(grade);
 	}
 
 	@Override
