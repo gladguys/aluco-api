@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ExamFilter {
 
+	private Long id;
 	private String name;
 	private Long classId;
 	private Long teacherId;

@@ -31,7 +31,12 @@ public class ExamDTO {
 
     public ExamDTO() {}
 
-    public ExamDTO(Long id, String name,  String description, Long classId, Long teacherId, LocalDate date ) {
+    public ExamDTO(Long id, Long classId) {
+        this.id = id;
+        this.classId = classId;
+    }
+
+    public ExamDTO(Long id, String name, String description, Long classId, Long teacherId, LocalDate date ) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,6 +54,7 @@ public class ExamDTO {
 
         Class c = new Class();
         c.setId(classId);
+        exam.setClassExam(c);
 
         Set<Grade> grades = new HashSet<>();
         if(gradesDTO != null) {
