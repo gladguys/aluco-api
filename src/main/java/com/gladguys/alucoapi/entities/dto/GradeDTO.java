@@ -16,6 +16,7 @@ public class GradeDTO {
     private Long studentId;
     private String studentName;
     private Long examId;
+    private String examName;
 
     public Grade toEntity() {
         Grade grade = new Grade();

@@ -10,6 +10,7 @@ import com.gladguys.alucoapi.services.GradeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class GradeServiceImpl implements GradeService {
@@ -46,6 +47,14 @@ public class GradeServiceImpl implements GradeService {
 		if(studentId == null) throw new Exception("id do aluno não informado");
 
 		return this.gradeRepository.getAllGradesByStudent(studentId);
+
+	}
+
+	@Override
+	public List<GradeDTO> getAllGradesByClass(Long classId) throws Exception {
+
+		if (classId == null) throw new  Exception("class id is null");
+		return this.gradeRepository.getAllGradesByClass(classId);
 
 	}
 

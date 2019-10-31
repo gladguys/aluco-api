@@ -44,6 +44,18 @@ public class GradeController {
         }
     }
 
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<List<GradeDTO>> allGradesForClass(@PathVariable("classId") Long classId) {
+
+        try {
+            List<GradeDTO> grades = this.gradeService.getAllGradesByClass(classId);
+            return ResponseEntity.ok(grades);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Grade> save(@RequestBody GradeDTO dto) {
 

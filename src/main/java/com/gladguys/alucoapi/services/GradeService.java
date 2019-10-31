@@ -19,4 +19,5 @@ public interface GradeService {
 
 	void deleteById(Long id) throws Exception;
 
+	List<GradeDTO> getAllGradesByClass(Long classId) throws Exception;
 }
