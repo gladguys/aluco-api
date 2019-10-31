@@ -23,6 +23,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT id, name, date FROM exam ");
 		sql.append(" WHERE 1=1 ");
+
 		if (examFilter.getName() != null)
 			sql.append(" AND name LIKE '%" +examFilter.getName() + "%'");
 
@@ -35,5 +36,17 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 
 		List<ExamDTO> result = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper(ExamDTO.class));
 		return result;
+	}
+
+	@Override
+	public ExamDTO getExamWithClass(Long id) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, class_id FROM exam WHERE id = " + id);
+		return jdbcTemplate.queryForObject(sql.toString(),(rs, rowNum) ->
+				new ExamDTO(
+						rs.getLong("id"),
+						rs.getLong("class_id")
+				));
 	}
 }

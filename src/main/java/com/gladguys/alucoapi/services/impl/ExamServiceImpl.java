@@ -46,6 +46,10 @@ public class ExamServiceImpl implements ExamService {
 		this.examRepository.deleteById(id);
 	}
 
+	@Override
+	public ExamDTO getExamWithClassIdByExamId(Long examId) {
+		return this.examRepository.getExamWithClass(examId);
+	}
 
 
 }

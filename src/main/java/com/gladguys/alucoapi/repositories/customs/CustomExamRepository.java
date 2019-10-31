@@ -10,4 +10,6 @@ import java.util.List;
 public interface CustomExamRepository {
 
 	List<ExamDTO> getByFilters(ExamFilter examFilter);
+
+	ExamDTO getExamWithClass(Long examId);
 }
