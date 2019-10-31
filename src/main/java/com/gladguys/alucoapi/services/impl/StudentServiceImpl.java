@@ -38,6 +38,11 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
+	public Set<Student> getAllByClassId(Long classId) {
+		return this.studentRepository.getAllByClassId(classId);
+	}
+
+	@Override
 	public Student update(Student student) {
 		return this.studentRepository.save(student);
 	}
