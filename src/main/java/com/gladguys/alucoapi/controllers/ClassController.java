@@ -1,9 +1,11 @@
 package com.gladguys.alucoapi.controllers;
 
+import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +27,13 @@ import java.util.Set;
 public class ClassController {
 
 	private ClassService classService;
+	private StudentService studentService;
 	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService, JwtTokenUtil jwtTokenUtil) {
+	public ClassController(ClassService classService, StudentService studentService, JwtTokenUtil jwtTokenUtil) {
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
+		this.studentService = studentService;
 	}
 
 	@ApiOperation(value = "Retorna as turmas de um professor específico")
@@ -67,6 +71,20 @@ public class ClassController {
 
 			ClassDTO classFound = this.classService.getById(id);
 			return ResponseEntity.ok(classFound);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@ApiOperation(value = "Retorna os estudantes de uma turma específica")
+	@GetMapping("/{id}/students")
+	public ResponseEntity<Set<Student>> getStudentsByClassId(@PathVariable("id") Long id) {
+		try{
+			if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+			Set<Student> students = this.studentService.getAllByClassId(id);
+			return ResponseEntity.ok(students);
 
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
