@@ -14,6 +14,7 @@ public class GradeDTO {
     private BigDecimal grade;
     private Long weight;
     private Long studentId;
+    private String studentName;
     private Long examId;
 
     public Grade toEntity() {

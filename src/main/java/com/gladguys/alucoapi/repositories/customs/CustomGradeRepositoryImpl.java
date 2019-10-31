@@ -19,8 +19,9 @@ public class CustomGradeRepositoryImpl implements CustomGradeRepository {
 	@Override
 	public List<GradeDTO> getAllGradesByExam(Long examId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT id, grade, student_id as studentId" +
-				" FROM grade ");
+		sql.append(" SELECT g.id, stu.id, stu.name as studentName, grade, g.student_id as studentId" +
+				" FROM grade g ");
+		sql.append(" INNER JOIN student stu on stu.id = g.student_id ");
 		sql.append(" WHERE 1=1 ");
 		if( examId != null) {
 			sql.append(" AND exam_id = " + examId);
@@ -34,8 +35,9 @@ public class CustomGradeRepositoryImpl implements CustomGradeRepository {
 	@Override
 	public List<GradeDTO> getAllGradesByStudent(Long studentId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT id, grade, student_id as studentId, exam_id as examId " +
+		sql.append(" SELECT id, grade, stu.name as nameStudent, student_id as studentId, exam_id as examId " +
 				" FROM grade ");
+		sql.append(" INNER JOIN student stu on stu.id = grade.id ");
 		sql.append(" WHERE 1=1 ");
 		if( studentId != null) {
 			sql.append(" AND student_id = " + studentId);

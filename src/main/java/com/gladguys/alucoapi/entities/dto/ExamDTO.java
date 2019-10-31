@@ -27,6 +27,8 @@ public class ExamDTO {
 
     private Long teacherId;
 
+    private String nameStudent;
+
     private Set<GradeDTO> gradesDTO;
 
     public ExamDTO() {}
