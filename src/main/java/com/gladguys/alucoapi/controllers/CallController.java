@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Call;
 import com.gladguys.alucoapi.services.CallService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +21,18 @@ public class CallController {
         this.callService = callService;
     }
 
+    @ApiOperation(value = "Retorna as chamadas de um determinado dia e turma")
     @GetMapping("/class/{classId}")
     public ResponseEntity<Set<Call>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") Date date) {
         try {
             Set<Call> calls = this.callService.getAllByClassAndDate(classId, date);
             return ResponseEntity.ok(calls);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
+    @ApiOperation(value = "Cadastra uma lista de chamadas")
     @PostMapping
     public ResponseEntity saveAll(Set<Call> calls) {
         try {
@@ -40,6 +43,7 @@ public class CallController {
         }
     }
 
+    @ApiOperation(value = "Atualiza uma chamada")
     @PutMapping
     public ResponseEntity<Call> update(Call call) {
         try {
@@ -50,6 +54,7 @@ public class CallController {
         }
     }
 
+    @ApiOperation(value = "Retorna as chamadas de um estudante específico")
     @GetMapping("/student/{studentId}")
     public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
         try {

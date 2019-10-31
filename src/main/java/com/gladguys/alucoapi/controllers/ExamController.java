@@ -5,6 +5,7 @@ import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ExamService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,7 @@ public class ExamController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Retorna lista de provas do professor requisitante")
     public ResponseEntity<List<ExamDTO>> getAll(HttpServletRequest request,
                                                 @RequestParam(value = "name", required = false) String name,
                                                 @RequestParam(value = "classId", required = false) Long classId) {
@@ -48,8 +50,8 @@ public class ExamController {
         }
     }
 
-
     @PostMapping
+    @ApiOperation(value = "Cadastra uma prova")
     public ResponseEntity<ExamDTO> save(@RequestBody ExamDTO examDTO) {
         try {
             Exam exam = this.examService.saveOrUpdate(examDTO);
@@ -61,6 +63,7 @@ public class ExamController {
     }
 
     @PutMapping
+    @ApiOperation(value = "Atualiza uma prova com dados passado no body")
     public ResponseEntity<ExamDTO> update(@RequestBody ExamDTO examDTO) {
         try {
             if(examDTO == null || examDTO.getId() == null)
@@ -78,6 +81,7 @@ public class ExamController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Deleta uma prova com base no id passado na url")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         try {
             boolean exists = this.examService.exists(id);
