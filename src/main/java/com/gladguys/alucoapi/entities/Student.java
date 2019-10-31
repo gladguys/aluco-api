@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
 
@@ -59,6 +60,24 @@ public class Student {
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
+
+	public StudentDTO toDTO() {
+		StudentDTO student = new StudentDTO();
+		student.setId(id);
+		student.setName(name);
+		student.setEmail(email);
+		student.setPhotoUrl(photoUrl);
+		student.setDateBirth(dateBirth);
+		student.setPhone(phone);
+		student.setAddress(address);
+		student.setResponsibleName(responsibleName);
+		student.setResponsiblePhone(responsiblePhone);
+		student.setPreviousSchool(previousSchool);
+		student.setObservation(observation);
+		student.setGender(gender);
+
+		return student;
+	}
 
 }
 
