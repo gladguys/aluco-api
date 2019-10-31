@@ -6,8 +6,7 @@ import com.gladguys.alucoapi.repositories.GradeRepository;
 import com.gladguys.alucoapi.services.GradeService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class GradeServiceImpl implements GradeService {
@@ -28,25 +27,26 @@ public class GradeServiceImpl implements GradeService {
 	}
 
 	@Override
-	public Set<Grade> getAllGradesByExam(Long examId) throws Exception {
+	public List<GradeDTO> getAllGradesByExam(Long examId) throws Exception {
 
 		if(examId == null) throw new Exception("id da turma não informado");
 
-		return this.gradeRepository.getAllByExamIdOrderByStudentId(examId);
+		return this.gradeRepository.getAllGradesByExam(examId);
 
 	}
 
 	@Override
-	public Set<Grade> getAllGradesByStudent(Long studentId) throws Exception {
+	public List<GradeDTO> getAllGradesByStudent(Long studentId) throws Exception {
 
 		if(studentId == null) throw new Exception("id do aluno não informado");
 
-		return this.gradeRepository.getAllByStudentIdOrderByStudentNameAsc(studentId);
+		return this.gradeRepository.getAllGradesByStudent(studentId);
 
 	}
 
 	@Override
 	public Grade saveOrUpdate(GradeDTO gradeDTO) {
+
 		return this.gradeRepository.save(gradeDTO.toEntity());
 	}
 

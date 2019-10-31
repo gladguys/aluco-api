@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -20,10 +21,10 @@ public class GradeController {
     }
 
     @GetMapping("/exam/{examId}")
-    public ResponseEntity<Set<Grade>> allGradesForExam(@PathVariable("examId") Long examId) {
+    public ResponseEntity<List<GradeDTO>> allGradesForExam(@PathVariable("examId") Long examId) {
 
         try {
-            Set<Grade> grades = this.gradeService.getAllGradesByExam(examId);
+            List<GradeDTO> grades = this.gradeService.getAllGradesByExam(examId);
             return ResponseEntity.ok(grades);
 
         } catch (Exception e) {
@@ -32,10 +33,10 @@ public class GradeController {
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<Set<Grade>> allGradesForStudent(@PathVariable("studentId") Long studentId) {
+    public ResponseEntity<List<GradeDTO>> allGradesForStudent(@PathVariable("studentId") Long studentId) {
 
         try {
-            Set<Grade> grades = this.gradeService.getAllGradesByExam(studentId);
+            List<GradeDTO> grades = this.gradeService.getAllGradesByStudent(studentId);
             return ResponseEntity.ok(grades);
 
         } catch (Exception e) {
@@ -47,8 +48,8 @@ public class GradeController {
     public ResponseEntity<Grade> save(@RequestBody GradeDTO dto) {
 
         try {
-
             Grade grade = this.gradeService.saveOrUpdate(dto);
+
             return ResponseEntity.ok(grade);
 
         } catch (Exception e) {

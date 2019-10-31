@@ -15,10 +15,8 @@ public class StudentDTO {
     private String name;
     private String email;
     private String photoUrl;
-
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateBirth;
-
     private String phone;
     private Long teacherId;
     private String responsibleName;
