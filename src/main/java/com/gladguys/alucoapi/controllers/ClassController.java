@@ -1,8 +1,8 @@
 package com.gladguys.alucoapi.controllers;
 
-import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
 import com.gladguys.alucoapi.services.StudentService;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -79,11 +80,11 @@ public class ClassController {
 
 	@ApiOperation(value = "Retorna os estudantes de uma turma específica")
 	@GetMapping("/{id}/students")
-	public ResponseEntity<Set<Student>> getStudentsByClassId(@PathVariable("id") Long id) {
+	public ResponseEntity<List<StudentDTO>> getStudentsByClassId(@PathVariable("id") Long id) {
 		try{
 			if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-			Set<Student> students = this.studentService.getAllByClassId(id);
+			List<StudentDTO> students = this.studentService.getAllByClassId(id);
 			return ResponseEntity.ok(students);
 
 		} catch (Exception e) {
