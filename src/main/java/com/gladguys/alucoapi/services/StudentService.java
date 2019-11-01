@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.services;
 
 import com.gladguys.alucoapi.entities.Student;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface StudentService {
 
 	List<Student> findAll();
 	Set<Student> getAllByTeacher(Long teacherId);
-	Set<Student> getAllByClassId(Long classId);
+	List<StudentDTO> getAllByClassId(Long classId);
 	Student getById(Long id);
 	Student save(Student student);
 	Student update(Student student);

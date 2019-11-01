@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Student;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.repositories.StudentRepository;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Set<Student> getAllByClassId(Long classId) {
+	public List<StudentDTO> getAllByClassId(Long classId) {
 		return this.studentRepository.getAllByClassId(classId);
 	}
 
