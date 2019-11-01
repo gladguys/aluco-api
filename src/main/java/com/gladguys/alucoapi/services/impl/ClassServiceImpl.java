@@ -60,11 +60,11 @@ public class ClassServiceImpl implements ClassService {
 
 		Set<Student> students = new HashSet<>();
 		studentDTOS.forEach(dto -> {
-			students.add(this.studentService.getById(dto.getId()));
+			students.add(dto.toEntity());
 		});
 
 		if(students.size() > 0) {
-			classToAddStudent.setStudents(students);
+			classToAddStudent.addStudents(students);
 			this.classRepository.save(classToAddStudent);
 		}
 	}
