@@ -26,7 +26,8 @@ public class TeacherController {
 	public ResponseEntity<Teacher> signup(@RequestBody SignupDTO sign) {
 
 		try {
-			this.teacherService.createOrUpdate(sign);
+			Teacher teacher = this.teacherService.createOrUpdate(sign);
+			if (teacher == null) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		} catch (Exception e) {
