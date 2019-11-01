@@ -3,11 +3,8 @@ package com.gladguys.alucoapi.services.impl;
 import com.gladguys.alucoapi.entities.User;
 import com.gladguys.alucoapi.repositories.UserRepository;
 import com.gladguys.alucoapi.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +31,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Long getTeacherIdByUsername(String username) {
 		return this.userRepository.getTeacherIdByUsername(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return this.userRepository.existsByEmail(email);
 	}
 
 

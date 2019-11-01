@@ -32,6 +32,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public Teacher createOrUpdate(SignupDTO sign) {
+        boolean exists = userService.existsByEmail(sign.getEmail());
+
+        if (exists) return null;
+
         User user = new User();
         user.setCreateDate(LocalDate.now());
         user.setEmail(sign.getEmail());

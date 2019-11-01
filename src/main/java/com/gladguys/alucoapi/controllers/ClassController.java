@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ public class ClassController {
 		this.classService = classService;
 	}
 
+	@ApiOperation(value = "Retorna as turmas de um professor específico")
 	@GetMapping("/teacher/{teacherId}")
 	public ResponseEntity<Set<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
 		try {
@@ -44,6 +46,7 @@ public class ClassController {
 		}
 	}
 
+	@ApiOperation(value = "Retorna as turmas do professor logado")
 	@GetMapping
 	public ResponseEntity<Set<ClassDTO>> getAll(HttpServletRequest request) {
 		try {
@@ -56,6 +59,7 @@ public class ClassController {
 		}
 	}
 
+	@ApiOperation(value = "Retorna uma turma pelo código")
 	@GetMapping("/{id}")
 	public ResponseEntity<ClassDTO> getById(@PathVariable("id") Long id) {
 		try {
@@ -69,6 +73,7 @@ public class ClassController {
 		}
 	}
 
+	@ApiOperation(value = "Cadastra uma turma")
 	@PostMapping
 	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto, HttpServletRequest request) {
 		try {
@@ -85,6 +90,7 @@ public class ClassController {
 		}
 	}
 
+	@ApiOperation(value = "Atualiza uma turma")
 	@PutMapping
 	public ResponseEntity<ClassDTO> update(@RequestBody ClassDTO dto, HttpServletRequest request) {
 
@@ -106,6 +112,7 @@ public class ClassController {
 		}
 	}
 
+	@ApiOperation(value = "Deleta uma turma")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
 		try {
@@ -120,7 +127,7 @@ public class ClassController {
 		}
 	}
 
-
+	@ApiOperation(value = "Cadastra uma lista de estudantes em uma turma")
 	@PostMapping("/{id}/students")
 	public ResponseEntity saveStudentsForClass(@PathVariable("id") Long id, @RequestBody StudentWrapper wrapper) {
 		try {
