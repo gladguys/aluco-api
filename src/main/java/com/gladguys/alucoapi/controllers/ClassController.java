@@ -39,11 +39,11 @@ public class ClassController {
 
 	@ApiOperation(value = "Retorna as turmas de um professor específico")
 	@GetMapping("/teacher/{teacherId}")
-	public ResponseEntity<Set<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
+	public ResponseEntity<List<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
 		try {
 			if(teacherId == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
+			List<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
 			return ResponseEntity.ok(classes);
 
 		} catch (Exception e) {
@@ -53,10 +53,10 @@ public class ClassController {
 
 	@ApiOperation(value = "Retorna as turmas do professor logado")
 	@GetMapping
-	public ResponseEntity<Set<ClassDTO>> getAll(HttpServletRequest request) {
+	public ResponseEntity<List<ClassDTO>> getAll(HttpServletRequest request) {
 		try {
 			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
+			List<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
 			return ResponseEntity.ok(classes);
 
 		} catch (Exception e) {
@@ -151,7 +151,7 @@ public class ClassController {
 	public ResponseEntity saveStudentsForClass(@PathVariable("id") Long id, @RequestBody StudentWrapper wrapper) {
 		try {
 			if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-			if(wrapper == null || wrapper.getStudentDTOS().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			if(wrapper == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 			this.classService.addStudentsIntoClass(wrapper.getStudentDTOS(), id);
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);

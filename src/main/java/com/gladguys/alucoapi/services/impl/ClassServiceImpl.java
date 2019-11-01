@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -31,13 +32,9 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public Set<ClassDTO> getAllByTeacher(Long teacherId) {
-		Set<ClassDTO> classesDTO = new HashSet<>();
+	public List<ClassDTO> getAllByTeacher(Long teacherId) {
 
-		Set<Class> classes = this.classRepository.getAllByTeacherId(teacherId);
-		classes.forEach(c -> classesDTO.add(c.toDTO()));
-
-		return classesDTO;
+		return this.classRepository.getAllByTeacherId(teacherId);
 	}
 
 	@Override
