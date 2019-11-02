@@ -5,6 +5,7 @@ import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public interface ExamService {
@@ -17,5 +18,5 @@ public interface ExamService {
 
 	void deleteById(Long id);
 
-    List<ExamDTO> getAllByClassId(Long classId);
+    Set<ExamDTO> getAllByClassId(Long classId);
 }
