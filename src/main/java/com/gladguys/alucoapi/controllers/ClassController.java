@@ -160,4 +160,18 @@ public class ClassController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
+
+	@ApiOperation("Desvincula aluno de uma turma")
+	@DeleteMapping("{studentId}/{classId}")
+	public ResponseEntity deleteStudentFromClass(@PathVariable("studentId") Long studentId, @PathVariable("classId") Long classId) {
+		try {
+			if (studentId == null && classId == null) return ResponseEntity.badRequest().body(null);
+
+			this.classService.deleteStudentFromClass(studentId, classId);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
 }

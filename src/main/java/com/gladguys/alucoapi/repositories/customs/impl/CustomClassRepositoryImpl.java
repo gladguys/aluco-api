@@ -25,4 +25,10 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 
 		return this.jdbcTemplate.query(sql.toString(), new Object[]{teacherId}, new BeanPropertyRowMapper<>(ClassDTO.class));
 	}
+
+	@Override
+	public void deleteStudentFromClass(Long studentId, Long classId, List<Long> examsId) {
+		this.jdbcTemplate.update("DELETE FROM grade WHERE student_id = ? AND exam_id IN (?) ", new Object[]{studentId, examsId});
+		this.jdbcTemplate.update("DELETE FROM class_student WHERE student_id = ? AND class_id = ?", new Object[]{studentId, classId});
+	}
 }

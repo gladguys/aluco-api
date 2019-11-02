@@ -1,11 +1,14 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Class;
+import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ExamService;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +17,19 @@ import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassServiceImpl implements ClassService {
 
 	private ClassRepository classRepository;
 	private StudentService studentService;
+	private ExamService examService;
 
-	public ClassServiceImpl(ClassRepository classRepository, StudentService studentService) {
+	public ClassServiceImpl(ClassRepository classRepository, StudentService studentService, ExamService examService) {
 		this.classRepository = classRepository;
 		this.studentService = studentService;
+		this.examService = examService;
 	}
 
 	@Override
@@ -67,5 +73,12 @@ public class ClassServiceImpl implements ClassService {
 			classToAddStudent.addStudents(students);
 			this.classRepository.save(classToAddStudent);
 		}
+	}
+
+	@Override
+	public void deleteStudentFromClass(Long studentId, Long classId) {
+		List<Long> examsId = this.examService.getAllByClassId(classId).stream().map(ExamDTO::getId).collect(Collectors.toList());
+
+		this.classRepository.deleteStudentFromClass(studentId, classId, examsId);
 	}
 }

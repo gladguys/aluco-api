@@ -21,4 +21,6 @@ public interface ClassService {
 	void deleteById(Long id);
 
 	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception;
+
+	void deleteStudentFromClass(Long studentId, Long classId);
 }
