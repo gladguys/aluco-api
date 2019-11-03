@@ -42,8 +42,8 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public Set<ExamDTO> getAllByClassId(Long classId) {
-		return this.examRepository.findByClassExamId(classId).stream().map(Exam::toDTO).collect(Collectors.toSet());
+	public Set<Long> getAllByClassId(Long classId) {
+		return this.examRepository.getAllByClassId(classId);
 	}
 
 }

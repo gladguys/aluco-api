@@ -18,5 +18,5 @@ public interface ExamService {
 
 	void deleteById(Long id);
 
-    Set<ExamDTO> getAllByClassId(Long classId);
+    Set<Long> getAllByClassId(Long classId);
 }
