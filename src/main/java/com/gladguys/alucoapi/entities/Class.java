@@ -58,6 +58,6 @@ public class Class {
     }
 
 	public void addStudents(Set<Student> students) {
-	    students.forEach(s -> this.students.add(s));
+        this.students.addAll(students);
     }
 }
