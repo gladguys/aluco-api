@@ -77,7 +77,7 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public void deleteStudentFromClass(Long studentId, Long classId) {
-		Set<Long> examsId = this.examService.getAllByClassId(classId).stream().map(ExamDTO::getId).collect(Collectors.toSet());
+		Set<Long> examsId = this.examService.getAllByClassId(classId);
 
 		this.classRepository.deleteStudentFromClass(studentId, classId, examsId);
 	}

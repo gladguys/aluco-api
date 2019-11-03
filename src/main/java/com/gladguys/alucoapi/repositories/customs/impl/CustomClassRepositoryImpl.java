@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class CustomClassRepositoryImpl implements CustomClassRepository {
@@ -27,7 +28,7 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	}
 
 	@Override
-	public void deleteStudentFromClass(Long studentId, Long classId, List<Long> examsId) {
+	public void deleteStudentFromClass(Long studentId, Long classId, Set<Long> examsId) {
 		this.jdbcTemplate.update("DELETE FROM grade WHERE student_id = ? AND exam_id IN (?) ", new Object[]{studentId, examsId});
 		this.jdbcTemplate.update("DELETE FROM class_student WHERE student_id = ? AND class_id = ?", new Object[]{studentId, classId});
 	}
