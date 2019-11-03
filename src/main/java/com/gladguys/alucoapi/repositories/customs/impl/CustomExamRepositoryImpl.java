@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
+import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.repositories.customs.CustomExamRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,9 +24,8 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT id FROM exam WHERE class_id = ?");
 
-        List<Long> l;
-        l = jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(Long.class));
+        List<ExamDTO> examDTOS = jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(ExamDTO.class));
 
-        return l.stream().collect(Collectors.toSet());
+        return examDTOS.stream().map(ExamDTO::getId).collect(Collectors.toSet());
     }
 }

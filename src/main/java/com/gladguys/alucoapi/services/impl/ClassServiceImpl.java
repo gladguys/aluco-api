@@ -76,6 +76,7 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteStudentFromClass(Long studentId, Long classId) {
 		Set<Long> examsId = this.examService.getAllByClassId(classId);
 
