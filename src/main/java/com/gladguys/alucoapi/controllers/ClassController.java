@@ -161,7 +161,7 @@ public class ClassController {
 	}
 
 	@ApiOperation("Desvincula aluno de uma turma")
-	@DeleteMapping("classes/{classId}/students/{studentId}")
+	@DeleteMapping("{classId}/students/{studentId}")
 	public ResponseEntity deleteStudentFromClass(@PathVariable("classId") Long classId, @PathVariable("studentId") Long studentId) {
 		try {
 			if (studentId == null && classId == null) return ResponseEntity.badRequest().body(null);
