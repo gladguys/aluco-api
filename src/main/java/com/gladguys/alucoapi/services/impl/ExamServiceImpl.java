@@ -7,6 +7,8 @@ import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamServiceImpl implements ExamService {
@@ -37,6 +39,11 @@ public class ExamServiceImpl implements ExamService {
 	@Override
 	public void deleteById(Long id) {
 
+	}
+
+	@Override
+	public Set<Long> getAllByClassId(Long classId) {
+		return this.examRepository.getAllByClassId(classId);
 	}
 
 }

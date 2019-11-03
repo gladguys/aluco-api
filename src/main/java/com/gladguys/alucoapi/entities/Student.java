@@ -61,4 +61,3 @@ public class Student {
 	private Teacher teacher;
 
 }
-

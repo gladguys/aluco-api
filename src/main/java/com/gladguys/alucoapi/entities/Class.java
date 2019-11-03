@@ -38,7 +38,7 @@ public class Class {
     @Column(name = "create_date")
     private LocalDate creationDate;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students = new HashSet<>();
 
@@ -55,5 +55,9 @@ public class Class {
         dto.setCreationDate(creationDate);
 
         return dto;
+    }
+
+	public void addStudents(Set<Student> students) {
+        this.students.addAll(students);
     }
 }
