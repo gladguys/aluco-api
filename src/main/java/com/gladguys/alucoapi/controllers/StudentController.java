@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +45,7 @@ public class StudentController {
             return ResponseEntity.ok(students);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,7 +53,7 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
         try {
-            if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            if(dto == null) throw new ResponseException("Estudante é obrigatório", HttpStatus.BAD_REQUEST);
 
             Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             dto.setTeacherId(teacherId);
@@ -61,7 +62,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -69,11 +70,11 @@ public class StudentController {
     @PutMapping
     public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
         try {
-            if(studentDTO == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            if(studentDTO == null) throw new ResponseException("Estudante é obrigatorio", HttpStatus.BAD_REQUEST);
+            else if (studentDTO.getId() == null) throw new ResponseException("Estudante é obrigatório", HttpStatus.BAD_REQUEST);
 
             boolean exists = this.studentService.existsById(studentDTO.getId());
-            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            if (!exists) throw new ResponseException("Estudante não encontrado", HttpStatus.NOT_FOUND);
 
             Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             studentDTO.setTeacherId(teacherId);
@@ -82,7 +83,7 @@ public class StudentController {
             return ResponseEntity.ok(studentUpdated);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -91,13 +92,13 @@ public class StudentController {
     public ResponseEntity<Student> delete(@PathVariable Long studentId) {
         try {
             boolean exists = this.studentService.existsById(studentId);
-            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            if (!exists) throw new ResponseException("Estudante não encontrado", HttpStatus.NOT_FOUND);
 
             this.studentService.deleteById(studentId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

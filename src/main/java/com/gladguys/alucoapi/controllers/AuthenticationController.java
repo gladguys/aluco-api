@@ -57,7 +57,7 @@ public class AuthenticationController {
 		try {
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 		} catch (AuthenticationException e) {
-			throw new ResponseException("Invalid Credentials", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new ResponseException("Email e/ou senha incorretos", HttpStatus.UNAUTHORIZED);
 		}
 	}
 

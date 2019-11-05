@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Teacher;
 import com.gladguys.alucoapi.entities.dto.SignupDTO;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.services.TeacherService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,11 @@ public class TeacherController {
 
 		try {
 			Teacher teacher = this.teacherService.createOrUpdate(sign);
-			if (teacher == null) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+			if (teacher == null) throw new ResponseException("Professor já existe em nossos registros", HttpStatus.UNPROCESSABLE_ENTITY);
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+			throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

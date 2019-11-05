@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Grade;
 import com.gladguys.alucoapi.entities.dto.GradeDTO;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.services.GradeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class GradeController {
             return ResponseEntity.ok(grades);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,7 +40,7 @@ public class GradeController {
             return ResponseEntity.ok(grades);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,7 +53,7 @@ public class GradeController {
             return ResponseEntity.ok(grade);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,7 +66,7 @@ public class GradeController {
             return ResponseEntity.ok(grade);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,7 +76,7 @@ public class GradeController {
             this.gradeService.deleteById(id);
             return ResponseEntity.ok(null);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.services.ExamService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class ExamController {
             List<ExamDTO> exams = this.examService.getAllByTeacherId(teacherId);
             return ResponseEntity.ok(exams);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -45,7 +46,7 @@ public class ExamController {
             return ResponseEntity.ok(exam.toDTO());
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

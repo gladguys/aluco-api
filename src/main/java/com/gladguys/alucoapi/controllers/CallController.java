@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Call;
+import com.gladguys.alucoapi.exception.ResponseException;
 import com.gladguys.alucoapi.services.CallService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class CallController {
             Set<Call> calls = this.callService.getAllByClassAndDate(classId, date);
             return ResponseEntity.ok(calls);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,7 +40,7 @@ public class CallController {
             return ResponseEntity.ok("Calls saved with success");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,7 +51,7 @@ public class CallController {
             Call callSaved = this.callService.update(call);
             return ResponseEntity.ok(callSaved);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -62,7 +63,7 @@ public class CallController {
             return ResponseEntity.ok(calls);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
