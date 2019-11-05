@@ -35,7 +35,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT s.id, s.name FROM student s ");
 		sql.append(" WHERE s.teacher_id = ? ");
-		sql.append(" order by (s.name) ");
+		sql.append(" ORDER BY (s.name) ");
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(StudentDTO.class));
 	}
