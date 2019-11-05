@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -37,10 +38,10 @@ public class StudentController {
 
     @ApiOperation(value = "Retorna os estudantes do professor logado")
     @GetMapping
-    public ResponseEntity<Set<Student>> getAll(HttpServletRequest request) {
+    public ResponseEntity<List<StudentDTO>> getAll(HttpServletRequest request) {
         try {
             Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            Set<Student> students = this.studentService.getAllByTeacher(teacherId);
+            List<StudentDTO> students = this.studentService.getAllByTeacher(teacherId);
             return ResponseEntity.ok(students);
 
         } catch (Exception e) {
