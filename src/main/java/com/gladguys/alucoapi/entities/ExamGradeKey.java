@@ -3,6 +3,8 @@ package com.gladguys.alucoapi.entities;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,23 +16,18 @@ import javax.persistence.OneToOne;
 
 import java.math.BigDecimal;
 
-@Entity(name = "grade")
-public @Data class Grade {
+@Embeddable
+@Data
+public class ExamGradeKey {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
 	private BigDecimal grade;
 
-	private Long weight;
 
-	@ManyToOne
-	@JoinColumn(name = "student_id")
+	@Column(name = "student_id")
 	private Student student;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "exam_id")
+	@Column(name = "")
 	private Exam exam;
 
 }
