@@ -11,7 +11,7 @@ import java.util.Set;
 public interface StudentService {
 
 	List<Student> findAll();
-	Set<Student> getAllByTeacher(Long teacherId);
+	List<StudentDTO> getAllByTeacher(Long teacherId);
 	List<StudentDTO> getAllByClassId(Long classId);
 	Student getById(Long id);
 	Student save(Student student);
