@@ -36,14 +36,15 @@ public @Data class Exam {
 	@NotBlank(message = "Descrição deve ser informada.")
 	private String description;
 
-	private Date date;
+	private Date creationDate;
+
+	private Date examDate;
+
+	private int weight;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "class_id")
 	private Class classExam;
-
-	@OneToMany(mappedBy = "exam")
-	private Set<Grade> grades = new HashSet<>();
 
 	public ExamDTO toDTO() {
 
@@ -51,7 +52,9 @@ public @Data class Exam {
 		examDTO.setId(id);
 		examDTO.setName(name);
 		examDTO.setDescription(description);
-		examDTO.setDate(date);
+		examDTO.setCreationDate(creationDate);
+		examDTO.setExamDate(examDate);
+		examDTO.setWeight(weight);
 		examDTO.setClassId(classExam.getId());
 		examDTO.setTeacherId(classExam.getTeacher().getId());
 		return examDTO;
