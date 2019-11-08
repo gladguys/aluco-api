@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import lombok.Data;
 
@@ -29,14 +30,17 @@ public @Data class Exam {
 	@NotBlank(message = "Descrição deve ser informada.")
 	private String description;
 
-	private LocalDate date;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate creationDate;
+
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate examDate;
+
+	private int weight;
 
 	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private Class classExam;
-
-	@OneToMany(mappedBy = "exam")
-	private Set<Grade> grades = new HashSet<>();
 
 	public ExamDTO toDTO() {
 
@@ -44,9 +48,14 @@ public @Data class Exam {
 		examDTO.setId(id);
 		examDTO.setName(name);
 		examDTO.setDescription(description);
-		examDTO.setDate(date);
-		if(examDTO.getClassId() != null)
+		examDTO.setCreationDate(creationDate);
+		examDTO.setExamDate(examDate);
+		examDTO.setWeight(weight);
+
+		if(classExam != null) {
 			examDTO.setClassId(classExam.getId());
+		}
+
 		return examDTO;
 	}
 }

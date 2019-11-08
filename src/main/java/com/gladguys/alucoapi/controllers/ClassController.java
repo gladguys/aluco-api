@@ -2,8 +2,10 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,27 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/classes")
 public class ClassController {
 
 	private ClassService classService;
+	private StudentService studentService;
 	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService, JwtTokenUtil jwtTokenUtil) {
+	public ClassController(ClassService classService, StudentService studentService, JwtTokenUtil jwtTokenUtil) {
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
+		this.studentService = studentService;
 	}
 
 	@ApiOperation(value = "Retorna as turmas de um professor específico")
 	@GetMapping("/teacher/{teacherId}")
-	public ResponseEntity<Set<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
+	public ResponseEntity<List<ClassDTO>> getAllByTeacher(@PathVariable("teacherId") Long teacherId) {
 		try {
 			if(teacherId == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
+			List<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
 			return ResponseEntity.ok(classes);
 
 		} catch (Exception e) {
@@ -48,10 +52,10 @@ public class ClassController {
 
 	@ApiOperation(value = "Retorna as turmas do professor logado")
 	@GetMapping
-	public ResponseEntity<Set<ClassDTO>> getAll(HttpServletRequest request) {
+	public ResponseEntity<List<ClassDTO>> getAll(HttpServletRequest request) {
 		try {
 			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-			Set<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
+			List<ClassDTO> classes = this.classService.getAllByTeacher(teacherId);
 			return ResponseEntity.ok(classes);
 
 		} catch (Exception e) {
@@ -67,6 +71,20 @@ public class ClassController {
 
 			ClassDTO classFound = this.classService.getById(id);
 			return ResponseEntity.ok(classFound);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@ApiOperation(value = "Retorna os estudantes de uma turma específica")
+	@GetMapping("/{id}/students")
+	public ResponseEntity<List<StudentDTO>> getStudentsByClassId(@PathVariable("id") Long id) {
+		try{
+			if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+			List<StudentDTO> students = this.studentService.getAllByClassId(id);
+			return ResponseEntity.ok(students);
 
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -132,7 +150,7 @@ public class ClassController {
 	public ResponseEntity saveStudentsForClass(@PathVariable("id") Long id, @RequestBody StudentWrapper wrapper) {
 		try {
 			if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-			if(wrapper == null || wrapper.getStudentDTOS().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			if(wrapper == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 			this.classService.addStudentsIntoClass(wrapper.getStudentDTOS(), id);
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);
@@ -141,4 +159,18 @@ public class ClassController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
+
+	@ApiOperation("Desvincula aluno de uma turma")
+	@DeleteMapping("{classId}/students/{studentId}")
+	public ResponseEntity deleteStudentFromClass(@PathVariable("classId") Long classId, @PathVariable("studentId") Long studentId) {
+		try {
+			if (studentId == null && classId == null) return ResponseEntity.badRequest().body(null);
+
+			this.classService.deleteStudentFromClass(studentId, classId);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
 }

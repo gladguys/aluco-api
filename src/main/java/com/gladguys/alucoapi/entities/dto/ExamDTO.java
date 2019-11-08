@@ -3,7 +3,6 @@ package com.gladguys.alucoapi.entities.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Exam;
-import com.gladguys.alucoapi.entities.Grade;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -21,13 +20,16 @@ public class ExamDTO {
     private String description;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date;
+    private LocalDate creationDate;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate examDate;
+
+    private int weight;
 
     private Long classId;
 
     private Long teacherId;
-
-    private Set<GradeDTO> gradesDTO;
 
     public ExamDTO() {}
 
@@ -36,16 +38,13 @@ public class ExamDTO {
         exam.setId(id);
         exam.setName(name);
         exam.setDescription(description);
-        exam.setDate(date);
+        exam.setCreationDate(creationDate);
+        exam.setExamDate(examDate);
+        exam.setWeight(weight);
 
         Class c = new Class();
         c.setId(classId);
-
-        Set<Grade> grades = new HashSet<>();
-        if(gradesDTO != null) {
-            this.gradesDTO.forEach(g -> grades.add(g.toEntity()));
-            exam.setGrades(grades);
-        }
+        exam.setClassExam(c);
 
         return exam;
     }

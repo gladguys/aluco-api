@@ -1,28 +1,35 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Class;
+import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ExamService;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassServiceImpl implements ClassService {
 
 	private ClassRepository classRepository;
 	private StudentService studentService;
+	private ExamService examService;
 
-	public ClassServiceImpl(ClassRepository classRepository, StudentService studentService) {
+	public ClassServiceImpl(ClassRepository classRepository, StudentService studentService, ExamService examService) {
 		this.classRepository = classRepository;
 		this.studentService = studentService;
+		this.examService = examService;
 	}
 
 	@Override
@@ -31,13 +38,9 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public Set<ClassDTO> getAllByTeacher(Long teacherId) {
-		Set<ClassDTO> classesDTO = new HashSet<>();
+	public List<ClassDTO> getAllByTeacher(Long teacherId) {
 
-		Set<Class> classes = this.classRepository.getAllByTeacherId(teacherId);
-		classes.forEach(c -> classesDTO.add(c.toDTO()));
-
-		return classesDTO;
+		return this.classRepository.getAllByTeacherId(teacherId);
 	}
 
 	@Override
@@ -63,12 +66,20 @@ public class ClassServiceImpl implements ClassService {
 
 		Set<Student> students = new HashSet<>();
 		studentDTOS.forEach(dto -> {
-			students.add(this.studentService.getById(dto.getId()));
+			students.add(dto.toEntity());
 		});
 
 		if(students.size() > 0) {
-			classToAddStudent.setStudents(students);
+			classToAddStudent.addStudents(students);
 			this.classRepository.save(classToAddStudent);
 		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteStudentFromClass(Long studentId, Long classId) {
+		Set<Long> examsId = this.examService.getAllByClassId(classId);
+
+		this.classRepository.deleteStudentFromClass(studentId, classId, examsId);
 	}
 }

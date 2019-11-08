@@ -1,12 +1,14 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Student;
+import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.repositories.StudentRepository;
+import com.gladguys.alucoapi.services.ClassService;
 import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -33,8 +35,13 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Set<Student> getAllByTeacher(Long teacherId) {
-		return this.studentRepository.findAllByTeacherIdOrderByName(teacherId);
+	public List<StudentDTO> getAllByTeacher(Long teacherId) {
+		return this.studentRepository.getAllByTeacherId(teacherId);
+	}
+
+	@Override
+	public List<StudentDTO> getAllByClassId(Long classId) {
+		return this.studentRepository.getAllByClassId(classId);
 	}
 
 	@Override
@@ -43,8 +50,10 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		this.studentRepository.deleteById(id);
+		this.studentRepository.deleteStudentFromAllClasses(id);
 	}
 
 	@Override

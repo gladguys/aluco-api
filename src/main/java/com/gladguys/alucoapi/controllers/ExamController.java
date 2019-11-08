@@ -43,7 +43,7 @@ public class ExamController {
             Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
 
-            return ResponseEntity.ok(this.examService.getAllByTeacherId(examFilter));
+            return ResponseEntity.ok(this.examService.getAllByFilterClassOrTeacher(examFilter));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

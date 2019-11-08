@@ -1,6 +1,7 @@
 
-package com.gladguys.alucoapi.repositories.customs;
+package com.gladguys.alucoapi.repositories.customs.impl;
 
+import com.gladguys.alucoapi.repositories.customs.CustomUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

@@ -6,13 +6,14 @@ import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public interface ExamService {
 
 	Exam getById(Long id) throws Exception;
 
-	List<ExamDTO> getAllByTeacherId(ExamFilter filter) throws Exception;
+	List<ExamDTO> getAllByFilterClassOrTeacher(ExamFilter filter) throws Exception;
 
 	Exam saveOrUpdate(ExamDTO examDTO);
 
@@ -20,4 +21,5 @@ public interface ExamService {
 
 	void deleteById(Long id);
 
+    Set<Long> getAllByClassId(Long classId);
 }
