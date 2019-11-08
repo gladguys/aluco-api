@@ -13,4 +13,6 @@ public interface CustomExamRepository {
 	List<ExamDTO> getByFilters(ExamFilter examFilter);
 
     Set<Long> getAllByClassId(Long classId);
+
+    ExamDTO getById(Long id);
 }

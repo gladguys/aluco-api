@@ -20,10 +20,10 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public Exam getById(Long id) throws Exception {
+	public ExamDTO getById(Long id) throws Exception {
 
 		if (id == null) throw new Exception("id null");
-		return this.examRepository.findById(id).orElseThrow(Exception::new);
+		return this.examRepository.getById(id);
 	}
 
 	@Override

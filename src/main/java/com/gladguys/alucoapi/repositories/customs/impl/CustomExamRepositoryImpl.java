@@ -51,4 +51,10 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 
 		return examDTOS.stream().map(ExamDTO::getId).collect(Collectors.toSet());
 	}
+
+	@Override
+	public ExamDTO getById(Long id) {
+		//TODO: query that will get data about the exam PLUS list of students with their grade for this specific exam.
+		return null;
+	}
 }

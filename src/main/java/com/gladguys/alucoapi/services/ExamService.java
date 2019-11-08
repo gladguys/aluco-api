@@ -11,7 +11,7 @@ import java.util.Set;
 @Component
 public interface ExamService {
 
-	Exam getById(Long id) throws Exception;
+	ExamDTO getById(Long id) throws Exception;
 
 	List<ExamDTO> getAllByFilterClassOrTeacher(ExamFilter filter) throws Exception;
 
