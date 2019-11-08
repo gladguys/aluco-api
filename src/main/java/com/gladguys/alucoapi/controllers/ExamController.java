@@ -57,11 +57,12 @@ public class ExamController {
 			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             ExamDTO dto = this.examService.getById(id);
 
-            if(dto.getTeacherId() != teacherId) return ResponseEntity.
+            if(dto.getTeacherId() != teacherId) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-            return null;
+            return ResponseEntity.ok(dto);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
 

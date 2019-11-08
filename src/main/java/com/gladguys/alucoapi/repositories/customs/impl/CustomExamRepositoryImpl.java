@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
+import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.repositories.customs.CustomExamRepository;
@@ -54,7 +55,12 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 
 	@Override
 	public ExamDTO getById(Long id) {
-		//TODO: query that will get data about the exam PLUS list of students with their grade for this specific exam.
-		return null;
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT e.id, e.name, e.description, e.creation_date, e.exam_date, e.weight, c.name as className, t.id as teacherId FROM exam e " +
+				" INNER JOIN class c ON c.id = e.class_id "+
+				" INNER JOIN teacher t ON t.id = c.teacher_id "+
+				" WHERE class_id = ? ");
+
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamDTO.class));
 	}
 }
