@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
 import com.gladguys.alucoapi.services.StudentService;
@@ -91,7 +92,7 @@ public class ClassController {
 		if (dto == null || dto.getId() == null) throw new ApiResponseException("Turma é obrigatória");
 
 		boolean exists = this.classService.exists(dto.getId());
-		if (!exists) throw new ApiResponseException("Turma não encontrada");
+		if (!exists) throw new ClassNotFoundException(dto.getId());
 
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		dto.setTeacherId(teacherId);
@@ -104,7 +105,7 @@ public class ClassController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
 		boolean exists = this.classService.exists(id);
-		if (!exists) throw new ApiResponseException("Turma não encontrada");
+		if (!exists) throw new ClassNotFoundException(id);
 
 		this.classService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);

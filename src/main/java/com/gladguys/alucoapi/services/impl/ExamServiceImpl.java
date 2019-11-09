@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.services.impl;
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
 import com.gladguys.alucoapi.repositories.ExamRepository;
 import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ExamServiceImpl implements ExamService {
 	public Exam getById(Long id) {
 		if (id == null) throw new ApiResponseException("Prova é obrigatória");
 
-		return this.examRepository.findById(id).orElseThrow(() -> new ApiResponseException("Nenhuma prova encontrada"));
+		return this.examRepository.findById(id).orElseThrow(() -> new ExamNotFoundException(id));
 	}
 
 	@Override

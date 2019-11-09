@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.StudentNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +64,7 @@ public class StudentController {
 		if (studentDTO == null || studentDTO.getId() == null) throw new ApiResponseException("Aluno é obrigatório");
 
 		boolean exists = this.studentService.existsById(studentDTO.getId());
-		if (!exists) throw new ApiResponseException("Aluno não encontrado");
+		if (!exists) throw new StudentNotFoundException(studentDTO.getId());
 
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		studentDTO.setTeacherId(teacherId);
@@ -78,7 +79,7 @@ public class StudentController {
 		if (studentId == null) throw new ApiResponseException("Aluno é obrigatório");
 
 		boolean exists = this.studentService.existsById(studentId);
-		if (!exists) throw new ApiResponseException("Aluno não encontrado");
+		if (!exists) throw new StudentNotFoundException(studentId);
 
 		this.studentService.deleteById(studentId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
