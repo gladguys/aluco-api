@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.ClassService;
 import com.gladguys.alucoapi.services.ExamService;
@@ -27,8 +28,8 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public ClassDTO getById(Long id) throws Exception {
-		return this.classRepository.findById(id).orElseThrow(Exception::new).toDTO();
+	public ClassDTO getById(Long id) {
+		return this.classRepository.findById(id).orElseThrow(() -> new ApiResponseException("Nenhuma turma encontrada")).toDTO();
 	}
 
 	@Override
@@ -55,8 +56,9 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	@Transactional
-	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception {
-		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(Exception::new);
+	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
+
+		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ApiResponseException("Turma não encontrada"));
 
 		Set<Student> students = new HashSet<>();
 		studentDTOS.forEach(dto -> {
