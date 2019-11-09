@@ -1,9 +1,11 @@
 package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Exam;
+import com.gladguys.alucoapi.entities.GradesWrapper;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
+import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.ExamService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/exams")
@@ -28,10 +29,12 @@ public class ExamController {
 
 	private JwtTokenUtil jwtTokenUtil;
 	private ExamService examService;
+	private ExamGradeService gradeService;
 
-	ExamController(JwtTokenUtil jwtTokenUtil, ExamService examService) {
+	ExamController(JwtTokenUtil jwtTokenUtil, ExamService examService, ExamGradeService gradeService) {
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.examService = examService;
+		this.gradeService = gradeService;
 	}
 
 	@GetMapping
@@ -109,6 +112,20 @@ public class ExamController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
+	}
+
+	@PostMapping(value = "/{id}/grades")
+	@ApiOperation(value = "Salva notas de alunos para um específico exame")
+	public ResponseEntity<String> saveGrades(@RequestBody GradesWrapper gradesDTO, @PathVariable("id") Long id) {
+
+		try{
+			this.gradeService.saveAllGrades(gradesDTO.getGrades());
+			return ResponseEntity.ok("notas salvas com sucesso");
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+
 	}
 
 }

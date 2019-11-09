@@ -1,35 +1,26 @@
 package com.gladguys.alucoapi.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Embeddable
-@Data
 public class ExamGradeKey implements Serializable {
-
 
 	@Column(name = "student_id")
 	private Long studentId;
 
-	@Column(name = "")
+	@Column(name = "exam_id")
 	private Long examId;
 
 	public ExamGradeKey() {
+	}
+
+	public ExamGradeKey(Long studentId, Long examId) {
+		this.studentId = studentId;
+		this.examId = examId;
 	}
 
 	@Override
@@ -49,4 +40,19 @@ public class ExamGradeKey implements Serializable {
 		return Objects.hash(studentId, examId);
 	}
 
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public Long getExamId() {
+		return examId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
+
+	public void setExamId(Long examId) {
+		this.examId = examId;
+	}
 }

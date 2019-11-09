@@ -9,20 +9,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
-@Entity
-@Data
+@Entity(name = "exam_grade")
 public class ExamGrade {
 
 	@EmbeddedId
 	private ExamGradeKey id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@MapsId("studentId")
-	private Student student;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@MapsId("examId")
-	private Exam exam;
-
 	private Double grade;
+
+	public ExamGradeKey getId() {
+		return id;
+	}
+
+	public void setId(ExamGradeKey id) {
+		this.id = id;
+	}
+
+	public Double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
+	}
 }
