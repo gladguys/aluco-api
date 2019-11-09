@@ -10,9 +10,9 @@ import java.util.Set;
 @Component
 public interface ExamService {
 
-	Exam getById(Long id) throws Exception;
+	Exam getById(Long id);
 
-	List<ExamDTO> getAllByTeacherId(Long teacherId) throws Exception;
+	List<ExamDTO> getAllByTeacherId(Long teacherId);
 
 	Exam saveOrUpdate(ExamDTO examDTO);
 
