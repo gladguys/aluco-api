@@ -15,55 +15,41 @@ import java.util.Set;
 @RequestMapping("/api/calls")
 public class CallController {
 
-    CallService callService;
+	CallService callService;
 
-    public CallController(CallService callService) {
-        this.callService = callService;
-    }
+	public CallController(CallService callService) {
+		this.callService = callService;
+	}
 
-    @ApiOperation(value = "Retorna as chamadas de um determinado dia e turma")
-    @GetMapping("/class/{classId}")
-    public ResponseEntity<Set<Call>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") Date date) {
-        try {
-            Set<Call> calls = this.callService.getAllByClassAndDate(classId, date);
-            return ResponseEntity.ok(calls);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	@ApiOperation(value = "Retorna as chamadas de um determinado dia e turma")
+	@GetMapping("/class/{classId}")
+	public ResponseEntity<Set<Call>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") Date date) {
+		if (classId == null) throw new ApiResponseException("Turma é obrigatório");
 
-    @ApiOperation(value = "Cadastra uma lista de chamadas")
-    @PostMapping
-    public ResponseEntity saveAll(Set<Call> calls) {
-        try {
-            return ResponseEntity.ok("Calls saved with success");
+		Set<Call> calls = this.callService.getAllByClassAndDate(classId, date);
+		return ResponseEntity.ok(calls);
+	}
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	@ApiOperation(value = "Cadastra uma lista de chamadas")
+	@PostMapping
+	public ResponseEntity saveAll(Set<Call> calls) {
+		return ResponseEntity.ok("Calls saved with success");
+	}
 
-    @ApiOperation(value = "Atualiza uma chamada")
-    @PutMapping
-    public ResponseEntity<Call> update(Call call) {
-        try {
-            Call callSaved = this.callService.update(call);
-            return ResponseEntity.ok(callSaved);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	@ApiOperation(value = "Atualiza uma chamada")
+	@PutMapping
+	public ResponseEntity<Call> update(Call call) {
+		Call callSaved = this.callService.update(call);
 
-    @ApiOperation(value = "Retorna as chamadas de um estudante específico")
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
-        try {
-            Set<Call> calls = this.callService.getAllByStudent(studentId);
-            return ResponseEntity.ok(calls);
+		return ResponseEntity.ok(callSaved);
+	}
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	@ApiOperation(value = "Retorna as chamadas de um estudante específico")
+	@GetMapping("/student/{studentId}")
+	public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
+		Set<Call> calls = this.callService.getAllByStudent(studentId);
+
+		return ResponseEntity.ok(calls);
+	}
 
 }
