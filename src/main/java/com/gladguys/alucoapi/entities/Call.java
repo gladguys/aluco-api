@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.enums.StatusEnum;
 import lombok.Data;
 
@@ -10,10 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
+@Data
 @Entity(name = "call")
-public @Data class Call {
+public class Call {
 
 	@Id
 	@GeneratedValue
@@ -27,7 +29,8 @@ public @Data class Call {
 	@JoinColumn(name = "class_id")
 	private Class classCall;
 
-	private LocalDateTime date;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate date;
 
 	private StatusEnum status;
 

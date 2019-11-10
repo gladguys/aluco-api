@@ -1,31 +1,28 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gladguys.alucoapi.entities.enums.GenderEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Set;
 
+@Data
 @Entity(name = "student")
-public @Data class Student {
+public class Student {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +35,32 @@ public @Data class Student {
 	private String email;
 
 	@Column(name = "photo_url")
-	private String photoURL;
+	private String photoUrl;
 
 	@Column(name = "date_of_birth")
-	private LocalDateTime dateBirth;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate dateBirth;
 
 	private String phone;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	private GenderEnum gender;
+
+	@Column(name = "responsible_name")
+	private String responsibleName;
+
+	@Column(name = "responsible_phone")
+	private String responsiblePhone;
+
+	private String address;
+
+	@Column(name = "previous_school")
+	private String previousSchool;
+
+	private String observation;
+
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
 
 }
-

@@ -1,8 +1,8 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gladguys.alucoapi.entities.enums.ProfileEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -10,39 +10,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity(name = "user_aluco")
-public @Data class User {
+@Data
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Username deve ser informado.")
+	@Column(unique = true)
 	private String username;
 
-	@NotBlank(message = "Email deve ser informado.")
 	@Email
+	@Column(unique = true)
 	private String email;
 
-	@NotBlank(message = "Password deve ser informado.")
-	@Size(min = 6)
 	private String password;
 
 	@CreatedDate
 	@Column(name = "create_date")
-	private LocalDateTime createDate;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate createDate;
 
 	@Column(name = "profile")
 	private ProfileEnum profileEnum;
-
-	@OneToOne(mappedBy = "user")
-	private Teacher teacher;
 
 }

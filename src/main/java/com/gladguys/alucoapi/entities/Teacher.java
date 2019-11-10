@@ -1,7 +1,7 @@
 package com.gladguys.alucoapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -10,22 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity(name = "teacher")
-public @Data class Teacher {
+@Data
+public class Teacher {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Nome deve ser informado.")
 	private String name;
 
 	@Column(name = "photo_url")
@@ -33,13 +29,11 @@ public @Data class Teacher {
 
 	@CreatedDate
 	@Column(name = "create_date")
-	private LocalDateTime createDate;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private LocalDate createDate;
 
 	@OneToOne
 	@JoinColumn(name = "user_aluco_id")
 	private User user;
-
-	@OneToMany(mappedBy = "teacher")
-	private List<Student> students = new ArrayList<>();
 
 }
