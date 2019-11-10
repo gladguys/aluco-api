@@ -36,47 +36,45 @@ public class ExamController {
 	@GetMapping
 	@ApiOperation(value = "Retorna as provas de um professor específico")
 	public ResponseEntity<List<ExamDTO>> get(HttpServletRequest request,
-											 @RequestParam(value = "name", required = false) String name,
-											 @RequestParam(value = "classId", required = false) Long classId) {
-			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-			ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
+	                                         @RequestParam(value = "name", required = false) String name,
+	                                         @RequestParam(value = "classId", required = false) Long classId) {
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
 
-			return ResponseEntity.ok(this.examService.getAllByFilterClassOrTeacher(examFilter));
+		return ResponseEntity.ok(this.examService.getAllByFilterClassOrTeacher(examFilter));
 
 	}
 
 	@GetMapping(value = "/{id}")
-	@ApiOperation(value = "Busca detalhe de um exame específico")
+	@ApiOperation(value = "Busca detalhes de uma prova específica")
 	public ResponseEntity<ExamDTO> getById(HttpServletRequest request, @PathVariable("id") Long id) {
-			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            ExamDTO dto = this.examService.getById(id);
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		ExamDTO dto = this.examService.getById(id);
 
-            if(dto.getTeacherId() != teacherId) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		if (dto.getTeacherId() != teacherId) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-            return ResponseEntity.ok(dto);
+		return ResponseEntity.ok(dto);
 
-		}
+	}
 
 
 	@PostMapping
-	@ApiOperation(value = "Cadastra uma exame")
+	@ApiOperation(value = "Cadastra uma prova")
 	public ResponseEntity<ExamDTO> save(@RequestBody ExamDTO examDTO) {
-			Exam exam = this.examService.saveOrUpdate(examDTO);
-			return ResponseEntity.ok(exam.toDTO());
+		Exam exam = this.examService.saveOrUpdate(examDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(exam.toDTO());
 	}
 
 	@PutMapping
 	@ApiOperation(value = "Atualiza uma prova com base no objeto passado no body da request")
 	public ResponseEntity<ExamDTO> update(@RequestBody ExamDTO examDTO) {
-			if (examDTO == null || examDTO.getId() == null)
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		if (examDTO == null || examDTO.getId() == null) throw new ApiResponseException("Prova é obrigatória");
 
-			boolean exists = this.examService.exists(examDTO.getId());
-			if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		boolean exists = this.examService.exists(examDTO.getId());
+		if (!exists) throw new ExamNotFoundException(examDTO.getId());
 
-			Exam exam = this.examService.saveOrUpdate(examDTO);
-			return ResponseEntity.ok(exam.toDTO());
-
+		Exam exam = this.examService.saveOrUpdate(examDTO);
+		return ResponseEntity.ok(exam.toDTO());
 	}
 
 	@DeleteMapping("/{id}")
