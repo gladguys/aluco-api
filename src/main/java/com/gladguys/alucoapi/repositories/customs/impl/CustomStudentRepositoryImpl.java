@@ -48,4 +48,14 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 		template.update("DELETE FROM grade WHERE student_id = :studentId", parameters);
 		this.jdbcTemplate.update("DELETE FROM student_class WHERE student_id = ? ", new Object[]{studentId});
 	}
+
+	@Override
+	public StudentDTO getById(Long id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT s.id, s.name, s.email, s.date_of_birth as dateBirth, s.phone, s.responsible_name as responsibleName, s.responsible_phone as responsiblePhone, " +
+				" s.address, s.previous_school as previousSchool, s.observation, s.gender FROM student s" +
+				" WHERE s.id = ? ");
+
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(StudentDTO.class));
+	}
 }

@@ -8,6 +8,7 @@ public interface CustomStudentRepository {
 
 	List<StudentDTO> getAllByClassId(Long id);
 	List<StudentDTO> getAllByTeacherId(Long id);
+	StudentDTO getById(Long id);
 	void deleteStudentFromAllClasses(Long studentId);
 
 }

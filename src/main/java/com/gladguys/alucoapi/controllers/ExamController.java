@@ -42,21 +42,16 @@ public class ExamController {
 	public ResponseEntity<List<ExamDTO>> get(HttpServletRequest request,
 											 @RequestParam(value = "name", required = false) String name,
 											 @RequestParam(value = "classId", required = false) Long classId) {
-		try {
 			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 			ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
 
 			return ResponseEntity.ok(this.examService.getAllByFilterClassOrTeacher(examFilter));
 
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
 	}
 
 	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Busca detalhe de um exame específico")
 	public ResponseEntity<ExamDTO> getById(HttpServletRequest request, @PathVariable("id") Long id) {
-		try {
 			Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
             ExamDTO dto = this.examService.getById(id);
 
@@ -64,27 +59,19 @@ public class ExamController {
 
             return ResponseEntity.ok(dto);
 
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
-	}
+
 
 	@PostMapping
 	@ApiOperation(value = "Cadastra uma exame")
 	public ResponseEntity<ExamDTO> save(@RequestBody ExamDTO examDTO) {
-		try {
 			Exam exam = this.examService.saveOrUpdate(examDTO);
 			return ResponseEntity.ok(exam.toDTO());
-
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
 	}
 
 	@PutMapping
 	@ApiOperation(value = "Atualiza uma prova com base no objeto passado no body da request")
 	public ResponseEntity<ExamDTO> update(@RequestBody ExamDTO examDTO) {
-		try {
 			if (examDTO == null || examDTO.getId() == null)
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
@@ -94,24 +81,17 @@ public class ExamController {
 			Exam exam = this.examService.saveOrUpdate(examDTO);
 			return ResponseEntity.ok(exam.toDTO());
 
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
 	}
 
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "Deleta a prova pelo id informado na endpoint")
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-		try {
 			boolean exists = this.examService.exists(id);
 			if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
 			this.examService.deleteById(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
 	}
 
 	@PostMapping(value = "/{id}/grades")
