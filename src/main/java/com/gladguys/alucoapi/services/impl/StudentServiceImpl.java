@@ -2,8 +2,10 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.exception.notfound.StudentNotFoundException;
 import com.gladguys.alucoapi.repositories.StudentRepository;
 import com.gladguys.alucoapi.services.StudentService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,8 +22,12 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student getById(Long id) {
-		return this.studentRepository.getOne(id);
+	public StudentDTO getById(Long id) {
+		try {
+			return this.studentRepository.getById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new StudentNotFoundException(id);
+		}
 	}
 
 	@Override

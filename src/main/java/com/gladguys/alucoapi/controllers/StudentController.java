@@ -37,13 +37,23 @@ public class StudentController {
 		this.jwtTokenUtil = jwtTokenUtil;
 	}
 
-	@ApiOperation(value = "Retorna os estudantes do professor logado")
+	@ApiOperation(value = "Retorna estudante por id")
 	@GetMapping
 	public ResponseEntity<List<StudentDTO>> getAll(HttpServletRequest request) {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		List<StudentDTO> students = this.studentService.getAllByTeacher(teacherId);
 
 		return ResponseEntity.ok(students);
+	}
+
+	@ApiOperation(value = "Retorna os estudantes do professor logado")
+	@GetMapping("/{id}")
+	public ResponseEntity<StudentDTO> get(HttpServletRequest request, @PathVariable("id") Long id) {
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+
+		StudentDTO student = this.studentService.getById(id);
+
+		return ResponseEntity.ok(student);
 	}
 
 	@ApiOperation(value = "Cadastra um estudante")
