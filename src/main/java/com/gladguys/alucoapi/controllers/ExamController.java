@@ -3,6 +3,8 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
+import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ExamService;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 @RestController
@@ -42,7 +45,6 @@ public class ExamController {
 		ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
 
 		return ResponseEntity.ok(this.examService.getAllByFilterClassOrTeacher(examFilter));
-
 	}
 
 	@GetMapping(value = "/{id}")
@@ -51,10 +53,9 @@ public class ExamController {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		ExamDTO dto = this.examService.getById(id);
 
-		if (dto.getTeacherId() != teacherId) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		if (!dto.getTeacherId().equals(teacherId)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
 		return ResponseEntity.ok(dto);
-
 	}
 
 
@@ -80,12 +81,13 @@ public class ExamController {
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "Deleta a prova pelo id informado na endpoint")
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-			boolean exists = this.examService.exists(id);
-			if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		if (id == null) throw new ApiResponseException("Prova é obrigatória");
 
-			this.examService.deleteById(id);
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		boolean exists = this.examService.exists(id);
+		if (!exists) throw new ExamNotFoundException(id);
 
+		this.examService.deleteById(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 
 }
