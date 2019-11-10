@@ -2,13 +2,14 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
+import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
 import com.gladguys.alucoapi.repositories.ExamRepository;
 import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ExamServiceImpl implements ExamService {
@@ -20,14 +21,14 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public Exam getById(Long id) throws Exception {
+	public Exam getById(Long id) {
+		if (id == null) throw new ApiResponseException("Prova é obrigatória");
 
-		if (id == null) throw new Exception("id null");
-		return this.examRepository.findById(id).orElseThrow(Exception::new);
+		return this.examRepository.findById(id).orElseThrow(() -> new ExamNotFoundException(id));
 	}
 
 	@Override
-	public List<ExamDTO> getAllByTeacherId(Long teacherId) throws Exception {
+	public List<ExamDTO> getAllByTeacherId(Long teacherId) {
 		return null;
 	}
 
