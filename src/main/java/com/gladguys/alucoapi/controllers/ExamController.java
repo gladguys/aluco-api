@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.GradesWrapper;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
+import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ExamGradeService;
@@ -105,7 +106,13 @@ public class ExamController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
-
 	}
 
+	@GetMapping(value = "/{id}/grades")
+	@ApiOperation(value = "Resgatar todas as notas dos alunos daquele exame")
+	public ResponseEntity<List<ExamGradeDTO>> getGradesByExam(@PathVariable("id") Long id) {
+
+		return ResponseEntity.ok(this.gradeService.getGradesByExamId(id));
+
+	}
 }

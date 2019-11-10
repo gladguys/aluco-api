@@ -24,4 +24,9 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 		gradesDTO.forEach( dto -> grades.add(dto.toEntity()));
 		this.repository.saveAll(grades);
 	}
+
+	@Override
+	public List<ExamGradeDTO> getGradesByExamId(Long id) {
+		return this.repository.getGradesByExamId(id);
+	}
 }

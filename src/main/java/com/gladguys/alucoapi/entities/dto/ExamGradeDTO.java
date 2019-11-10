@@ -11,6 +11,7 @@ public class ExamGradeDTO {
 
 	private Long examId;
 	private Long studentId;
+	private String studentName;
 	private Double grade;
 
 	public ExamGrade toEntity() {
