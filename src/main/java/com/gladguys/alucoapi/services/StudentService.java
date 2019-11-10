@@ -12,7 +12,7 @@ public interface StudentService {
 	List<Student> findAll();
 	List<StudentDTO> getAllByTeacher(Long teacherId);
 	List<StudentDTO> getAllByClassId(Long classId);
-	Student getById(Long id);
+	StudentDTO getById(Long id);
 	Student save(Student student);
 	Student update(Student student);
 	void deleteById(Long id);

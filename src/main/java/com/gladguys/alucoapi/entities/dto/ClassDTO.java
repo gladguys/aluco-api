@@ -23,6 +23,10 @@ public class ClassDTO {
 
 	private Long teacherId;
 
+	private Long classId;
+
+	private String className;
+
 	public Class toEntity() {
 		Class c = new Class();
 		c.setId(id);

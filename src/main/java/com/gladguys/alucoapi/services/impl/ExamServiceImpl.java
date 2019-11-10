@@ -2,10 +2,12 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Exam;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
+import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
 import com.gladguys.alucoapi.repositories.ExamRepository;
 import com.gladguys.alucoapi.services.ExamService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +23,20 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public Exam getById(Long id) {
-		if (id == null) throw new ApiResponseException("Prova é obrigatória");
-
-		return this.examRepository.findById(id).orElseThrow(() -> new ExamNotFoundException(id));
+	public ExamDTO getById(Long id) {
+		try {
+			if (id == null) throw new ApiResponseException("Prova é obrigatória");
+			ExamDTO dto = this.examRepository.getById(id);
+			if (dto == null) throw new ExamNotFoundException(id);
+			return dto;
+		} catch (EmptyResultDataAccessException e) {
+			throw new ExamNotFoundException(id);
+		}
 	}
 
 	@Override
-	public List<ExamDTO> getAllByTeacherId(Long teacherId) {
-		return null;
+	public List<ExamDTO> getAllByFilterClassOrTeacher(ExamFilter filter) {
+		return this.examRepository.getByFilters(filter);
 	}
 
 	@Override
@@ -38,8 +45,13 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public boolean exists(Long id) {
+		return this.examRepository.existsById(id);
+	}
 
+	@Override
+	public void deleteById(Long id) {
+		this.examRepository.deleteById(id);
 	}
 
 	@Override
