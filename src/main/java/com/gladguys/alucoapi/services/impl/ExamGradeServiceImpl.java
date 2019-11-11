@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.ExamGrade;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
+import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.ExamGradeRepository;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 	@Override
 	public void deleteGrade(ExamGradeDTO dto) {
+		if (dto.getStudentId() == null) throw new ApiResponseException("Id do aluno não informado");
+		if (dto.getExamId() == null) throw new ApiResponseException("Id da prova não informado");
 		this.repository.save(dto.toEntity());
 	}
 }
