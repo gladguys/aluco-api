@@ -28,5 +28,6 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
+
 }
 

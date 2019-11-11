@@ -115,4 +115,16 @@ public class ExamController {
 		return ResponseEntity.ok(this.gradeService.getGradesByExamId(id));
 
 	}
+
+	@DeleteMapping(value = "/{id}/grades")
+	@ApiOperation(value = "Remove registro de nota do aluno para aquele exame")
+	public ResponseEntity getGradesByExam(@RequestBody ExamGradeDTO dto) {
+		dto.setGrade(null);
+		this.gradeService.deleteGrade(dto);
+
+		return ResponseEntity.status(HttpStatus.OK).body("Nota removida com sucesso");
+
+	}
+
+
 }

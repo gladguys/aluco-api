@@ -29,4 +29,9 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 	public List<ExamGradeDTO> getGradesByExamId(Long id) {
 		return this.repository.getGradesByExamId(id);
 	}
+
+	@Override
+	public void deleteGrade(ExamGradeDTO dto) {
+		this.repository.save(dto.toEntity());
+	}
 }
