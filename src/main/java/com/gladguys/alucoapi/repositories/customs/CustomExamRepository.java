@@ -15,4 +15,6 @@ public interface CustomExamRepository {
     Set<Long> getAllByClassId(Long classId);
 
     ExamDTO getById(Long id);
+
+    void deleteExamGradeById(Long id);
 }
