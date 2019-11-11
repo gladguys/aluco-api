@@ -9,10 +9,8 @@ import java.util.Objects;
 @Embeddable
 public class ExamGradeKey implements Serializable {
 
-	@Column(name = "student_id")
 	private Long studentId;
 
-	@Column(name = "exam_id")
 	private Long examId;
 
 	public ExamGradeKey() {
