@@ -10,9 +10,19 @@ import lombok.Data;
 public class ExamGradeDTO {
 
 	private Long examId;
+	private String examName;
 	private Long studentId;
 	private String studentName;
 	private Double grade;
+
+	public ExamGradeDTO() {
+	}
+
+	public ExamGradeDTO(Long examId, String examName, Double grade) {
+		this.examId = examId;
+		this.examName = examName;
+		this.grade = grade;
+	}
 
 	public ExamGrade toEntity() {
 		ExamGrade examGrade = new ExamGrade();

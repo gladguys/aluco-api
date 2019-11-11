@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.repositories.customs.CustomClassRepository;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -45,4 +46,5 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 		}
 		this.jdbcTemplate.update("DELETE FROM student_class WHERE student_id = ? AND class_id = ?", new Object[]{studentId, classId});
 	}
+
 }
