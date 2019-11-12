@@ -25,9 +25,12 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 	@Override
 	public void saveAllGrades(List<ExamGradeDTO> gradesDTO) {
-		List<ExamGrade> grades = new ArrayList<>();
-		gradesDTO.forEach( dto -> grades.add(dto.toEntity()));
-		this.repository.saveAll(grades);
+
+		this.repository
+				.saveAll(
+						gradesDTO.stream()
+								.map(ExamGradeDTO::toEntity)
+								.collect(Collectors.toList()));
 	}
 
 	@Override
