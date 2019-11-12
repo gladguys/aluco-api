@@ -10,6 +10,8 @@ import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Set;
 
@@ -50,8 +52,9 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
-		this.examRepository.deleteById(id);
+		this.examRepository.deleteExamGradeById(id);
 	}
 
 	@Override

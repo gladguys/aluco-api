@@ -2,19 +2,15 @@ package com.gladguys.alucoapi.repositories.customs.impl;
 
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.repositories.customs.CustomClassRepository;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 public class CustomClassRepositoryImpl implements CustomClassRepository {
@@ -41,7 +37,7 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 		parameters.addValue("studentId", studentId);
 		if(examsId.size()!= 0) {
 			parameters.addValue("examsId", examsId);
-			template.update("DELETE FROM grade WHERE student_id = :studentId AND exam_id IN (:examsId) ", parameters);
+			template.update("DELETE FROM exam_grade WHERE student_id = :studentId AND exam_id IN (:examsId) ", parameters);
 		}
 		this.jdbcTemplate.update("DELETE FROM student_class WHERE student_id = ? AND class_id = ?", new Object[]{studentId, classId});
 	}
