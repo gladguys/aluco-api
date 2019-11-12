@@ -25,7 +25,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 	public List<ExamDTO> getByFilters(ExamFilter examFilter) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("  SELECT e.id, e.name, e.exam_date FROM exam e\n" +
+		sql.append("  SELECT e.id, e.name, e.weight, e.exam_date FROM exam e\n" +
 				" INNER JOIN class c on c.id = e.class_id\n" +
 				" INNER JOIN teacher t on t.id = c.teacher_id ");
 		sql.append(" WHERE 1=1 ");
@@ -56,7 +56,8 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 	@Override
 	public ExamDTO getById(Long id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT e.id, e.name, e.description, e.creation_date, e.exam_date, e.weight, c.name as className, t.id as teacherId FROM exam e " +
+		sql.append("SELECT e.id, e.name, e.description, e.creation_date, e.exam_date, e.weight as weight, " +
+				"c.name as className, t.id as teacherId FROM exam e " +
 				" INNER JOIN class c ON c.id = e.class_id "+
 				" INNER JOIN teacher t ON t.id = c.teacher_id "+
 				" WHERE e.id = ? ");
