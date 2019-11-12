@@ -26,6 +26,10 @@ public class ExamGradeDTO {
 		this.weight = weight;
 	}
 
+	public  ExamGradeDTO buildForGradesBoard() {
+		return new ExamGradeDTO(this.examId, this.examName, this.grade, this.weight);
+	}
+
 	public ExamGrade toEntity() {
 		ExamGrade examGrade = new ExamGrade();
 		ExamGradeKey key = new ExamGradeKey();
