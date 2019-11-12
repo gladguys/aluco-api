@@ -21,6 +21,8 @@ public class ClassDTO {
 
 	private Set<StudentDTO> students;
 
+	private Set<ExamDTO> examDTOS;
+
 	private Long teacherId;
 
 	private Long classId;

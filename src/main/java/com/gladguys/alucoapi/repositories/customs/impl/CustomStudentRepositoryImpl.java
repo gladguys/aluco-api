@@ -30,7 +30,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 	@Override
 	public List<StudentDTO> getAllByTeacherId(Long id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT s.id, s.name FROM student s ");
+		sql.append("SELECT s.id, s.name, s.gender FROM student s ");
 		sql.append(" WHERE s.teacher_id = ? ");
 		sql.append(" ORDER BY (s.name) ");
 

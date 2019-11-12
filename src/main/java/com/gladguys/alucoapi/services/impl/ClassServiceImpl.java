@@ -3,15 +3,18 @@ package com.gladguys.alucoapi.services.impl;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,10 +24,12 @@ public class ClassServiceImpl implements ClassService {
 
 	private ClassRepository classRepository;
 	private ExamService examService;
+	private ExamGradeService examGradeService;
 
-	public ClassServiceImpl(ClassRepository classRepository, ExamService examService) {
+	public ClassServiceImpl(ClassRepository classRepository, ExamService examService, ExamGradeService examGradeService) {
 		this.classRepository = classRepository;
 		this.examService = examService;
+		this.examGradeService = examGradeService;
 	}
 
 	@Override
@@ -60,6 +65,8 @@ public class ClassServiceImpl implements ClassService {
 
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 
+		attachStudentsIntoExams(studentDTOS, classToAddStudent);
+
 		Set<Student> students = new HashSet<>();
 		studentDTOS.forEach(dto -> {
 			students.add(dto.toEntity());
@@ -69,6 +76,16 @@ public class ClassServiceImpl implements ClassService {
 			classToAddStudent.addStudents(students);
 			this.classRepository.save(classToAddStudent);
 		}
+	}
+
+	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
+		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
+
+		exams.forEach( ex -> {
+			List<ExamGradeDTO> examGradeDTOS = new ArrayList<>();
+			studentDTOS.forEach(studentDTO -> examGradeDTOS.add(new ExamGradeDTO(studentDTO.getId(),ex,null)));
+			this.examGradeService.saveAllGrades(examGradeDTOS);
+		});
 	}
 
 	@Override
