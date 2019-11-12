@@ -5,6 +5,7 @@ import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.helpers.GradeHelper;
 import com.gladguys.alucoapi.repositories.ExamGradeRepository;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import org.springframework.stereotype.Service;
@@ -50,18 +51,21 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 		List<StudentGrades> studentsGrades = new ArrayList<>();
 
-		List<ExamGradeDTO> examsGrades = this.repository.getGradesBoard(classId);
-		Map<Long, List<ExamGradeDTO>> collect = examsGrades.stream().collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
-		collect.forEach((aLong, examGradeDTOS) -> {
+		Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
+				this.repository
+						.getGradesBoard(classId)
+						.parallelStream()
+						.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
+
+		examsGradesPerStudent.forEach((aLong, examGradeDTOS) -> {
 			StudentGrades sg = new StudentGrades();
 			sg.setStudentName(examGradeDTOS.get(0).getStudentName());
 			sg.setExams(
-					examGradeDTOS.stream()
-							     .map(e -> new ExamGradeDTO(e.getExamId(), e.getExamName(), e.getGrade()))
+					examGradeDTOS.parallelStream()
+							     .map(e -> new ExamGradeDTO(e.getExamId(), e.getExamName(), e.getGrade(), e.getWeight()))
 							     .collect(Collectors.toList()));
 
-			//TODO: create logic to generate status
-			sg.setStatus("EM ANDAMENTO");
+			sg.setStatus(String.valueOf(GradeHelper.getAverageGrade(examGradeDTOS)));
 
 			studentsGrades.add(sg);
 		} );

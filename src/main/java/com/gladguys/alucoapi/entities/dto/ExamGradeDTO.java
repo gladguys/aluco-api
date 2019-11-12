@@ -11,6 +11,7 @@ public class ExamGradeDTO {
 
 	private Long examId;
 	private String examName;
+	private int weight;
 	private Long studentId;
 	private String studentName;
 	private Double grade;
@@ -18,10 +19,11 @@ public class ExamGradeDTO {
 	public ExamGradeDTO() {
 	}
 
-	public ExamGradeDTO(Long examId, String examName, Double grade) {
+	public ExamGradeDTO(Long examId, String examName, Double grade, int weight) {
 		this.examId = examId;
 		this.examName = examName;
 		this.grade = grade;
+		this.weight = weight;
 	}
 
 	public ExamGrade toEntity() {
