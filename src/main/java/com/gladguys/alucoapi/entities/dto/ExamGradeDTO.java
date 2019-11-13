@@ -14,6 +14,9 @@ public class ExamGradeDTO {
 	private String studentName;
 	private Double grade;
 
+	public ExamGradeDTO() {
+	}
+
 	public ExamGradeDTO(Long studentId, Long examId, Double grade) {
 		this.studentId = studentId;
 		this.examId = examId;
