@@ -9,4 +9,5 @@ public interface CustomExamGradeRepository {
 	List<ExamGradeDTO> getGradesByExamId(Long id);
 
 	List<ExamGradeDTO> getGradesBoard(Long classId);
+	void deleteByClassId(Long id);
 }

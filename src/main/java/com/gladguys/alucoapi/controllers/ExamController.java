@@ -46,6 +46,7 @@ public class ExamController {
 	public ResponseEntity<List<ExamDTO>> get(HttpServletRequest request,
 	                                         @RequestParam(value = "name", required = false) String name,
 	                                         @RequestParam(value = "classId", required = false) Long classId) {
+
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		ExamFilter examFilter = new ExamFilter(name, classId, teacherId);
 
@@ -118,13 +119,12 @@ public class ExamController {
 
 	@DeleteMapping(value = "/{id}/grades")
 	@ApiOperation(value = "Remove registro de nota do aluno para aquele exame")
-	public ResponseEntity getGradesByExam(@RequestBody ExamGradeDTO dto) {
+	public ResponseEntity delete(@RequestBody ExamGradeDTO dto) {
 		dto.setGrade(null);
 		this.gradeService.deleteGrade(dto);
 
 		return ResponseEntity.status(HttpStatus.OK).body("Nota removida com sucesso");
 
 	}
-
 
 }

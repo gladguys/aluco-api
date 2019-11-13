@@ -62,4 +62,7 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 		return studentsGrades;
 	}
 
+	public void deleteByClassId(Long id) {
+		this.repository.deleteByClassId(id);
+	}
 }

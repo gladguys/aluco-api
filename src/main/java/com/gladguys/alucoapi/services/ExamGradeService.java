@@ -12,5 +12,6 @@ public interface ExamGradeService {
 	List<ExamGradeDTO> getGradesByExamId(Long id);
 	void deleteGrade(ExamGradeDTO dto);
 	List<StudentGrades> getGradeBoardFromClass(Long classId);
+	void deleteByClassId(Long id);
 }
 

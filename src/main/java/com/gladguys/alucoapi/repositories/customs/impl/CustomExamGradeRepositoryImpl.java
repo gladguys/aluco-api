@@ -40,4 +40,14 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
+
+	@Override
+	public void deleteByClassId(Long id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" DELETE FROM exam_grade eg ");
+		sql.append("WHERE eg.exam_id IN (SELECT id FROM exam e WHERE e.class_id = ?); ");
+		sql.append(" DELETE FROM exam e WHERE e.class_id = " + id );
+
+		this.jdbcTemplate.update(sql.toString(), new Object[]{id});
+	}
 }
