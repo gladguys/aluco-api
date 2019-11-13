@@ -24,7 +24,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 	public List<ExamDTO> getByFilters(ExamFilter examFilter) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("  SELECT e.id, e.name, e.exam_date FROM exam e\n" +
+		sql.append("  SELECT e.id, e.name, e.exam_date, e.weight, e.description FROM exam e\n" +
 				" INNER JOIN class c on c.id = e.class_id\n" +
 				" INNER JOIN teacher t on t.id = c.teacher_id ");
 		sql.append(" WHERE e.id IS NOT NULL ");
