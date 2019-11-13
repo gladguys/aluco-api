@@ -41,4 +41,9 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 		if (dto.getExamId() == null) throw new ApiResponseException("Id da prova não informado");
 		this.repository.save(dto.toEntity());
 	}
+
+	@Override
+	public void deleteByClassId(Long id) {
+		this.repository.deleteByClassId(id);
+	}
 }

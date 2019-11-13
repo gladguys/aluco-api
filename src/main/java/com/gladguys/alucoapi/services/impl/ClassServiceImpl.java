@@ -7,6 +7,7 @@ import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.ExamService;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,17 @@ public class ClassServiceImpl implements ClassService {
 
 	private ClassRepository classRepository;
 	private ExamService examService;
+	private ExamGradeService examGradeService;
 
-	public ClassServiceImpl(ClassRepository classRepository, ExamService examService) {
+	public ClassServiceImpl(ClassRepository classRepository, ExamService examService, ExamGradeService examGradeService) {
 		this.classRepository = classRepository;
 		this.examService = examService;
+		this.examGradeService = examGradeService;
 	}
 
 	@Override
 	public ClassDTO getById(Long id) {
+		this.classRepository.deleteById(id);
 		return this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id)).toDTO();
 	}
 
@@ -51,6 +55,8 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public void deleteById(Long id) {
+
+		this.examGradeService.deleteByClassId(id);
 		this.classRepository.deleteById(id);
 	}
 

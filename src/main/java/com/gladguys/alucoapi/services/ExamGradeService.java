@@ -10,5 +10,6 @@ public interface ExamGradeService {
 	void saveAllGrades(List<ExamGradeDTO> gradesDTO);
 	List<ExamGradeDTO> getGradesByExamId(Long id);
 	void deleteGrade(ExamGradeDTO dto);
+	void deleteByClassId(Long id);
 }
 
