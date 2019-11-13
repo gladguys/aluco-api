@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -79,12 +80,13 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
+
 		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
 
 		exams.forEach( ex -> {
-			List<ExamGradeDTO> examGradeDTOS = new ArrayList<>();
-			studentDTOS.forEach(studentDTO -> examGradeDTOS.add(new ExamGradeDTO(studentDTO.getId(),ex,null)));
-			this.examGradeService.saveAllGrades(examGradeDTOS);
+			this.examGradeService.saveAllGrades(
+					studentDTOS.stream().map(dto ->
+							new ExamGradeDTO(dto.getId(),ex,null)).collect(Collectors.toList()));
 		});
 	}
 
