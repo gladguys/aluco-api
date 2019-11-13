@@ -56,9 +56,12 @@ public class ExamServiceImpl implements ExamService {
 
 		Exam examSaved = this.examRepository.save(examDTO.toEntity());
 
-		List<StudentDTO> students = this.studentService.getAllByClassId(examDTO.getClassId());
-		this.examGradeService.saveAllGrades(students.stream().map(s ->
-				new ExamGradeDTO(s.getId(),examSaved.getId(), null)).collect(Collectors.toList()));
+		if (examDTO.getId() == null) {
+
+			List<StudentDTO> students = this.studentService.getAllByClassId(examDTO.getClassId());
+			this.examGradeService.saveAllGrades(students.stream().map(s ->
+					new ExamGradeDTO(s.getId(), examSaved.getId(), null)).collect(Collectors.toList()));
+		}
 
 		return examSaved;
 
