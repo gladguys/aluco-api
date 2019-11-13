@@ -1,6 +1,5 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
-import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.ExamDTO;
 import com.gladguys.alucoapi.entities.filters.ExamFilter;
 import com.gladguys.alucoapi.repositories.customs.CustomExamRepository;
@@ -28,7 +27,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 		sql.append("  SELECT e.id, e.name, e.exam_date FROM exam e\n" +
 				" INNER JOIN class c on c.id = e.class_id\n" +
 				" INNER JOIN teacher t on t.id = c.teacher_id ");
-		sql.append(" WHERE 1=1 ");
+		sql.append(" WHERE e.id IS NOT NULL ");
 		if (examFilter.getName() != null)
 			sql.append(" AND name LIKE '%" +examFilter.getName() + "%'");
 
@@ -63,4 +62,11 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamDTO.class));
 	}
+
+	@Override
+	public void deleteExamGradeById(Long id) {
+		this.jdbcTemplate.update("DELETE FROM exam_grade WHERE exam_id = ? ", new Object[]{id});
+		this.jdbcTemplate.update("DELETE FROM exam WHERE id = ? ", new Object[]{id});
+	}
+
 }
