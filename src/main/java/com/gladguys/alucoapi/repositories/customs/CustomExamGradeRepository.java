@@ -7,4 +7,6 @@ import java.util.List;
 public interface CustomExamGradeRepository {
 
 	List<ExamGradeDTO> getGradesByExamId(Long id);
+
+	void deleteByClassId(Long id);
 }
