@@ -53,13 +53,15 @@ public class ExamServiceImpl implements ExamService {
 	@Override
 	@Transactional
 	public Exam saveOrUpdate(ExamDTO examDTO) {
-		//TODO: check if the class has students, if so, create exam_grade for all of them
+
+		Exam examSaved = this.examRepository.save(examDTO.toEntity());
 
 		List<StudentDTO> students = this.studentService.getAllByClassId(examDTO.getClassId());
 		this.examGradeService.saveAllGrades(students.stream().map(s ->
-				new ExamGradeDTO(s.getId(),examDTO.getId(), null)).collect(Collectors.toList()));
+				new ExamGradeDTO(s.getId(),examSaved.getId(), null)).collect(Collectors.toList()));
 
-		return this.examRepository.save(examDTO.toEntity());
+		return examSaved;
+
 	}
 
 	@Override
