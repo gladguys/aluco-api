@@ -22,9 +22,9 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 	public List<ExamGradeDTO> getGradesByExamId(Long id) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(	" SELECT s.id as studentId, s.name as studentName, eg.grade as grade from exam_grade eg \n" +
-					" INNER JOIN student s ON s.id = eg.student_id\n" +
-					" WHERE eg.exam_id = ?  ORDER BY s.name \n");
+		sql.append(	" SELECT s.id as studentId, s.name as studentName, eg.grade as grade from exam_grade eg ");
+		sql.append(	" INNER JOIN student s ON s.id = eg.student_id");
+		sql.append("  WHERE eg.exam_id = ?  ORDER BY s.name ");
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
