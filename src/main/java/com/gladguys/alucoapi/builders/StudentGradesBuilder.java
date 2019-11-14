@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.helpers.GradeHelper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,8 @@ public class StudentGradesBuilder {
 						.map(ExamGradeDTO::buildForGradesBoard)
 						.collect(Collectors.toList()));
 
-		sg.setAverage(GradeHelper.getAverageGrade(examGradeDTOS));
+		sg.setAverage(GradeHelper.getAverageGrade(examGradeDTOS.stream().filter(e -> e.getExamDate().isBefore(LocalDate.now()))
+				.collect(Collectors.toList())));
 		
 		return sg;
 	}
