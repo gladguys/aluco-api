@@ -17,8 +17,8 @@ public class StudentGradesBuilder {
 						.map(ExamGradeDTO::buildForGradesBoard)
 						.collect(Collectors.toList()));
 
-		sg.setStatus(String.valueOf(GradeHelper.getAverageGrade(examGradeDTOS)));
-
+		sg.setAverage(GradeHelper.getAverageGrade(examGradeDTOS));
+		
 		return sg;
 	}
 }

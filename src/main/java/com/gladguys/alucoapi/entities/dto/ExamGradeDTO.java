@@ -6,11 +6,14 @@ import com.gladguys.alucoapi.entities.ExamGradeKey;
 import com.gladguys.alucoapi.entities.Student;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ExamGradeDTO {
 
 	private Long examId;
 	private String examName;
+	private LocalDate examDate;
 	private int weight;
 	private Long studentId;
 	private String studentName;

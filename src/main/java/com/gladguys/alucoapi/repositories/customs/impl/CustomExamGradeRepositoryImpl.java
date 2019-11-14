@@ -32,11 +32,12 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 	public List<ExamGradeDTO> getGradesBoard(Long classId) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(	" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, e.name as examName, " +
-					" eg.grade as grade FROM exam_grade eg\n" +
-					" INNER JOIN student s ON  s.id = eg.student_id\n" +
-					" INNER JOIN exam e ON e.id = eg.exam_id\n" +
-					" WHERE e.class_id = ? ");
+		sql.append(" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, ");
+		sql.append(" e.name as examName, e.exam_date as examDate, ");
+		sql.append(" eg.grade as grade FROM exam_grade eg ");
+		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
+		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
+		sql.append(" WHERE e.class_id = ? ");
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}

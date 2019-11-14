@@ -11,5 +11,6 @@ public class StudentGrades {
 	private List<ExamGradeDTO> exams;
 	private String status;
 	private String studentName;
+	private Double average;
 }
 

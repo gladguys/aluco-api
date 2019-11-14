@@ -8,6 +8,7 @@ import com.gladguys.alucoapi.repositories.ExamGradeRepository;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +52,17 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 		Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
 				this.repository
-				.getGradesBoard(classId)
-				.parallelStream()
-				.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
+						.getGradesBoard(classId)
+						.parallelStream()
+						.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
 
 		examsGradesPerStudent.forEach((aLong, examGradeDTOS) -> {
-			studentsGrades.add(StudentGradesBuilder.build(examGradeDTOS));
-		} );
+			studentsGrades.add(
+					StudentGradesBuilder.build(
+							examGradeDTOS.stream()
+									.filter(e -> e.getExamDate().isBefore(LocalDate.now()))
+									.collect(Collectors.toList())));
+		});
 
 		return studentsGrades;
 	}
