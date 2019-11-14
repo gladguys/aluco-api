@@ -68,13 +68,8 @@ public class ClassServiceImpl implements ClassService {
 
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
-		Set<Student> students = new HashSet<>();
-		studentDTOS.forEach(dto -> {
-			students.add(dto.toEntity());
-		});
-
-		if(students.size() > 0) {
-			classToAddStudent.addStudents(students);
+		if(studentDTOS.size() > 0) {
+			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
 	}
