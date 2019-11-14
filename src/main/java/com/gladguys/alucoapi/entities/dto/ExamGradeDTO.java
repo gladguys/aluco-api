@@ -29,6 +29,13 @@ public class ExamGradeDTO {
 		this.weight = weight;
 	}
 
+	public ExamGradeDTO(Long studentId , Long examId, Double  average) {
+
+		this.examId = examId;
+		this.studentId = studentId;
+
+	}
+
 	public  ExamGradeDTO buildForGradesBoard() {
 		return new ExamGradeDTO(this.examId, this.examName, this.grade, this.weight);
 	}

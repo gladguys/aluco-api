@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.services.impl;
 import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassServiceImpl implements ClassService {
@@ -66,15 +69,23 @@ public class ClassServiceImpl implements ClassService {
 
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 
-		Set<Student> students = new HashSet<>();
-		studentDTOS.forEach(dto -> {
-			students.add(dto.toEntity());
-		});
+		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
-		if(students.size() > 0) {
-			classToAddStudent.addStudents(students);
+		if(studentDTOS.size() > 0) {
+			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
+	}
+
+	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
+
+		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
+
+		exams.forEach( ex -> {
+			this.examGradeService.saveAllGrades(
+					studentDTOS.stream().map(dto ->
+							new ExamGradeDTO(dto.getId(),ex,null)).collect(Collectors.toList()));
+		});
 	}
 
 	@Override
