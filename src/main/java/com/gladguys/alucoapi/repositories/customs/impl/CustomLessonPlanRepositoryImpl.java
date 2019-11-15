@@ -23,7 +23,7 @@ public class CustomLessonPlanRepositoryImpl implements CustomLessonPlanRepositor
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT l.id, l.content, l.lesson_date as lessonDate, l.class_id as classId ");
 		sql.append(" FROM lesson_plan l ");
-		sql.append(" WHERE l.id IS NOT NULL ");
+		sql.append(" WHERE 1=1 ");
 		if (filter.getClassId() != null)
 			sql.append(" AND l.class_id = " + filter.getClassId());
 		if (filter.getLessonDate() != null) {
