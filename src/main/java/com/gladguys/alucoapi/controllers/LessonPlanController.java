@@ -84,6 +84,6 @@ public class LessonPlanController {
 	@ApiOperation("deleta plano de aula por id")
 	public ResponseEntity<String> delete(@PathVariable("id") Long id ) {
 		this.lessonPlanService.delete(id);
-		return  ResponseEntity.ok("plano de aula removido com sucesso");
+		return  ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 }
