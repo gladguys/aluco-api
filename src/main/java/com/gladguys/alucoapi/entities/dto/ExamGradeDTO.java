@@ -19,8 +19,7 @@ public class ExamGradeDTO {
 	private String studentName;
 	private Double grade;
 
-	public ExamGradeDTO() {
-	}
+	public ExamGradeDTO() {}
 
 	public ExamGradeDTO(Long examId, String examName, Double grade, int weight) {
 		this.examId = examId;
@@ -30,10 +29,8 @@ public class ExamGradeDTO {
 	}
 
 	public ExamGradeDTO(Long studentId , Long examId, Double  average) {
-
 		this.examId = examId;
 		this.studentId = studentId;
-
 	}
 
 	public  ExamGradeDTO buildForGradesBoard() {
@@ -49,5 +46,5 @@ public class ExamGradeDTO {
 		examGrade.setGrade(grade);
 
 		return examGrade;
-	}
+  }
 }

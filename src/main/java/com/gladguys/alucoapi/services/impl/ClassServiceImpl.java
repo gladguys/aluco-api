@@ -58,7 +58,6 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public void deleteById(Long id) {
-
 		this.examGradeService.deleteByClassId(id);
 		this.classRepository.deleteById(id);
 	}
@@ -68,7 +67,6 @@ public class ClassServiceImpl implements ClassService {
 	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
 
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
-
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
 		if(studentDTOS.size() > 0) {
