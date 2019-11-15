@@ -14,6 +14,15 @@ public class ExamGradeDTO {
 	private String studentName;
 	private Double grade;
 
+	public ExamGradeDTO() {
+	}
+
+	public ExamGradeDTO(Long studentId, Long examId, Double grade) {
+		this.studentId = studentId;
+		this.examId = examId;
+		this.grade = grade;
+	}
+
 	public ExamGrade toEntity() {
 		ExamGrade examGrade = new ExamGrade();
 		ExamGradeKey key = new ExamGradeKey();
