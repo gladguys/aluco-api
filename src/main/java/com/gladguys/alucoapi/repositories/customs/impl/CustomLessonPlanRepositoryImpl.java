@@ -38,9 +38,9 @@ public class CustomLessonPlanRepositoryImpl implements CustomLessonPlanRepositor
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT l.id, l.content, l.metodology, l.homework, l.classwork, l.lesson_date as lessonDate, l.notes, t.id as teacherId ");
 		sql.append(" FROM lesson_plan l");
-		sql.append(" INNER JOIN class c ON c.id =  ");
+		sql.append(" INNER JOIN class c ON c.id = l.class_id ");
 		sql.append(" INNER JOIN teacher t ON t.id = c.teacher_id ");
-		sql.append(" WHERE id = ? ");
+		sql.append(" WHERE l.id = ? ");
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(LessonPlanDTO.class));
 	}
