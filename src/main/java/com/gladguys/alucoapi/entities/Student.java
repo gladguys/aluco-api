@@ -28,6 +28,9 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "registration_number")
+	private String registrationNumber;
+
 	@NotBlank(message = "Nome deve ser informado.")
 	private String name;
 
