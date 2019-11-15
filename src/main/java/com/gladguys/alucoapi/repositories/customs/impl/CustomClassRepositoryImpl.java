@@ -46,7 +46,6 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	@Override
 	public boolean isClassFromTeacher(Long classId, Long teacherId) {
 		String sql = "SELECT count(*) FROM class WHERE teacher_id = ? AND id = ?";
-		boolean exists = false;
 		int count = this.jdbcTemplate.queryForObject(sql, new Object[] { teacherId, classId }, Integer.class);
 		return count > 0;
 	}
