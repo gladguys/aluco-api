@@ -93,4 +93,9 @@ public class ClassServiceImpl implements ClassService {
 
 		this.classRepository.deleteStudentFromClass(studentId, classId, examsId);
 	}
+
+	@Override
+	public boolean isClassFromTeacher(Long classId, Long teacherId) {
+		return this.classRepository.isClassFromTeacher(classId, teacherId);
+	}
 }
