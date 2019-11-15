@@ -33,7 +33,7 @@ public class LessonPlanDTO {
 
 		Class aclass = new Class();
 		aclass.setId(classId);
-		lessonPlan.setAClass(aclass);
+		lessonPlan.setClassPlan(aclass);
 
 		return lessonPlan;
 	}

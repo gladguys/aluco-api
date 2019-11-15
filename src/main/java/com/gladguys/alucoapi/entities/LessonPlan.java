@@ -40,7 +40,7 @@ public class LessonPlan {
 
 	@ManyToOne
 	@JoinColumn(name = "class_id")
-	private Class aClass;
+	private Class classPlan;
 
 	public LessonPlanDTO toDTO() {
 		LessonPlanDTO dto = new LessonPlanDTO();
@@ -51,8 +51,8 @@ public class LessonPlan {
 		dto.setClasswork(classwork);
 		dto.setLessonDate(lessonDate);
 		dto.setNotes(notes);
-		if (aClass != null) {
-			dto.setClassId(aClass.getId());
+		if (classPlan != null) {
+			dto.setClassId(classPlan.getId());
 		}
 		return dto;
 	}
