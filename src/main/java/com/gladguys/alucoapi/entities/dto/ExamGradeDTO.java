@@ -6,21 +6,35 @@ import com.gladguys.alucoapi.entities.ExamGradeKey;
 import com.gladguys.alucoapi.entities.Student;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ExamGradeDTO {
 
 	private Long examId;
+	private String examName;
+	private LocalDate examDate;
+	private int weight;
 	private Long studentId;
 	private String studentName;
 	private Double grade;
 
-	public ExamGradeDTO() {
+	public ExamGradeDTO() {}
+
+	public ExamGradeDTO(Long examId, String examName, Double grade, int weight) {
+		this.examId = examId;
+		this.examName = examName;
+		this.grade = grade;
+		this.weight = weight;
 	}
 
-	public ExamGradeDTO(Long studentId, Long examId, Double grade) {
-		this.studentId = studentId;
+	public ExamGradeDTO(Long studentId , Long examId, Double  average) {
 		this.examId = examId;
-		this.grade = grade;
+		this.studentId = studentId;
+	}
+
+	public  ExamGradeDTO buildForGradesBoard() {
+		return new ExamGradeDTO(this.examId, this.examName, this.grade, this.weight);
 	}
 
 	public ExamGrade toEntity() {
@@ -32,5 +46,5 @@ public class ExamGradeDTO {
 		examGrade.setGrade(grade);
 
 		return examGrade;
-	}
+  }
 }

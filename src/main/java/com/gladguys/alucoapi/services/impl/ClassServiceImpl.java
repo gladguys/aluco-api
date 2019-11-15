@@ -58,7 +58,6 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public void deleteById(Long id) {
-
 		this.examGradeService.deleteByClassId(id);
 		this.classRepository.deleteById(id);
 	}
@@ -68,16 +67,10 @@ public class ClassServiceImpl implements ClassService {
 	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
 
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
-
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
-		Set<Student> students = new HashSet<>();
-		studentDTOS.forEach(dto -> {
-			students.add(dto.toEntity());
-		});
-
-		if(students.size() > 0) {
-			classToAddStudent.addStudents(students);
+		if(studentDTOS.size() > 0) {
+			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
 	}

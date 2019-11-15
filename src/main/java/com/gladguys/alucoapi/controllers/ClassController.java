@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.controllers;
 
+import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
@@ -7,6 +8,7 @@ import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -30,9 +32,11 @@ public class ClassController {
 
 	private ClassService classService;
 	private StudentService studentService;
+	private ExamGradeService examGradeService;
 	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService, StudentService studentService, JwtTokenUtil jwtTokenUtil) {
+	public ClassController(ClassService classService, StudentService studentService, ExamGradeService examGradeService, JwtTokenUtil jwtTokenUtil) {
+		this.examGradeService = examGradeService;
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
 		this.studentService = studentService;
@@ -131,4 +135,10 @@ public class ClassController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 
+	@ApiOperation("Retorna quadro de notas da turma")
+	@GetMapping("/{id}/grades")
+	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
+		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
+		return ResponseEntity.ok(gradeBoardFromClass);
+	}
 }
