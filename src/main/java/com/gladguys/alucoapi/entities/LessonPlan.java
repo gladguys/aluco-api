@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gladguys.alucoapi.entities.dto.LessonPlanDTO;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -41,4 +42,18 @@ public class LessonPlan {
 	@JoinColumn(name = "class_id")
 	private Class aClass;
 
+	public LessonPlanDTO toDTO() {
+		LessonPlanDTO dto = new LessonPlanDTO();
+		dto.setId(id);
+		dto.setContent(content);
+		dto.setMetodology(metodology);
+		dto.setHomework(homework);
+		dto.setClasswork(classwork);
+		dto.setLessonDate(lessonDate);
+		dto.setNotes(notes);
+		if (aClass != null) {
+			dto.setClassId(aClass.getId());
+		}
+		return dto;
+	}
 }
