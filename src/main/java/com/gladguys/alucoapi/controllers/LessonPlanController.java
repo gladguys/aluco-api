@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -42,13 +43,14 @@ public class LessonPlanController {
 	@ApiOperation("busca todos os planos de aula por turma com filtros para classId e localDate")
 	public ResponseEntity<List<LessonPlanDTO>> getAll(HttpServletRequest request,
 													  @RequestParam(value = "classId", required = false) Long classId,
-													  @RequestParam(value = "lessonDate", required = false)LocalDate localDate) {
+													  @RequestParam(value = "lessonDate", required = false) String lessonDate) {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 
 		if (classId != null && !this.classService.isClassFromTeacher(classId, teacherId))
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-		LessonPlanFilter filter = new LessonPlanFilter(classId,localDate);
+		DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LessonPlanFilter filter = new LessonPlanFilter(classId,LocalDate.parse(lessonDate,ddMMyyyyFormarter));
 
 		return ResponseEntity.ok(this.lessonPlanService.getByFilters(filter));
 	}

@@ -27,7 +27,7 @@ public class CustomLessonPlanRepositoryImpl implements CustomLessonPlanRepositor
 		if (filter.getClassId() != null)
 			sql.append(" AND l.class_id = " + filter.getClassId());
 		if (filter.getLessonDate() != null) {
-			sql.append(" AND l.lesson_date = ? " + filter.getLessonDate());
+			sql.append(" AND l.lesson_date = '" + filter.getLessonDate() + "' ");
 		}
 
 		return jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(LessonPlanDTO.class));
