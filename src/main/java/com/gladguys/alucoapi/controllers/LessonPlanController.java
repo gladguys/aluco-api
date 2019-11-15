@@ -43,14 +43,19 @@ public class LessonPlanController {
 	@ApiOperation("busca todos os planos de aula por turma com filtros para classId e localDate")
 	public ResponseEntity<List<LessonPlanDTO>> getAll(HttpServletRequest request,
 													  @RequestParam(value = "classId", required = false) Long classId,
-													  @RequestParam(value = "lessonDate", required = false) String lessonDate) {
+													  @RequestParam(value = "lessonDate", required = false) String lessonDateStr) {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		LocalDate lessonDate = null;
 
 		if (classId != null && !this.classService.isClassFromTeacher(classId, teacherId))
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-		DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LessonPlanFilter filter = new LessonPlanFilter(classId,LocalDate.parse(lessonDate,ddMMyyyyFormarter));
+		if(lessonDateStr != null) {
+			DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			lessonDate = LocalDate.parse(lessonDateStr, ddMMyyyyFormarter);
+		}
+
+		LessonPlanFilter filter = new LessonPlanFilter(classId,lessonDate);
 
 		return ResponseEntity.ok(this.lessonPlanService.getByFilters(filter));
 	}
