@@ -30,7 +30,7 @@ public class LessonPlanServiceImpl implements LessonPlanService {
 	@Override
 	public LessonPlanDTO save(LessonPlanDTO lessonPlanDTO) {
 
-			return this.repository.save(lessonPlanDTO.toEntity()).toDTO();
+		return this.repository.save(lessonPlanDTO.toEntity()).toDTO();
 	}
 
 	@Override
