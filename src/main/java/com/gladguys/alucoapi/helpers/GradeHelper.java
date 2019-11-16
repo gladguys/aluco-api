@@ -24,6 +24,6 @@ public class GradeHelper {
 					.filter(e -> e.getGrade() != null)
 					.map(dto -> dto.getGrade() * dto.getWeight())
 					.reduce(Double::sum)
-					.get();
+					.orElse(0);
 	}
 }
