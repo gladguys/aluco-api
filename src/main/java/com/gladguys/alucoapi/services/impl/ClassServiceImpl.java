@@ -35,7 +35,6 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public ClassDTO getById(Long id) {
-		this.classRepository.deleteById(id);
 		return this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id)).toDTO();
 	}
 
