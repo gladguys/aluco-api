@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/profiless")
+@RequestMapping("/api/profiles")
 public class FileHandlerController {
 
 	@Autowired
