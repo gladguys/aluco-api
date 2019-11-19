@@ -8,18 +8,16 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.services.AmazonS3ClientService;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @Component
 public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
@@ -27,8 +25,7 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
 	private AmazonS3 amazonS3;
 
 	@Autowired
-	public AmazonS3ClientServiceImpl(Region awsRegion, AWSCredentialsProvider awsCredentialsProvider, String awsS3AudioBucket)
-	{
+	public AmazonS3ClientServiceImpl(Region awsRegion, AWSCredentialsProvider awsCredentialsProvider, String awsS3AudioBucket) {
 		this.amazonS3 = AmazonS3ClientBuilder.standard()
 				.withCredentials(awsCredentialsProvider)
 				.withRegion(awsRegion.getName()).build();
@@ -40,7 +37,6 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
 		String fileName = multipartFile.getOriginalFilename();
 
 		try {
-			//creating the file in the server (temporarily)
 			File file = new File(fileName);
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(multipartFile.getBytes());
@@ -52,17 +48,18 @@ public class AmazonS3ClientServiceImpl implements AmazonS3ClientService {
 				putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
 			}
 			this.amazonS3.putObject(putObjectRequest);
-			//removing the file created in the server
 			file.delete();
 		} catch (IOException | AmazonServiceException ex) {
+			throw new ApiResponseException("Erro ao fazer upload da imagem no aws s3");
 		}
 	}
 
 	@Async
-	public void deleteFileFromS3Bucket(String fileName)
-	{
+	public void deleteFileFromS3Bucket(String fileName) {
 		try {
 			amazonS3.deleteObject(new DeleteObjectRequest(awsS3AudioBucket, fileName));
 		} catch (AmazonServiceException ex) {
+			throw new ApiResponseException("Erro ao deletar imagem no aws s3");
 		}
-	}}
+	}
+}
