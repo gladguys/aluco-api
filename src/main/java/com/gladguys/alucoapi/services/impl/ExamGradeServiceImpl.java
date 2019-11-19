@@ -9,6 +9,7 @@ import com.gladguys.alucoapi.services.ExamGradeService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,15 +52,18 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 		Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
 				this.repository
-				.getGradesBoard(classId)
-				.parallelStream()
-				.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
+						.getGradesBoard(classId)
+						.parallelStream()
+						.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
 
 		examsGradesPerStudent.forEach((aLong, examGradeDTOS) -> {
 			studentsGrades.add(StudentGradesBuilder.build(examGradeDTOS));
-		} );
+		});
 
-		return studentsGrades;
+		return studentsGrades
+				.stream()
+				.sorted(Comparator.comparing(StudentGrades::getStudentName))
+				.collect(Collectors.toList());
 	}
 
 	public void deleteByClassId(Long id) {

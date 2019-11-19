@@ -15,7 +15,7 @@ public class GradeHelper {
 		return examGradesDTO
 					.parallelStream()
 					.map(ExamGradeDTO::getWeight)
-					.reduce(Integer::sum).get();
+					.reduce(Integer::sum).orElse(0);
 	}
 
 	private static Double getSumGrades(List<ExamGradeDTO> examGradesDTO) {
