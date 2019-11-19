@@ -23,4 +23,6 @@ public interface ClassService {
 	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id);
 
 	void deleteStudentFromClass(Long studentId, Long classId);
+
+	boolean isClassFromTeacher(Long classId, Long teacherId);
 }

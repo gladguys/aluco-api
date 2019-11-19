@@ -43,4 +43,11 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 		this.jdbcTemplate.update("DELETE FROM student_class WHERE student_id = ? AND class_id = ?", new Object[]{studentId, classId});
 	}
 
+	@Override
+	public boolean isClassFromTeacher(Long classId, Long teacherId) {
+		String sql = "SELECT count(*) FROM class WHERE teacher_id = ? AND id = ?";
+		int count = this.jdbcTemplate.queryForObject(sql, new Object[] { teacherId, classId }, Integer.class);
+		return count > 0;
+	}
+
 }
