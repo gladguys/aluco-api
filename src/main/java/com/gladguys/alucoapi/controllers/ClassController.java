@@ -81,8 +81,7 @@ public class ClassController {
 	@ApiOperation(value = "Cadastra uma turma")
 	@PostMapping
 	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto, HttpServletRequest request) {
-		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
-
+		validateClassData(dto);
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		dto.setTeacherId(teacherId);
 
@@ -94,7 +93,8 @@ public class ClassController {
 	@PutMapping
 	public ResponseEntity<ClassDTO> update(@RequestBody ClassDTO dto, HttpServletRequest request) {
 		if (dto == null || dto.getId() == null) throw new ApiResponseException("Turma é obrigatória");
-
+		if (dto.getClassName().replaceAll("\\s+","").length() == 0)
+			throw new ApiResponseException("Nome para turma inválido");
 		boolean exists = this.classService.exists(dto.getId());
 		if (!exists) throw new ClassNotFoundException(dto.getId());
 
@@ -140,5 +140,11 @@ public class ClassController {
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
 		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
 		return ResponseEntity.ok(gradeBoardFromClass);
+	}
+
+	private void validateClassData(@RequestBody ClassDTO dto) {
+		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
+		if (dto.getClassName().replaceAll("\\s+","").length() == 0)
+			throw new ApiResponseException("Nome para turma inválido");
 	}
 }
