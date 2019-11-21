@@ -81,28 +81,26 @@ public class ClassController {
 	@ApiOperation(value = "Cadastra uma turma")
 	@PostMapping
 	public ResponseEntity<ClassDTO> save(@RequestBody ClassDTO dto, HttpServletRequest request) {
-		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
+		validateClassData(dto);
+		dto.setTeacherId(
+				jwtTokenUtil.getTeacherIdFromToken(request).longValue());
 
-		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-		dto.setTeacherId(teacherId);
-
-		ClassDTO classDTO = this.classService.saveOrUpdate(dto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(classDTO);
+		return ResponseEntity
+				.status(HttpStatus.CREATED).body(this.classService.saveOrUpdate(dto));
 	}
 
 	@ApiOperation(value = "Atualiza uma turma")
 	@PutMapping
 	public ResponseEntity<ClassDTO> update(@RequestBody ClassDTO dto, HttpServletRequest request) {
-		if (dto == null || dto.getId() == null) throw new ApiResponseException("Turma é obrigatória");
+		validateClassData(dto);
 
 		boolean exists = this.classService.exists(dto.getId());
 		if (!exists) throw new ClassNotFoundException(dto.getId());
 
-		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-		dto.setTeacherId(teacherId);
+		dto.setTeacherId(
+				jwtTokenUtil.getTeacherIdFromToken(request).longValue());
 
-		ClassDTO classSaved = this.classService.saveOrUpdate(dto);
-		return ResponseEntity.ok(classSaved);
+		return ResponseEntity.ok(this.classService.saveOrUpdate(dto));
 	}
 
 	@ApiOperation(value = "Deleta uma turma")
@@ -140,5 +138,11 @@ public class ClassController {
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
 		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
 		return ResponseEntity.ok(gradeBoardFromClass);
+	}
+
+	private void validateClassData(@RequestBody ClassDTO dto) {
+		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
+		if (dto.getClassName().replaceAll("\\s+","").length() == 0)
+			throw new ApiResponseException("Nome para turma inválido");
 	}
 }
