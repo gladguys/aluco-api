@@ -20,7 +20,7 @@ public class StudentGradesBuilder {
 						.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
 						.collect(Collectors.toList()));
 
-		sg.setAverage(GradeHelper.getAverageGrade(examGradeDTOS.stream().filter(e -> e.getExamDate().isBefore(LocalDate.now()))
+		sg.setAverage(GradeHelper.getAverageGrade(examGradeDTOS.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
 				.collect(Collectors.toList())));
 		
 		return sg;
