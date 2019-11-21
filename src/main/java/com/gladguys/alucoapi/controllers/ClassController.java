@@ -140,9 +140,7 @@ public class ClassController {
 		return ResponseEntity.ok(gradeBoardFromClass);
 	}
 
-	private void validateClassData(@RequestBody ClassDTO dto) {
-		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
-		if (dto.getClassName().replaceAll("\\s+","").length() == 0)
-			throw new ApiResponseException("Nome para turma inválido");
+	private void validateClassData(ClassDTO dto) {
+		if (dto == null) throw new ApiResponseException("Turma nao informada");
 	}
 }
