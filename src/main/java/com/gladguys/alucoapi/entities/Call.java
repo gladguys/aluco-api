@@ -29,7 +29,7 @@ public class Call {
 	@JoinColumn(name = "class_id")
 	private Class classCall;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate date;
 
 	private StatusEnum status;

@@ -17,7 +17,7 @@ public class StudentDTO {
     private String email;
     private String photoUrl;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateBirth;
 
     private String phone;

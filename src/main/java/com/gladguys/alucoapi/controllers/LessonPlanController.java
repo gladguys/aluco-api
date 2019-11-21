@@ -51,7 +51,7 @@ public class LessonPlanController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
 		if(lessonDateStr != null) {
-			DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			lessonDate = LocalDate.parse(lessonDateStr, ddMMyyyyFormarter);
 		}
 

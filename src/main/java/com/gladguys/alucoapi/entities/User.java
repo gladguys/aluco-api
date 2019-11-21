@@ -33,7 +33,7 @@ public class User {
 
 	@CreatedDate
 	@Column(name = "create_date")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate createDate;
 
 	@Column(name = "profile")

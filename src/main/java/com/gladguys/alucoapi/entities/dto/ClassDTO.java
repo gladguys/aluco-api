@@ -16,7 +16,7 @@ public class ClassDTO {
 
 	private String description;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate creationDate;
 
 	private Set<StudentDTO> students;
