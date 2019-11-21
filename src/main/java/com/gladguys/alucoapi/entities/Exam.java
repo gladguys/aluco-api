@@ -30,10 +30,10 @@ public @Data class Exam {
 	@NotBlank(message = "Descrição deve ser informada.")
 	private String description;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate creationDate;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate examDate;
 
 	private int weight;

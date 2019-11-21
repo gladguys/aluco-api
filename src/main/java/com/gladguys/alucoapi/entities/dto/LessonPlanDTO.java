@@ -16,7 +16,7 @@ public class LessonPlanDTO {
 	private String homework;
 	private String classwork;
 	private String notes;
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate lessonDate;
 	private Long classId;
 	private Long teacherId;

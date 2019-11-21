@@ -41,7 +41,7 @@ public class Student {
 	private String photoUrl;
 
 	@Column(name = "date_of_birth")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateBirth;
 
 	private String phone;

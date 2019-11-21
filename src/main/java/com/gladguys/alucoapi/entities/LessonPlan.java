@@ -35,7 +35,7 @@ public class LessonPlan {
 	@Column(columnDefinition = "text")
 	private String notes;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate lessonDate;
 
 	@ManyToOne
