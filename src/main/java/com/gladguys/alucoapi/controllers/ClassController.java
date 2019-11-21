@@ -141,8 +141,6 @@ public class ClassController {
 	}
 
 	private void validateClassData(ClassDTO dto) {
-		if (dto == null) throw new ApiResponseException("Turma é obrigatória");
-		if (dto.getClassName().replaceAll("\\s+","").length() == 0)
-			throw new ApiResponseException("Nome para turma inválido");
+		if (dto == null) throw new ApiResponseException("Turma nao informada");
 	}
 }
