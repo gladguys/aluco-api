@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.dto.LessonPlanDTO;
 import com.gladguys.alucoapi.entities.filters.LessonPlanFilter;
+import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.LessonPlanRepository;
 import com.gladguys.alucoapi.services.LessonPlanService;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class LessonPlanServiceImpl implements LessonPlanService {
 
 	@Override
 	public LessonPlanDTO save(LessonPlanDTO lessonPlanDTO) {
+		if (lessonPlanDTO.getClassId() == null)
+			throw new ApiResponseException("id da turma não informado para o plano de aula");
+
 		return this.repository.save(lessonPlanDTO.toEntity()).toDTO();
 	}
 

@@ -50,12 +50,12 @@ public class LessonPlanController {
 		if (classId != null && !this.classService.isClassFromTeacher(classId, teacherId))
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-		if(lessonDateStr != null) {
+		if (lessonDateStr != null) {
 			DateTimeFormatter ddMMyyyyFormarter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			lessonDate = LocalDate.parse(lessonDateStr, ddMMyyyyFormarter);
 		}
 
-		LessonPlanFilter filter = new LessonPlanFilter(classId,lessonDate);
+		LessonPlanFilter filter = new LessonPlanFilter(classId, lessonDate);
 
 		return ResponseEntity.ok(this.lessonPlanService.getByFilters(filter));
 	}
@@ -76,14 +76,15 @@ public class LessonPlanController {
 	@PutMapping
 	@ApiOperation("Editar plano de aula")
 	public ResponseEntity<LessonPlanDTO> update(@RequestBody LessonPlanDTO dto) {
-		if (dto == null || dto.getId() == null)  throw new ApiResponseException("Plano de Aula ou seu id não informado para editar");
+		if (dto == null || dto.getId() == null)
+			throw new ApiResponseException("Plano de Aula ou seu id não informado para editar");
 		return ResponseEntity.ok(this.lessonPlanService.save(dto));
 	}
 
 	@DeleteMapping(value = "/{id}")
 	@ApiOperation("deleta plano de aula por id")
-	public ResponseEntity<String> delete(@PathVariable("id") Long id ) {
+	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
 		this.lessonPlanService.delete(id);
-		return  ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 }
