@@ -99,22 +99,14 @@ public class ExamController {
 	@PostMapping(value = "/{id}/grades")
 	@ApiOperation(value = "Salva notas de alunos para um específico exame")
 	public ResponseEntity<String> saveGrades(@RequestBody GradesWrapper gradesDTO, @PathVariable("id") Long id) {
-
-		try{
-			this.gradeService.saveAllGrades(gradesDTO.getGrades());
-			return ResponseEntity.ok("notas salvas com sucesso");
-
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
+		this.gradeService.saveAllGrades(gradesDTO.getGrades());
+		return ResponseEntity.ok("notas salvas com sucesso");
 	}
 
 	@GetMapping(value = "/{id}/grades")
 	@ApiOperation(value = "Resgatar todas as notas dos alunos daquele exame")
 	public ResponseEntity<List<ExamGradeDTO>> getGradesByExam(@PathVariable("id") Long id) {
-
 		return ResponseEntity.ok(this.gradeService.getGradesByExamId(id));
-
 	}
 
 	@DeleteMapping(value = "/{id}/grades")

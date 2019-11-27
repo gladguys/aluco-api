@@ -17,56 +17,56 @@ import java.util.stream.Collectors;
 @Service
 public class ExamGradeServiceImpl implements ExamGradeService {
 
-	ExamGradeRepository repository;
+    ExamGradeRepository repository;
 
-	public ExamGradeServiceImpl(ExamGradeRepository repository) {
-		this.repository = repository;
-	}
+    public ExamGradeServiceImpl(ExamGradeRepository repository) {
+        this.repository = repository;
+    }
 
-	@Override
-	public void saveAllGrades(List<ExamGradeDTO> gradesDTO) {
+    @Override
+    public void saveAllGrades(List<ExamGradeDTO> gradesDTO) {
 
-		this.repository.saveAll(
-				gradesDTO
-						.stream()
-						.map(ExamGradeDTO::toEntity)
-						.collect(Collectors.toList()));
-	}
+        this.repository.saveAll(
+                gradesDTO
+                        .stream()
+                        .map(ExamGradeDTO::toEntity)
+                        .collect(Collectors.toList()));
+    }
 
-	@Override
-	public List<ExamGradeDTO> getGradesByExamId(Long id) {
-		return this.repository.getGradesByExamId(id);
-	}
+    @Override
+    public List<ExamGradeDTO> getGradesByExamId(Long id) {
+        return this.repository.getGradesByExamId(id);
+    }
 
-	@Override
-	public void deleteGrade(ExamGradeDTO dto) {
-		if (dto.getStudentId() == null) throw new ApiResponseException("Id do aluno não informado");
-		if (dto.getExamId() == null) throw new ApiResponseException("Id da prova não informado");
-		this.repository.save(dto.toEntity());
-	}
+    @Override
+    public void deleteGrade(ExamGradeDTO dto) {
+        if (dto.getStudentId() == null) throw new ApiResponseException("Id do aluno não informado");
+        if (dto.getExamId() == null) throw new ApiResponseException("Id da prova não informado");
+        this.repository.save(dto.toEntity());
+    }
 
-	@Override
-	public List<StudentGrades> getGradeBoardFromClass(Long classId) {
+    @Override
+    public List<StudentGrades> getGradeBoardFromClass(Long classId) {
 
-		List<StudentGrades> studentsGrades = new ArrayList<>();
+        List<StudentGrades> studentsGrades = new ArrayList<>();
 
-		Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
-				this.repository
-						.getGradesBoard(classId)
-						.parallelStream()
-						.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
+        Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
+                this.repository
+                        .getGradesBoard(classId)
+                        .parallelStream()
+                        .collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
 
-		examsGradesPerStudent.forEach((aLong, examGradeDTOS) -> {
-			studentsGrades.add(StudentGradesBuilder.build(examGradeDTOS));
-		});
+        examsGradesPerStudent.forEach((aLong, examGradeDTOS) -> {
+            studentsGrades.add(StudentGradesBuilder.build(examGradeDTOS));
+        });
 
-		return studentsGrades
-				.stream()
-				.sorted(Comparator.comparing(StudentGrades::getStudentName))
-				.collect(Collectors.toList());
-	}
+        return studentsGrades
+                .stream()
+                .sorted(Comparator.comparing(StudentGrades::getStudentName))
+                .collect(Collectors.toList());
+    }
 
-	public void deleteByClassId(Long id) {
-		this.repository.deleteByClassId(id);
-	}
+    public void deleteByClassId(Long id) {
+        this.repository.deleteByClassId(id);
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ValidationException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -29,6 +30,14 @@ public class ApiExceptionHandler {
 		ApiException exception = new ApiException(e.getMessage(), internalServer, new Date());
 
 		return new ResponseEntity<>(exception, internalServer);
+	}
+
+	@ExceptionHandler(value = {ValidationException.class})
+	public ResponseEntity<Object> handleValidationException(Exception e) {
+		HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+		ApiException exception = new ApiException(e.getMessage(), badRequest, new Date());
+
+		return new ResponseEntity<>(exception, badRequest);
 	}
 
 	@ExceptionHandler(value = {ClassNotFoundException.class})
