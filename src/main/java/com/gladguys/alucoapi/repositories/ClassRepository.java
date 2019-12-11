@@ -9,7 +9,4 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClassRepository extends JpaRepository<Class, Long>, CustomClassRepository {
-
-	List<ClassDTO> getAllByTeacherId(Long teacherId);
-}
+public interface ClassRepository extends JpaRepository<Class, Long>, CustomClassRepository {}

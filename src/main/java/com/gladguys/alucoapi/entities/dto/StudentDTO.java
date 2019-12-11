@@ -12,11 +12,12 @@ import java.time.LocalDate;
 public class StudentDTO {
 
     private Long id;
+    private String registrationNumber;
     private String name;
     private String email;
     private String photoUrl;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateBirth;
 
     private String phone;
@@ -31,6 +32,7 @@ public class StudentDTO {
     public Student toEntity() {
         Student student = new Student();
         student.setId(id);
+        student.setRegistrationNumber(registrationNumber);
         student.setName(name);
         student.setEmail(email);
         student.setPhotoUrl(photoUrl);

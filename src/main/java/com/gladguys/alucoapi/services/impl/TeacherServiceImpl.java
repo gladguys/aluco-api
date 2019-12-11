@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.Teacher;
 import com.gladguys.alucoapi.entities.User;
 import com.gladguys.alucoapi.entities.dto.SignupDTO;
 import com.gladguys.alucoapi.entities.enums.ProfileEnum;
+import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.TeacherRepository;
 import com.gladguys.alucoapi.services.TeacherService;
 import com.gladguys.alucoapi.services.UserService;
@@ -34,7 +35,7 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher createOrUpdate(SignupDTO sign) {
         boolean exists = userService.existsByEmail(sign.getEmail());
 
-        if (exists) return null;
+        if (exists) throw new ApiResponseException("Professor já existe em nossos registros");
 
         User user = new User();
         user.setCreateDate(LocalDate.now());

@@ -24,14 +24,8 @@ public class TeacherController {
 	@ApiOperation(value = "Cria um novo usuário e professor")
 	@PostMapping
 	public ResponseEntity<Teacher> signup(@RequestBody SignupDTO sign) {
+		this.teacherService.createOrUpdate(sign);
 
-		try {
-			Teacher teacher = this.teacherService.createOrUpdate(sign);
-			if (teacher == null) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-
-			return ResponseEntity.status(HttpStatus.CREATED).body(null);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 }

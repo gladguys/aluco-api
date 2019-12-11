@@ -28,6 +28,9 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "registration_number")
+	private String registrationNumber;
+
 	@NotBlank(message = "Nome deve ser informado.")
 	private String name;
 
@@ -38,7 +41,7 @@ public class Student {
 	private String photoUrl;
 
 	@Column(name = "date_of_birth")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dateBirth;
 
 	private String phone;

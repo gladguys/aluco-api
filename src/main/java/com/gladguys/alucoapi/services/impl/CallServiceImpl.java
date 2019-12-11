@@ -29,14 +29,10 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public Set<Call> getAllByClassAndDate(Long classId, Date date) {
-
-    	if (classId == null) {
-            return null;
-        }
-
     	if (date == null) {
 			date = new Date();
     	}
+
     	return this.callRepository.findAllByClassCallIdAndDate(classId, date);
     }
 

@@ -34,7 +34,7 @@ public class Class {
 
     private String description;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "create_date")
     private LocalDate creationDate;
 

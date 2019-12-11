@@ -29,7 +29,7 @@ public class Teacher {
 
 	@CreatedDate
 	@Column(name = "create_date")
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate createDate;
 
 	@OneToOne

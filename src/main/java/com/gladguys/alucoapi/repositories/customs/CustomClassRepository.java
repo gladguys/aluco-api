@@ -9,4 +9,5 @@ public interface CustomClassRepository {
 	
 	List<ClassDTO> getAllByTeacherId(Long teacherId);
 	void deleteStudentFromClass(Long studentId, Long classId, Set<Long> examsId);
+	boolean isClassFromTeacher(Long classId, Long teacherId);
 }

@@ -10,9 +10,9 @@ import java.util.Set;
 @Component
 public interface ClassService {
 
-	ClassDTO getById(Long id) throws Exception;
+	ClassDTO getById(Long id);
 
-	List<ClassDTO> getAllByTeacher(Long teacherId) throws Exception;
+	List<ClassDTO> getAllByTeacher(Long teacherId);
 
 	ClassDTO saveOrUpdate(ClassDTO c);
 
@@ -20,7 +20,9 @@ public interface ClassService {
 
 	void deleteById(Long id);
 
-	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) throws Exception;
+	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id);
 
 	void deleteStudentFromClass(Long studentId, Long classId);
+
+	boolean isClassFromTeacher(Long classId, Long teacherId);
 }

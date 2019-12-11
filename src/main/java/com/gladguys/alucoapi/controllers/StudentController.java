@@ -2,6 +2,8 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.StudentNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -20,85 +22,76 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
-    private StudentService studentService;
+	private StudentService studentService;
 
-    public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
-        this.studentService = studentService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
+	public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
+		this.studentService = studentService;
+		this.jwtTokenUtil = jwtTokenUtil;
+	}
 
-    @ApiOperation(value = "Retorna os estudantes do professor logado")
-    @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAll(HttpServletRequest request) {
-        try {
-            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            List<StudentDTO> students = this.studentService.getAllByTeacher(teacherId);
-            return ResponseEntity.ok(students);
+	@ApiOperation(value = "Retorna estudante por id")
+	@GetMapping
+	public ResponseEntity<List<StudentDTO>> getAll(HttpServletRequest request) {
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		List<StudentDTO> students = this.studentService.getAllByTeacher(teacherId);
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+		return ResponseEntity.ok(students);
+	}
 
-    @ApiOperation(value = "Cadastra um estudante")
-    @PostMapping
-    public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
-        try {
-            if(dto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	@ApiOperation(value = "Retorna os estudantes do professor logado")
+	@GetMapping("/{id}")
+	public ResponseEntity<StudentDTO> get(HttpServletRequest request, @PathVariable("id") Long id) {
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 
-            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            dto.setTeacherId(teacherId);
+		StudentDTO student = this.studentService.getById(id);
 
-            Student studentSaved = this.studentService.save(dto.toEntity());
-            return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
+		return ResponseEntity.ok(student);
+	}
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+	@ApiOperation(value = "Cadastra um estudante")
+	@PostMapping
+	public ResponseEntity<Student> save(HttpServletRequest request, @RequestBody StudentDTO dto) {
+		if (dto == null) throw new ApiResponseException("Aluno é obrigatório");
 
-    @ApiOperation(value = "Atualiza um estudante")
-    @PutMapping
-    public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
-        try {
-            if(studentDTO == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            else if (studentDTO.getId() == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		dto.setTeacherId(teacherId);
 
-            boolean exists = this.studentService.existsById(studentDTO.getId());
-            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		Student studentSaved = this.studentService.save(dto.toEntity());
+		return ResponseEntity.status(HttpStatus.CREATED).body(studentSaved);
+	}
 
-            Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-            studentDTO.setTeacherId(teacherId);
+	@ApiOperation(value = "Atualiza um estudante")
+	@PutMapping
+	public ResponseEntity<Student> update(HttpServletRequest request, @RequestBody StudentDTO studentDTO) {
+		if (studentDTO == null || studentDTO.getId() == null) throw new ApiResponseException("Aluno é obrigatório");
 
-            Student studentUpdated = this.studentService.update(studentDTO.toEntity());
-            return ResponseEntity.ok(studentUpdated);
+		boolean exists = this.studentService.existsById(studentDTO.getId());
+		if (!exists) throw new StudentNotFoundException(studentDTO.getId());
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		studentDTO.setTeacherId(teacherId);
 
-    @ApiOperation(value = "Deleta um estudante")
-    @DeleteMapping("/{studentId}")
-    public ResponseEntity<Student> delete(@PathVariable Long studentId) {
-        try {
-            boolean exists = this.studentService.existsById(studentId);
-            if (!exists) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		Student studentUpdated = this.studentService.update(studentDTO.toEntity());
+		return ResponseEntity.ok(studentUpdated);
+	}
 
-            this.studentService.deleteById(studentId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+	@ApiOperation(value = "Deleta um estudante")
+	@DeleteMapping("/{studentId}")
+	public ResponseEntity<Student> delete(@PathVariable Long studentId) {
+		if (studentId == null) throw new ApiResponseException("Aluno é obrigatório");
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+		boolean exists = this.studentService.existsById(studentId);
+		if (!exists) throw new StudentNotFoundException(studentId);
+
+		this.studentService.deleteById(studentId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+	}
 }

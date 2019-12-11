@@ -16,12 +16,18 @@ public class ClassDTO {
 
 	private String description;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate creationDate;
 
 	private Set<StudentDTO> students;
 
+	private Set<ExamDTO> examDTOS;
+
 	private Long teacherId;
+
+	private Long classId;
+
+	private String className;
 
 	public Class toEntity() {
 		Class c = new Class();
