@@ -34,7 +34,6 @@ public @Data class Exam {
 
 	@Min(1)
 	@Max(4)
-	@NotBlank(message = "Bimestre deve ser informado.")
 	private int periodYear;
 
 	private boolean recExam;
