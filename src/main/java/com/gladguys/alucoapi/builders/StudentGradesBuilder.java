@@ -17,30 +17,27 @@ public class StudentGradesBuilder {
 
 		sg.setExamsPeriodOne(examGradeDTOS.parallelStream()
 				.filter(exam -> exam.getPeriodYear() == 1)
-				.map(ExamGradeDTO::buildForGradesBoard)
 				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
 				.collect(Collectors.toList()));
 
 		sg.setExamsPeriodTwo(examGradeDTOS.parallelStream()
 				.filter(exam -> exam.getPeriodYear() == 2)
-				.map(ExamGradeDTO::buildForGradesBoard)
 				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
 				.collect(Collectors.toList()));
 
 		sg.setExamsPeriodThree(examGradeDTOS.parallelStream()
 				.filter(exam -> exam.getPeriodYear() == 3)
-				.map(ExamGradeDTO::buildForGradesBoard)
 				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
 				.collect(Collectors.toList()));
 
 		sg.setExamsPeriodFour(examGradeDTOS.parallelStream()
 				.filter(exam -> exam.getPeriodYear() == 4)
-				.map(ExamGradeDTO::buildForGradesBoard)
 				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
 				.collect(Collectors.toList()));
 
+		Double averagePeriodOne = 0.0;
 		if (sg.getExamsPeriodOne().size() > 0) {
-			Double averagePeriodOne = 0.0;
+
 			List<ExamGradeDTO> regularExams = sg.getExamsPeriodOne()
 					.stream()
 					.filter(e -> !e.isRecExam())
@@ -58,12 +55,11 @@ public class StudentGradesBuilder {
 
 				averagePeriodOne = (averagePeriodOne + gradeRec) / 2;
 			}
-
-			sg.setAveragePeriodOne(averagePeriodOne);
 		}
+		sg.setAveragePeriodOne(averagePeriodOne);
 
+		Double averagePeriodTwo = 0.0;
 		if (sg.getExamsPeriodTwo().size() > 0) {
-			Double averagePeriodTwo = 0.0;
 			List<ExamGradeDTO> regularExams = sg.getExamsPeriodTwo()
 					.stream()
 					.filter(e -> !e.isRecExam())
@@ -81,12 +77,11 @@ public class StudentGradesBuilder {
 
 				averagePeriodTwo = (averagePeriodTwo + gradeRec) / 2;
 			}
-
-			sg.setAveragePeriodTwo(averagePeriodTwo);
 		}
+		sg.setAveragePeriodTwo(averagePeriodTwo);
 
+		Double averagePeriodThree = 0.0;
 		if (sg.getExamsPeriodThree().size() > 0) {
-			Double averagePeriodThree = 0.0;
 			List<ExamGradeDTO> regularExams = sg.getExamsPeriodThree()
 					.stream()
 					.filter(e -> !e.isRecExam())
@@ -104,12 +99,11 @@ public class StudentGradesBuilder {
 
 				averagePeriodThree = (averagePeriodThree + gradeRec) / 2;
 			}
-
-			sg.setAveragePeriodThree(averagePeriodThree);
 		}
+		sg.setAveragePeriodThree(averagePeriodThree);
 
+		Double averagePeriodFour = 0.0;
 		if (sg.getExamsPeriodFour().size() > 0) {
-			Double averagePeriodFour = 0.0;
 			List<ExamGradeDTO> regularExams = sg.getExamsPeriodFour()
 					.stream()
 					.filter(e -> !e.isRecExam())
@@ -127,9 +121,8 @@ public class StudentGradesBuilder {
 
 				averagePeriodFour = (averagePeriodFour + gradeRec) / 2;
 			}
-
-			sg.setAveragePeriodFour(averagePeriodFour);
 		}
+		sg.setAveragePeriodFour(averagePeriodFour);
 
 		sg.setAverage(
 				(sg.getAveragePeriodOne() + sg.getAveragePeriodTwo() + sg.getAveragePeriodThree() + sg.getAveragePeriodFour()) / 4);
