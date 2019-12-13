@@ -69,4 +69,10 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 	public void deleteByClassId(Long id) {
 		this.repository.deleteByClassId(id);
 	}
+
+	@Override
+	public List<ExamGradeDTO> getGradesByStudentId(Long classId, Long studentId) {
+
+		return this.repository.getGradesByStudentId(classId,studentId);
+	}
 }

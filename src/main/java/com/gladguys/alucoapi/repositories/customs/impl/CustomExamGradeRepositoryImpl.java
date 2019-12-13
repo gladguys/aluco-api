@@ -47,8 +47,23 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" DELETE FROM exam_grade eg ");
 		sql.append("WHERE eg.exam_id IN (SELECT id FROM exam e WHERE e.class_id = ?); ");
-		sql.append(" DELETE FROM exam e WHERE e.class_id = " + id );
+		sql.append(" DELETE FROM exam e WHERE e.class_id = ").append(id);
 
-		this.jdbcTemplate.update(sql.toString(), new Object[]{id});
+		this.jdbcTemplate.update(sql.toString(), id);
+	}
+
+	@Override
+	public List<ExamGradeDTO> getGradesByStudentId(Long classId, Long studentId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, ");
+		sql.append(" e.name as examName, e.exam_date as examDate, e.rec_exam as recExam, e.period_year as periodYear,");
+		sql.append(" eg.grade as grade FROM exam_grade eg ");
+		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
+		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
+		sql.append(" WHERE e.class_id = ? AND s.id = ? ");
+
+		return jdbcTemplate.query(sql.toString(),
+				new Object[]{classId, studentId},
+				new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
 }
