@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
@@ -29,6 +31,12 @@ public @Data class Exam {
 
 	@NotBlank(message = "Descrição deve ser informada.")
 	private String description;
+
+	@Min(1)
+	@Max(4)
+	private int periodYear;
+
+	private boolean recExam;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate creationDate;
@@ -51,6 +59,8 @@ public @Data class Exam {
 		examDTO.setCreationDate(creationDate);
 		examDTO.setExamDate(examDate);
 		examDTO.setWeight(weight);
+		examDTO.setRecExam(recExam);
+		examDTO.setPeriodYear(periodYear);
 
 		if(classExam != null) {
 			examDTO.setClassId(classExam.getId());
