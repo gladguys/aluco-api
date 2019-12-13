@@ -104,7 +104,7 @@ public class StudentController {
 	@GetMapping("/{id}/grades")
 	public ResponseEntity<List<ExamGradeDTO>> getAllExamGradesFromStudent(HttpServletRequest request,
 																  @PathVariable("id") Long studentId,
-																  @RequestParam("classId") Long classId) {
+																  @RequestParam(required = false) Long classId) {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		if (teacherId == null) throw new ApiResponseException("Não encontrado identificacao do professor na requisição");
 
