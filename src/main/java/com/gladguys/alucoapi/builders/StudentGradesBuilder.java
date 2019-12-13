@@ -7,6 +7,7 @@ import com.gladguys.alucoapi.helpers.GradeHelper;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StudentGradesBuilder {
@@ -15,118 +16,53 @@ public class StudentGradesBuilder {
 		StudentGrades sg = new StudentGrades();
 		sg.setStudentName(examGradeDTOS.get(0).getStudentName());
 
-		sg.setExamsPeriodOne(examGradeDTOS.parallelStream()
-				.filter(exam -> exam.getPeriodYear() == 1)
-				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
-				.collect(Collectors.toList()));
+		sg.setExamsPeriodOne(filterExamsByPeriod(examGradeDTOS, 1));
+		sg.setExamsPeriodTwo(filterExamsByPeriod(examGradeDTOS, 2));
+		sg.setExamsPeriodThree(filterExamsByPeriod(examGradeDTOS, 3));
+		sg.setExamsPeriodFour(filterExamsByPeriod(examGradeDTOS, 4));
 
-		sg.setExamsPeriodTwo(examGradeDTOS.parallelStream()
-				.filter(exam -> exam.getPeriodYear() == 2)
-				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
-				.collect(Collectors.toList()));
-
-		sg.setExamsPeriodThree(examGradeDTOS.parallelStream()
-				.filter(exam -> exam.getPeriodYear() == 3)
-				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
-				.collect(Collectors.toList()));
-
-		sg.setExamsPeriodFour(examGradeDTOS.parallelStream()
-				.filter(exam -> exam.getPeriodYear() == 4)
-				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
-				.collect(Collectors.toList()));
-
-		Double averagePeriodOne = 0.0;
-		if (sg.getExamsPeriodOne().size() > 0) {
-
-			List<ExamGradeDTO> regularExams = sg.getExamsPeriodOne()
-					.stream()
-					.filter(e -> !e.isRecExam())
-					.collect(Collectors.toList());
-
-			averagePeriodOne = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
-					.collect(Collectors.toList()));
-
-			if (sg.getExamsPeriodOne().stream().anyMatch(ExamGradeDTO::isRecExam)) {
-				Double gradeRec = sg.getExamsPeriodOne()
-						.stream()
-						.filter(ExamGradeDTO::isRecExam)
-						.findFirst().orElse(null)
-						.getGrade();
-
-				averagePeriodOne = (averagePeriodOne + gradeRec) / 2;
-			}
-		}
-		sg.setAveragePeriodOne(averagePeriodOne);
-
-		Double averagePeriodTwo = 0.0;
-		if (sg.getExamsPeriodTwo().size() > 0) {
-			List<ExamGradeDTO> regularExams = sg.getExamsPeriodTwo()
-					.stream()
-					.filter(e -> !e.isRecExam())
-					.collect(Collectors.toList());
-
-			averagePeriodTwo = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
-					.collect(Collectors.toList()));
-
-			if (sg.getExamsPeriodTwo().stream().anyMatch(ExamGradeDTO::isRecExam)) {
-				Double gradeRec = sg.getExamsPeriodTwo()
-						.stream()
-						.filter(ExamGradeDTO::isRecExam)
-						.findFirst().orElse(null)
-						.getGrade();
-
-				averagePeriodTwo = (averagePeriodTwo + gradeRec) / 2;
-			}
-		}
-		sg.setAveragePeriodTwo(averagePeriodTwo);
-
-		Double averagePeriodThree = 0.0;
-		if (sg.getExamsPeriodThree().size() > 0) {
-			List<ExamGradeDTO> regularExams = sg.getExamsPeriodThree()
-					.stream()
-					.filter(e -> !e.isRecExam())
-					.collect(Collectors.toList());
-
-			averagePeriodThree = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
-					.collect(Collectors.toList()));
-
-			if (sg.getExamsPeriodThree().stream().anyMatch(ExamGradeDTO::isRecExam)) {
-				Double gradeRec = sg.getExamsPeriodThree()
-						.stream()
-						.filter(ExamGradeDTO::isRecExam)
-						.findFirst().orElse(null)
-						.getGrade();
-
-				averagePeriodThree = (averagePeriodThree + gradeRec) / 2;
-			}
-		}
-		sg.setAveragePeriodThree(averagePeriodThree);
-
-		Double averagePeriodFour = 0.0;
-		if (sg.getExamsPeriodFour().size() > 0) {
-			List<ExamGradeDTO> regularExams = sg.getExamsPeriodFour()
-					.stream()
-					.filter(e -> !e.isRecExam())
-					.collect(Collectors.toList());
-
-			averagePeriodFour = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
-					.collect(Collectors.toList()));
-
-			if (sg.getExamsPeriodFour().stream().anyMatch(ExamGradeDTO::isRecExam)) {
-				Double gradeRec = sg.getExamsPeriodFour()
-						.stream()
-						.filter(ExamGradeDTO::isRecExam)
-						.findFirst().orElse(null)
-						.getGrade();
-
-				averagePeriodFour = (averagePeriodFour + gradeRec) / 2;
-			}
-		}
-		sg.setAveragePeriodFour(averagePeriodFour);
+		sg.setAveragePeriodOne(calculateAveragePerPeriod(sg, sg.getExamsPeriodOne()));
+		sg.setAveragePeriodTwo(calculateAveragePerPeriod(sg, sg.getExamsPeriodTwo()));
+		sg.setAveragePeriodThree(calculateAveragePerPeriod(sg, sg.getExamsPeriodThree()));
+		sg.setAveragePeriodFour(calculateAveragePerPeriod(sg, sg.getExamsPeriodFour()));
 
 		sg.setAverage(
-				(sg.getAveragePeriodOne() + sg.getAveragePeriodTwo() + sg.getAveragePeriodThree() + sg.getAveragePeriodFour()) / 4);
+				(sg.getAveragePeriodOne()
+						+ sg.getAveragePeriodTwo()
+						+ sg.getAveragePeriodThree()
+						+ sg.getAveragePeriodFour()) / 4);
 
 		return sg;
+	}
+
+	private static Double calculateAveragePerPeriod(StudentGrades sg, List<ExamGradeDTO> examsFromPeriod) {
+		Double average = 0.0;
+		if (examsFromPeriod.size() > 0) {
+			List<ExamGradeDTO> regularExams = examsFromPeriod
+					.stream()
+					.filter(e -> !e.isRecExam())
+					.collect(Collectors.toList());
+
+			average = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
+					.collect(Collectors.toList()));
+
+			if (examsFromPeriod.stream().anyMatch(ExamGradeDTO::isRecExam) && average < 8.0) {
+				Double gradeRec = Objects.requireNonNull(examsFromPeriod
+						.stream()
+						.filter(ExamGradeDTO::isRecExam)
+						.findFirst().orElse(null))
+						.getGrade();
+
+				average = (average + gradeRec) / 2;
+			}
+		}
+		return average;
+	}
+
+	private static List<ExamGradeDTO> filterExamsByPeriod(List<ExamGradeDTO> examGradeDTOS, int period) {
+		return examGradeDTOS.parallelStream()
+				.filter(exam -> exam.getPeriodYear() == period)
+				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
+				.collect(Collectors.toList());
 	}
 }
