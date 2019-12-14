@@ -5,8 +5,8 @@ import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.helpers.GradeHelper;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -16,10 +16,12 @@ public class StudentGradesBuilder {
 		StudentGrades sg = new StudentGrades();
 		sg.setStudentName(examGradeDTOS.get(0).getStudentName());
 
-		sg.setExamsPeriodOne(filterExamsByPeriod(examGradeDTOS, 1));
-		sg.setExamsPeriodTwo(filterExamsByPeriod(examGradeDTOS, 2));
-		sg.setExamsPeriodThree(filterExamsByPeriod(examGradeDTOS, 3));
-		sg.setExamsPeriodFour(filterExamsByPeriod(examGradeDTOS, 4));
+		Map<Integer, List<ExamGradeDTO>> periodsMap = examGradeDTOS.stream().collect(Collectors.groupingBy(ExamGradeDTO::getPeriodYear));
+
+		sg.setExamsPeriodOne(periodsMap.get(1));
+		sg.setExamsPeriodTwo(periodsMap.get(2));
+		sg.setExamsPeriodThree(periodsMap.get(3));
+		sg.setExamsPeriodFour(periodsMap.get(4));
 
 		sg.setAveragePeriodOne(calculateAveragePerPeriod(sg, sg.getExamsPeriodOne()));
 		sg.setAveragePeriodTwo(calculateAveragePerPeriod(sg, sg.getExamsPeriodTwo()));
@@ -55,12 +57,5 @@ public class StudentGradesBuilder {
 			}
 		}
 		return average;
-	}
-
-	private static List<ExamGradeDTO> filterExamsByPeriod(List<ExamGradeDTO> examGradeDTOS, int period) {
-		return examGradeDTOS.parallelStream()
-				.filter(exam -> exam.getPeriodYear() == period)
-				.sorted(Comparator.comparing(ExamGradeDTO::getExamDate, Comparator.nullsLast(Comparator.reverseOrder())))
-				.collect(Collectors.toList());
 	}
 }
