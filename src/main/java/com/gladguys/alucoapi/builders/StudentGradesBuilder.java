@@ -46,13 +46,11 @@ public class StudentGradesBuilder {
 			average = GradeHelper.getAverageGrade(regularExams.stream().filter(e -> !e.getExamDate().isAfter(LocalDate.now()))
 					.collect(Collectors.toList()));
 
-			if (examsFromPeriod.stream().anyMatch(ExamGradeDTO::isRecExam) && average < 8.0) {
-				Double gradeRec = Objects.requireNonNull(examsFromPeriod
-						.stream()
-						.filter(ExamGradeDTO::isRecExam)
-						.findFirst().orElse(null))
-						.getGrade();
+			ExamGradeDTO recExam = examsFromPeriod.stream().filter(ExamGradeDTO::isRecExam).findFirst().orElse(null);
 
+			if (recExam != null && average < 8.0) {
+				Double gradeRec = Objects.requireNonNull(recExam)
+						.getGrade();
 				average = (average + gradeRec) / 2;
 			}
 		}
