@@ -37,10 +37,10 @@ public class StudentClassObservationController {
 
     @ApiOperation(value = "Retorna as observações realizadas pelo professor em sala de aula de um estudante especifico a partir do seu id")
     @GetMapping("{studentId}")
-    public ResponseEntity<List<StudentClassObservation>> get(HttpServletRequest request, @PathVariable("studentId") Long studentId) {
+    public ResponseEntity<List<StudentClassObservationDTO>> get(HttpServletRequest request, @PathVariable("studentId") Long studentId) {
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-        List<StudentClassObservation> studentClassObservationList = this.studentClassObservationService.getStudentObservation(studentId);
+        List<StudentClassObservationDTO> studentClassObservationDTOList = this.studentClassObservationService.getStudentObservation(studentId);
 
-        return ResponseEntity.ok(studentClassObservationList);
+        return ResponseEntity.ok(studentClassObservationDTOList);
     }
 }
