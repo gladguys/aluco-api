@@ -62,6 +62,8 @@ public class StudentGradesBuilder {
 						.getGrade();
 				average = (average + gradeRec) / 2;
 			}
+		} else {
+			average = null;
 		}
 		return average;
 	}
