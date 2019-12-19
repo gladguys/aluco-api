@@ -28,7 +28,7 @@ public class StudentClassObservationController {
 
     @ApiOperation(value = "Salva as observações realizadas pelo professor em sala de aula de um determinado estudante")
     @PostMapping
-    public ResponseEntity<StudentClassObservation> save(HttpServletRequest request, StudentClassObservationDTO studentClassObservationDTO) {
+    public ResponseEntity<StudentClassObservation> save(HttpServletRequest request, @RequestBody StudentClassObservationDTO studentClassObservationDTO) {
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
         StudentClassObservation studentClassObservation = this.studentClassObservationService.save(studentClassObservationDTO.toEntity());
 
