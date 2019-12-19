@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.builders;
 
+import com.gladguys.alucoapi.entities.PeriodContent;
 import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.helpers.GradeHelper;
@@ -18,28 +19,34 @@ public class StudentGradesBuilder {
 
 		Map<Integer, List<ExamGradeDTO>> periodsMap = examGradeDTOS.stream().collect(Collectors.groupingBy(ExamGradeDTO::getPeriodYear));
 
-		sg.setExamsPeriodOne(periodsMap.get(1));
-		sg.setExamsPeriodTwo(periodsMap.get(2));
-		sg.setExamsPeriodThree(periodsMap.get(3));
-		sg.setExamsPeriodFour(periodsMap.get(4));
+		PeriodContent periodFirst = new PeriodContent();
+		periodFirst.setExamsPeriod(periodsMap.get(1));
+		sg.setPeriodOne(periodFirst);
+		periodFirst.setAverage(calculateAveragePerPeriod(sg, sg.getExamsPeriod(1)));
 
-		sg.setAveragePeriodOne(calculateAveragePerPeriod(sg, sg.getExamsPeriodOne()));
-		sg.setAveragePeriodTwo(calculateAveragePerPeriod(sg, sg.getExamsPeriodTwo()));
-		sg.setAveragePeriodThree(calculateAveragePerPeriod(sg, sg.getExamsPeriodThree()));
-		sg.setAveragePeriodFour(calculateAveragePerPeriod(sg, sg.getExamsPeriodFour()));
+		PeriodContent periodTwo = new PeriodContent();
+		periodTwo.setExamsPeriod(periodsMap.get(2));
+		sg.setPeriodTwo(periodTwo);
+		periodTwo.setAverage(calculateAveragePerPeriod(sg, sg.getExamsPeriod(2)));
 
-		sg.setAverage(
-				(sg.getAveragePeriodOne()
-						+ sg.getAveragePeriodTwo()
-						+ sg.getAveragePeriodThree()
-						+ sg.getAveragePeriodFour()) / 4);
+		PeriodContent periodThree = new PeriodContent();
+		periodThree.setExamsPeriod(periodsMap.get(3));
+		sg.setPeriodThree(periodThree);
+		periodThree.setAverage(calculateAveragePerPeriod(sg, sg.getExamsPeriod(3)));
+
+		PeriodContent periodFour = new PeriodContent();
+		periodFour.setExamsPeriod(periodsMap.get(4));
+		sg.setPeriodFour(periodFour);
+		periodFour.setAverage(calculateAveragePerPeriod(sg, sg.getExamsPeriod(4)));
+
+		sg.calculateFinalAverage();
 
 		return sg;
 	}
 
 	private static Double calculateAveragePerPeriod(StudentGrades sg, List<ExamGradeDTO> examsFromPeriod) {
 		Double average = 0.0;
-		if (examsFromPeriod.size() > 0) {
+		if (examsFromPeriod != null && examsFromPeriod.size() > 0) {
 			List<ExamGradeDTO> regularExams = examsFromPeriod
 					.stream()
 					.filter(e -> !e.isRecExam())

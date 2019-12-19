@@ -8,16 +8,35 @@ import java.util.List;
 @Data
 public class StudentGrades {
 
-	private List<ExamGradeDTO> examsPeriodOne;
-	private List<ExamGradeDTO> examsPeriodTwo;
-	private List<ExamGradeDTO> examsPeriodThree;
-	private List<ExamGradeDTO> examsPeriodFour;
+	private PeriodContent periodOne;
+	private PeriodContent periodTwo;
+	private PeriodContent periodThree;
+	private PeriodContent periodFour;
 	private String status;
 	private String studentName;
 	private Double average;
-	private Double averagePeriodOne;
-	private Double averagePeriodTwo;
-	private Double averagePeriodThree;
-	private Double averagePeriodFour;
+
+	public List<ExamGradeDTO> getExamsPeriod(int period) {
+		switch (period) {
+			case 1:
+				return this.periodOne.getExamsPeriod();
+			case 2:
+				return this.periodTwo.getExamsPeriod();
+			case 3:
+				return this.periodThree.getExamsPeriod();
+			case 4:
+				return this.periodFour.getExamsPeriod();
+			default:
+				return null;
+		}
+	}
+
+	public void calculateFinalAverage() {
+		this.average =
+				(this.periodOne.getAverage()
+				+ this.periodTwo.getAverage()
+				+ this.periodThree.getAverage()
+				+ this.periodFour.getAverage())/4;
+	}
 }
 
