@@ -54,7 +54,7 @@ public class CallController {
 
 	@ApiOperation(value = "Atualiza uma chamada")
 	@PutMapping
-	public ResponseEntity<CallDTO> update(CallDTO callDTO) throws Exception {
+	public ResponseEntity<CallDTO> update(@RequestBody CallDTO callDTO) throws Exception {
 		return ResponseEntity.ok(this.callService.save(callDTO));
 	}
 
