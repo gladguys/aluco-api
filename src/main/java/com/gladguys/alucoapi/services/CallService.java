@@ -13,7 +13,6 @@ import java.util.Set;
 public interface CallService {
 
 	Call getById(Long id);
-	Call update(Call call);
 	List<CallDTO> getAllByClassAndDate(Long classId, LocalDate date);
 	Set<Call> getAllByStudent(Long studentId);
 	CallDTO save(CallDTO callDTO) throws Exception;

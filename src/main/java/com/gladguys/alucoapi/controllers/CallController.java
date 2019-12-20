@@ -54,10 +54,8 @@ public class CallController {
 
 	@ApiOperation(value = "Atualiza uma chamada")
 	@PutMapping
-	public ResponseEntity<Call> update(Call call) {
-		Call callSaved = this.callService.update(call);
-
-		return ResponseEntity.ok(callSaved);
+	public ResponseEntity<CallDTO> update(CallDTO callDTO) throws Exception {
+		return ResponseEntity.ok(this.callService.save(callDTO));
 	}
 
 	@ApiOperation(value = "Retorna as chamadas de um estudante específico")

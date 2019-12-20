@@ -1,14 +1,12 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
 import com.gladguys.alucoapi.entities.dto.CallDTO;
-import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.repositories.customs.CustomCallRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository

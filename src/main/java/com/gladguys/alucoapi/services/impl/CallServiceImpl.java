@@ -25,12 +25,6 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public Call update(Call call) {
-
-    	return this.callRepository.save(call);
-    }
-
-    @Override
     public List<CallDTO> getAllByClassAndDate(Long classId, LocalDate date) {
     	return this.callRepository.getCallsByClassIdAndDate(classId, date);
     }
