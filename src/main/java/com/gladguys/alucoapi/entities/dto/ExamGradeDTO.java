@@ -18,6 +18,8 @@ public class ExamGradeDTO {
 	private Long studentId;
 	private String studentName;
 	private Double grade;
+	private int periodYear;
+	private boolean recExam;
 
 	public ExamGradeDTO() {}
 
