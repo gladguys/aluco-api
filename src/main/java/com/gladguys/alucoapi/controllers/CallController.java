@@ -60,10 +60,9 @@ public class CallController {
 
 	@ApiOperation(value = "Retorna as chamadas de um estudante específico")
 	@GetMapping("/student/{studentId}")
-	public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
-		Set<Call> calls = this.callService.getAllByStudent(studentId);
-
-		return ResponseEntity.ok(calls);
+	public ResponseEntity<List<CallDTO>> callsForStudent(@PathVariable("studentId") Long studentId,
+													 @RequestParam("classId") Long classId) {
+		return ResponseEntity.ok(this.callService.getAllByStudent(studentId, classId));
 	}
 
 }

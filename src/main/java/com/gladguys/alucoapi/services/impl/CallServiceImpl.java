@@ -2,7 +2,6 @@ package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Call;
 import com.gladguys.alucoapi.entities.dto.CallDTO;
-import com.gladguys.alucoapi.exception.ApiException;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.CallRepository;
 import com.gladguys.alucoapi.services.CallService;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CallServiceImpl implements CallService {
@@ -33,12 +31,11 @@ public class CallServiceImpl implements CallService {
 	}
 
 	@Override
-	public Set<Call> getAllByStudent(Long studentId) {
+	public List<CallDTO> getAllByStudent(Long studentId, Long classId) {
 		if (studentId != null) {
-			return this.callRepository.getAllByStudentId(studentId);
+			return this.callRepository.getAllByStudentIdAndClassId(studentId, classId);
 		}
-
-		return null;
+		throw new ApiResponseException("Studante enviado sem id!");
 	}
 
 	public CallDTO save(CallDTO dto) throws Exception {

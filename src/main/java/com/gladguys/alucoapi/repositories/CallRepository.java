@@ -11,7 +11,4 @@ import java.util.Date;
 import java.util.Set;
 
 @Repository
-public interface CallRepository extends JpaRepository<Call, Long>, CustomCallRepository {
-
-    Set<Call> getAllByStudentId(Long studentId);
-}
+public interface CallRepository extends JpaRepository<Call, Long>, CustomCallRepository {}
