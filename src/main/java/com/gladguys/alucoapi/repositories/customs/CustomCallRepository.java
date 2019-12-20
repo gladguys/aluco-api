@@ -9,4 +9,5 @@ import java.util.List;
 public interface CustomCallRepository {
 
 	List<CallDTO> getCallsByClassIdAndDate(Long teacherId, LocalDate date);
+	CallDTO getById(Long id);
 }

@@ -33,4 +33,15 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
+
+	@Override
+	public CallDTO getById(Long id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT c.id, c.student_id as studentId, c.class_id as classId, c.date, status ");
+		sql.append("FROM call c WHERE c.id = ?");
+
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(CallDTO.class));
+	}
+
+
 }
