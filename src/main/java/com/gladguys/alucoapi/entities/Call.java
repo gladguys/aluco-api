@@ -39,7 +39,7 @@ public class Call {
 		CallDTO callDTO = new CallDTO();
 		callDTO.setId(id);
 		callDTO.setDate(date);
-		callDTO.setStatusEnum(status);
+		callDTO.setStatus(status);
 		if (student != null)
 			callDTO.setStudentId(student.getId());
 		if (classCall != null)

@@ -15,7 +15,7 @@ public class CallDTO {
 	private Long id;
 	private Long studentId;
 	private Long classId;
-	private StatusEnum statusEnum;
+	private StatusEnum status;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate date;
 
@@ -23,7 +23,7 @@ public class CallDTO {
 		Call call = new Call();
 		call.setId(id);
 		call.setDate(date);
-		call.setStatus(statusEnum);
+		call.setStatus(status);
 
 		Student student = new Student();
 		student.setId(studentId);
