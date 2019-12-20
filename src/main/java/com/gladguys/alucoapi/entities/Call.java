@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gladguys.alucoapi.entities.dto.CallDTO;
 import com.gladguys.alucoapi.entities.enums.StatusEnum;
 import lombok.Data;
 
@@ -34,4 +35,16 @@ public class Call {
 
 	private StatusEnum status;
 
+	public CallDTO toDTO() {
+		CallDTO callDTO = new CallDTO();
+		callDTO.setId(id);
+		callDTO.setDate(date);
+		callDTO.setStatusEnum(status);
+		if (student != null)
+			callDTO.setStudentId(student.getId());
+		if (classCall != null)
+			callDTO.setClassId(classCall.getId());
+
+		return callDTO;
+	}
 }
