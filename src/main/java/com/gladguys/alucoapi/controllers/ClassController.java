@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.controllers;
 import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
@@ -142,5 +143,13 @@ public class ClassController {
 
 	private void validateClassData(ClassDTO dto) {
 		if (dto == null) throw new ApiResponseException("Turma nao informada");
+	}
+
+	@ApiOperation("Retorna uma lista de numero de faltas por aluno da turma")
+	@GetMapping("/{id}/absences")
+	public ResponseEntity<StudentAbsenceDTO> getAbsences(HttpServletRequest request) {
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+
+
 	}
 }
