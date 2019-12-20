@@ -22,7 +22,8 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT s.id, s.name FROM student s ");
 		sql.append("INNER JOIN student_class sc ON sc.student_id = s.id ");
-		sql.append("WHERE sc.class_id = ?");
+		sql.append("WHERE sc.class_id = ? ");
+		sql.append("ORDER BY (s.name) ");
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(StudentDTO.class));
 	}
