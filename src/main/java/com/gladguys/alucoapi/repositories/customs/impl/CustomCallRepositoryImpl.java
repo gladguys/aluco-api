@@ -31,7 +31,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 			sql.append(" AND c.class_id = ").append(classId);
 
 		if ( date != null)
-			sql.append(" AND c.date = ").append(date);
+			sql.append(" AND c.date = '" +date + "' ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}

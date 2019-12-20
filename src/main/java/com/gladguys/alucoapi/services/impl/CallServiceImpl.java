@@ -1,11 +1,13 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.Call;
+import com.gladguys.alucoapi.entities.dto.CallDTO;
 import com.gladguys.alucoapi.repositories.CallRepository;
 import com.gladguys.alucoapi.services.CallService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,16 +26,13 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public Call update(Call call) {
-        return this.callRepository.save(call);
+
+    	return this.callRepository.save(call);
     }
 
     @Override
-    public Set<Call> getAllByClassAndDate(Long classId, Date date) {
-    	if (date == null) {
-			date = new Date();
-    	}
-
-    	return this.callRepository.findAllByClassCallIdAndDate(classId, date);
+    public List<CallDTO> getAllByClassAndDate(Long classId, LocalDate date) {
+    	return this.callRepository.getCallsByClassIdAndDate(classId, date);
     }
 
     @Override
@@ -45,11 +44,8 @@ public class CallServiceImpl implements CallService {
         return null;
     }
 
-    @Override
-    public void saveAll(Set<Call> calls) throws Exception {
-    	if(calls != null) {
-			this.callRepository.saveAll(calls);
-		}
-    	throw new Exception();
+    public CallDTO save(CallDTO dto) throws Exception {
+
+    	return this.callRepository.save(dto.toEntity()).toDTO();
     }
 }
