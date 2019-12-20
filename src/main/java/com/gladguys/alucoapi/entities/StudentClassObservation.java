@@ -23,5 +23,7 @@ public class StudentClassObservation {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
+
+    @Column(columnDefinition = "text")
     private String observation;
 }
