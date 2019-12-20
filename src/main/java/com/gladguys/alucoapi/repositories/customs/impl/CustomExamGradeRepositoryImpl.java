@@ -60,10 +60,13 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		sql.append(" eg.grade as grade FROM exam_grade eg ");
 		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
 		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
-		sql.append(" WHERE e.class_id = ? AND s.id = ? ");
+		sql.append(" WHERE s.id = ? ");
+		if (classId != null) {
+			sql.append(" AND e.class_id  = ").append(classId);
+		}
 
 		return jdbcTemplate.query(sql.toString(),
-				new Object[]{classId, studentId},
+				new Object[]{studentId},
 				new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
 }
