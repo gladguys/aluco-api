@@ -101,6 +101,6 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public List<StudentAbsenceDTO> getAbsences(Long classId) {
-
+		return this.classRepository.getAbsences(classId);
 	}
 }

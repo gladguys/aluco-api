@@ -147,9 +147,8 @@ public class ClassController {
 
 	@ApiOperation("Retorna uma lista de numero de faltas por aluno da turma")
 	@GetMapping("/{id}/absences")
-	public ResponseEntity<StudentAbsenceDTO> getAbsences(HttpServletRequest request) {
+	public ResponseEntity<List<StudentAbsenceDTO>> getAbsences(HttpServletRequest request, @PathVariable("id") Long id) {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-
-
+		return ResponseEntity.ok(this.classService.getAbsences(id));
 	}
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 public class StudentAbsenceDTO {
 
 	private int quantity;
-	private Long student_id;
-	private Long class_id;
+	private Long studentId;
+	private Long classId;
 
 }
