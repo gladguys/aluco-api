@@ -1,4 +1,9 @@
 package com.gladguys.alucoapi.repositories;
 
-public class ConfigClassRepository {
+import com.gladguys.alucoapi.entities.ConfigClass;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ConfigClassRepository extends JpaRepository<ConfigClass, Long> {
+
+	ConfigClass getByClassId(Long classId);
 }

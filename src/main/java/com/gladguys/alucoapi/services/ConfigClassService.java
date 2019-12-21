@@ -1,4 +1,10 @@
 package com.gladguys.alucoapi.services;
 
-public class ConfigClassService {
+import com.gladguys.alucoapi.entities.ConfigClass;
+import com.gladguys.alucoapi.entities.dto.ConfigClassDTO;
+
+public interface ConfigClassService {
+
+	ConfigClass saveConfigClass(ConfigClassDTO configClassDTO);
+	ConfigClass getConfigByClassId(Long classId);
 }
