@@ -23,7 +23,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName, c.class_id as classId, c.status, c.date ")
-				.append(" INNER JOIN students s ON s.id = c.id ")
+				.append(" INNER JOIN student s ON s.id = c.id ")
 				.append(" FROM call c WHERE 1=1 ");
 
 		if (classId != null)
@@ -39,7 +39,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 	public CallDTO getById(Long id) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT c.id, c.student_id as studentId, s.name as studentName, c.class_id as classId, c.date, status ");
-		sql.append("INNER JOIN students s ON s.id = c.id ");
+		sql.append("INNER JOIN student s ON s.id = c.id ");
 		sql.append("FROM call c WHERE c.id = ?");
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(CallDTO.class));
@@ -50,7 +50,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName, c.class_id as classId, c.status, c.date ")
-				.append(" INNER JOIN students s ON s.id = c.id ")
+				.append(" INNER JOIN student s ON s.id = c.id ")
 				.append(" FROM call c WHERE 1=1 ");
 
 		if (classId != null)
