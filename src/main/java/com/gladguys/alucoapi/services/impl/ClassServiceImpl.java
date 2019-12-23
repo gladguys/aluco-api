@@ -4,6 +4,7 @@ import com.gladguys.alucoapi.entities.Class;
 import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
+import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
@@ -96,5 +97,10 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public boolean isClassFromTeacher(Long classId, Long teacherId) {
 		return this.classRepository.isClassFromTeacher(classId, teacherId);
+	}
+
+	@Override
+	public List<StudentAbsenceDTO> getAbsences(Long classId) {
+		return this.classRepository.getAbsences(classId);
 	}
 }

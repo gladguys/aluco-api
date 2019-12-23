@@ -1,6 +1,7 @@
 package com.gladguys.alucoapi.services;
 
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import org.springframework.stereotype.Component;
 
@@ -25,4 +26,6 @@ public interface ClassService {
 	void deleteStudentFromClass(Long studentId, Long classId);
 
 	boolean isClassFromTeacher(Long classId, Long teacherId);
+
+	List<StudentAbsenceDTO> getAbsences(Long classId);
 }
