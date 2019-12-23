@@ -33,7 +33,8 @@ public class CallController {
 
 	@ApiOperation(value = "Retorna as chamadas de um determinado dia e turma")
 	@GetMapping("/class/{classId}")
-	public ResponseEntity<List<CallDTO>> getAll(@PathVariable("classId") Long classId, @RequestParam("date") String dateStr) {
+	public ResponseEntity<List<CallDTO>> getAll(@PathVariable("classId") Long classId,
+												@RequestParam( required = false, value = "date") String dateStr) {
 		if (classId == null) throw new ApiResponseException("Turma é obrigatório");
 		LocalDate date = null;
 
@@ -60,10 +61,9 @@ public class CallController {
 
 	@ApiOperation(value = "Retorna as chamadas de um estudante específico")
 	@GetMapping("/student/{studentId}")
-	public ResponseEntity<Set<Call>> callsForStudent(@PathVariable("studentId") Long studentId) {
-		Set<Call> calls = this.callService.getAllByStudent(studentId);
-
-		return ResponseEntity.ok(calls);
+	public ResponseEntity<List<CallDTO>> callsForStudent(@PathVariable("studentId") Long studentId,
+													 @RequestParam("classId") Long classId) {
+		return ResponseEntity.ok(this.callService.getAllByStudent(studentId, classId));
 	}
 
 }

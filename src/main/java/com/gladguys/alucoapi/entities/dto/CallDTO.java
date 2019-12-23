@@ -14,6 +14,7 @@ public class CallDTO {
 
 	private Long id;
 	private Long studentId;
+	private String studentName;
 	private Long classId;
 	private StatusEnum status;
 	@JsonFormat(pattern = "dd/MM/yyyy")
