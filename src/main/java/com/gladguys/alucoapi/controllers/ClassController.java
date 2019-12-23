@@ -1,14 +1,17 @@
 package com.gladguys.alucoapi.controllers;
 
+import com.gladguys.alucoapi.entities.ConfigClass;
 import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ConfigClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ConfigClassService;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -32,11 +35,17 @@ import java.util.List;
 public class ClassController {
 
 	private ClassService classService;
+	private ConfigClassService configClassService;
 	private StudentService studentService;
 	private ExamGradeService examGradeService;
 	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService, StudentService studentService, ExamGradeService examGradeService, JwtTokenUtil jwtTokenUtil) {
+	public ClassController(ClassService classService,
+						   ConfigClassService configClassService,
+						   StudentService studentService,
+						   ExamGradeService examGradeService,
+						   JwtTokenUtil jwtTokenUtil) {
+		this.configClassService = configClassService;
 		this.examGradeService = examGradeService;
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
@@ -139,6 +148,24 @@ public class ClassController {
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
 		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
 		return ResponseEntity.ok(gradeBoardFromClass);
+	}
+
+	@ApiOperation("Salva configurações parâmetros da turma")
+	@PostMapping("/{id}/config")
+	public ResponseEntity<ConfigClass> setConfigClass(@PathVariable("id") Long id,
+													  @RequestBody ConfigClassDTO configClassDTO) {
+
+		configClassDTO.setClassId(id);
+		return ResponseEntity.ok(this.configClassService.saveConfigClass(configClassDTO));
+
+	}
+
+	@ApiOperation("Salva configurações parâmetros da turma")
+	@GetMapping("/{id}/config")
+	public ResponseEntity<ConfigClass> getConfigClass(@PathVariable("id") Long id) {
+
+		return ResponseEntity.ok(this.configClassService.getConfigByClassId(id));
+
 	}
 
 	private void validateClassData(ClassDTO dto) {

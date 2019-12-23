@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.services;
 
+import com.gladguys.alucoapi.entities.ConfigClass;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
@@ -28,4 +29,5 @@ public interface ClassService {
 	boolean isClassFromTeacher(Long classId, Long teacherId);
 
 	List<StudentAbsenceDTO> getAbsences(Long classId);
+
 }
