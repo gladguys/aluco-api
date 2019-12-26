@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
+@Table(name = "student_absences")
 public class StudentAbsenceDTO {
 
 	@Id
