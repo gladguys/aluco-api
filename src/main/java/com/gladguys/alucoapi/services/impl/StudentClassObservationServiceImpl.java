@@ -3,6 +3,8 @@ package com.gladguys.alucoapi.services.impl;
 import java.util.List;
 
 import com.gladguys.alucoapi.entities.dto.StudentClassObservationDTO;
+import com.gladguys.alucoapi.exception.notfound.StudentClassObservationNotFoundException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.gladguys.alucoapi.entities.StudentClassObservation;
@@ -16,6 +18,15 @@ public class StudentClassObservationServiceImpl implements StudentClassObservati
 
 	public StudentClassObservationServiceImpl(StudentClassObservationRepository studentClassObservationRepository) {
 		this.studentClassObservationRepository = studentClassObservationRepository;
+	}
+
+	@Override
+	public StudentClassObservation getById(Long id) {
+		try {
+			return this.studentClassObservationRepository.findById(id).orElse(null);
+		} catch (EmptyResultDataAccessException e) {
+			throw new StudentClassObservationNotFoundException(id);
+		}
 	}
 
 	@Override
