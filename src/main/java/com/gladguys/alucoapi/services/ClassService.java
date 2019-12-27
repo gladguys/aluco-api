@@ -28,6 +28,6 @@ public interface ClassService {
 
 	boolean isClassFromTeacher(Long classId, Long teacherId);
 
-	List<StudentAbsenceDTO> getAbsences(Long classId);
+	List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId);
 
 }
