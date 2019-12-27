@@ -60,11 +60,15 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	}
 
 	@Override
-	public List<StudentAbsenceDTO> getAbsences(Long classId) {
+	public List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT class_id as classId, student_id as studentId, nr_absences as quantity ");
 		sql.append("FROM student_absences WHERE class_id = ?");
+
+		if (studentId != null) {
+			sql.append("AND student_id = ").append(studentId);
+		}
 
 		return this.jdbcTemplate.query(
 				sql.toString(),

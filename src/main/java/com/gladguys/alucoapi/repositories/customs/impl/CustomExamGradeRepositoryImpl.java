@@ -29,7 +29,7 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
 
-	public List<ExamGradeDTO> getGradesBoard(Long classId) {
+	public List<ExamGradeDTO> getGradesBoard(Long classId, Long studentId) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, ");
@@ -38,6 +38,10 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
 		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
 		sql.append(" WHERE e.class_id = ? ");
+		if (studentId != null) {
+			sql.append(" AND s.id = ").append(studentId);
+		}
+
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}

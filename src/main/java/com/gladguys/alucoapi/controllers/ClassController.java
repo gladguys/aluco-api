@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -146,7 +147,7 @@ public class ClassController {
 	@ApiOperation("Retorna quadro de notas da turma")
 	@GetMapping("/{id}/grades")
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
-		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
+		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id, null);
 		return ResponseEntity.ok(gradeBoardFromClass);
 	}
 
@@ -174,8 +175,12 @@ public class ClassController {
 
 	@ApiOperation("Retorna uma lista de numero de faltas por aluno da turma")
 	@GetMapping("/{id}/absences")
-	public ResponseEntity<List<StudentAbsenceDTO>> getAbsences(HttpServletRequest request, @PathVariable("id") Long id) {
+	public ResponseEntity<List<StudentAbsenceDTO>> getAbsences(HttpServletRequest request,
+															   @PathVariable("id") Long id,
+															   @RequestParam(required = false,
+																	   value = "studentId") Long studentId) {
+
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
-		return ResponseEntity.ok(this.classService.getAbsences(id));
+		return ResponseEntity.ok(this.classService.getAbsences(id, studentId));
 	}
 }
