@@ -146,7 +146,7 @@ public class ClassController {
 	@ApiOperation("Retorna quadro de notas da turma")
 	@GetMapping("/{id}/grades")
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
-		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
+		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id, null);
 		return ResponseEntity.ok(gradeBoardFromClass);
 	}
 

@@ -1,7 +1,7 @@
 package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Student;
-import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
+import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.StudentNotFoundException;
@@ -102,14 +102,18 @@ public class StudentController {
 
 	@ApiOperation(value = "Retorna todos os resultados de provas por aluno")
 	@GetMapping("/{id}/grades")
-	public ResponseEntity<List<ExamGradeDTO>> getAllExamGradesFromStudent(HttpServletRequest request,
-																  @PathVariable("id") Long studentId,
-																  @RequestParam(required = false) Long classId) {
+	public ResponseEntity<List<StudentGrades>> getAllExamGradesFromStudent(HttpServletRequest request,
+																		   @PathVariable("id") Long studentId,
+																		   @RequestParam(required = false) Long classId) {
+
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		if (teacherId == null) throw new ApiResponseException("Não encontrado identificacao do professor na requisição");
 
-		List<ExamGradeDTO> examGrades = this.examGradeService.getGradesByStudentId(classId, studentId);
+		List<StudentGrades> studentGrades = this.examGradeService.getGradeBoardFromClass(classId, studentId);
 
-		return ResponseEntity.ok(examGrades);
+		return ResponseEntity.ok(studentGrades);
 	}
+
+
+
 }
