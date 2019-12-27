@@ -14,6 +14,7 @@ public interface StudentClassObservationService {
 
 	boolean existsById(Long id);
 	StudentClassObservation save(StudentClassObservation studentClassObservation);
+	StudentClassObservation update(StudentClassObservation studentClassObservation);
 	void deleteById(Long id);
 	List<StudentClassObservationDTO> getStudentObservation(Long idStudent);
 

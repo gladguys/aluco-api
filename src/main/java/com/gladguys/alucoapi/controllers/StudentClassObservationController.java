@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.gladguys.alucoapi.entities.StudentClassObservation;
 import com.gladguys.alucoapi.entities.dto.StudentClassObservationDTO;
+import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.notfound.StudentClassObservationNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.StudentClassObservationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,18 @@ public class StudentClassObservationController {
         StudentClassObservation studentClassObservation = this.studentClassObservationService.save(studentClassObservationDTO.toEntity());
 
         return ResponseEntity.ok(studentClassObservation.toDTO());
+    }
+
+    @ApiOperation(value = "Atualizando as observações realizadas pelo professor em sala de aula de um determinado estudante")
+    @PutMapping
+    public ResponseEntity<StudentClassObservationDTO> update(@RequestBody StudentClassObservationDTO studentClassObservationDTO) {
+        if (studentClassObservationDTO == null || studentClassObservationDTO.getId() == null) throw new ApiResponseException("Observação sobre o aluno é obrigatório");
+
+        boolean exists = this.studentClassObservationService.existsById(studentClassObservationDTO.getId());
+        if (!exists) throw new StudentClassObservationNotFoundException(studentClassObservationDTO.getId());
+
+        StudentClassObservation studentClassObservationUpdated = this.studentClassObservationService.update(studentClassObservationDTO.toEntity());
+        return ResponseEntity.ok(studentClassObservationUpdated.toDTO());
     }
 
     @ApiOperation(value = "Deleta a observação do estudante")
