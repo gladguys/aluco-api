@@ -12,6 +12,7 @@ import com.gladguys.alucoapi.entities.dto.StudentDTO;
 @Component
 public interface StudentClassObservationService {
 
+	boolean existsById(Long id);
 	StudentClassObservation save(StudentClassObservation studentClassObservation);
 	List<StudentClassObservationDTO> getStudentObservation(Long idStudent);
 

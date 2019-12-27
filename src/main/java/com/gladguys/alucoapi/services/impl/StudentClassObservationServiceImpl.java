@@ -27,4 +27,9 @@ public class StudentClassObservationServiceImpl implements StudentClassObservati
 	public List<StudentClassObservationDTO> getStudentObservation(Long idStudent) {
 		return this.studentClassObservationRepository.getStudentObservation(idStudent);
 	}
+
+	@Override
+	public boolean existsById(Long id) {
+		return this.studentClassObservationRepository.existsById(id);
+	}
 }
