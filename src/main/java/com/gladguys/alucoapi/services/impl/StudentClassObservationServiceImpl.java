@@ -24,6 +24,11 @@ public class StudentClassObservationServiceImpl implements StudentClassObservati
 	}
 
 	@Override
+	public void deleteById(Long id) {
+		this.studentClassObservationRepository.deleteById(id);
+	}
+
+	@Override
 	public List<StudentClassObservationDTO> getStudentObservation(Long idStudent) {
 		return this.studentClassObservationRepository.getStudentObservation(idStudent);
 	}

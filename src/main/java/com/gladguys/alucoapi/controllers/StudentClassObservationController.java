@@ -35,6 +35,18 @@ public class StudentClassObservationController {
         return ResponseEntity.ok(studentClassObservation.toDTO());
     }
 
+    @ApiOperation(value = "Deleta a observação do estudante")
+    @DeleteMapping("{idStudentClassObservation}")
+    public ResponseEntity<StudentClassObservationDTO> delete(@PathVariable Long idStudentClassObservation) {
+        if (idStudentClassObservation == null) throw new ApiResponseException("Observação sobre o aluno é obrigatório");
+
+        boolean exists = this.studentClassObservationService.existsById(idStudentClassObservation);
+        if (!exists) throw new StudentClassObservationNotFoundException(idStudentClassObservation);
+
+        this.studentClassObservationService.deleteById(idStudentClassObservation);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
     @ApiOperation(value = "Retorna as observações realizadas pelo professor em sala de aula de um estudante especifico a partir do seu id")
     @GetMapping("{studentId}")
     public ResponseEntity<List<StudentClassObservationDTO>> get(HttpServletRequest request, @PathVariable("studentId") Long studentId) {
