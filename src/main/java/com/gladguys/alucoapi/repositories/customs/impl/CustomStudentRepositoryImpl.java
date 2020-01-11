@@ -53,4 +53,5 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(StudentDTO.class));
 	}
+
 }

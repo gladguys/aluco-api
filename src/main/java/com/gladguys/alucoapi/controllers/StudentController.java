@@ -82,6 +82,7 @@ public class StudentController {
 		if (!exists) throw new StudentNotFoundException(studentDTO.getId());
 
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		this.studentService.isStudentFromTeacher(studentDTO.getId(), teacherId);
 		studentDTO.setTeacherId(teacherId);
 
 		Student studentUpdated = this.studentService.update(studentDTO.toEntity());

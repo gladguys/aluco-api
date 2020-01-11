@@ -17,5 +17,5 @@ public interface StudentService {
 	Student update(Student student);
 	void deleteById(Long id);
 	boolean existsById(Long id);
-
+	boolean isStudentFromTeacher(Long id, Long teacherId);
 }
