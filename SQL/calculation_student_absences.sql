@@ -1,5 +1,4 @@
 -- 1) Modificar a estrutura da tabela student_absences
-ALTER TABLE student_absences RENAME COLUMN quantity TO qt_absences;
 ALTER TABLE student_absences ADD qt_justified_absences integer not null default 0;
 
 -- 2) Alterar o comportamento das functions que calculam o total de faltas não justificadas e as que não são
