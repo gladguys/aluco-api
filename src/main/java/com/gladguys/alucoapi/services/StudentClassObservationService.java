@@ -9,7 +9,6 @@ import com.gladguys.alucoapi.entities.Student;
 import com.gladguys.alucoapi.entities.StudentClassObservation;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 
-@Component
 public interface StudentClassObservationService {
 
 	StudentClassObservation getById(Long id);
@@ -17,6 +16,9 @@ public interface StudentClassObservationService {
 	StudentClassObservation save(StudentClassObservation studentClassObservation);
 	StudentClassObservation update(StudentClassObservation studentClassObservation);
 	void deleteById(Long id);
+
+	void deleteByClassId(Long id);
+
 	List<StudentClassObservationDTO> getStudentObservation(Long idStudent);
 
 }

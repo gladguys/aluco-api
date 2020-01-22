@@ -56,4 +56,8 @@ public class CallServiceImpl implements CallService {
 
 		return callSaved.toDTO();
 	}
+
+	public void deleteAllByClassId(Long classId) {
+		this.callRepository.deleteByClassId(classId);
+	}
 }

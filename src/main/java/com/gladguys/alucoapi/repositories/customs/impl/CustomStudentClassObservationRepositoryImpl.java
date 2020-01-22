@@ -24,8 +24,16 @@ public class CustomStudentClassObservationRepositoryImpl implements CustomStuden
 	@Override
 	public List<StudentClassObservationDTO> getStudentObservation(Long idStudent) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT sco.id, sco.student_id, sco.class_id, sco.date, sco.observation FROM student_class_observation sco WHERE sco.student_id = ?");
+		sql.append("SELECT sco.id, sco.student_id, sco.class_id, sco.date, sco.observation ");
+		sql.append(" FROM student_class_observation sco WHERE sco.student_id = ? ");
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{idStudent}, new BeanPropertyRowMapper<>(StudentClassObservationDTO.class));
+	}
+
+	@Override
+	public void deleteByClassId(Long classId) {
+		this.jdbcTemplate.update(
+				"DELETE FROM student_class_observation WHERE class_id = ? ",
+				new Object[]{classId});
 	}
 }
