@@ -20,6 +20,7 @@ public class LessonPlanDTO {
 	private LocalDate lessonDate;
 	private Long classId;
 	private Long teacherId;
+	private String notificationId;
 
 	public LessonPlan toEntity() {
 		LessonPlan lessonPlan = new LessonPlan();
@@ -30,6 +31,7 @@ public class LessonPlanDTO {
 		lessonPlan.setMetodology(metodology);
 		lessonPlan.setNotes(notes);
 		lessonPlan.setLessonDate(lessonDate);
+		lessonPlan.setNotificationId(notificationId);
 
 		Class aclass = new Class();
 		aclass.setId(classId);
