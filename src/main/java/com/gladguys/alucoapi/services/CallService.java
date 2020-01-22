@@ -14,5 +14,6 @@ public interface CallService {
 	List<CallDTO> getAllByClassAndDate(Long classId, LocalDate date);
 	List<CallDTO> getAllByStudent(Long studentId, Long classId);
 	CallDTO save(CallDTO callDTO) throws Exception;
+	void deleteAllByClassId(Long classId);
 
 }

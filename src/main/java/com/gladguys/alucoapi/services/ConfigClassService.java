@@ -7,4 +7,5 @@ public interface ConfigClassService {
 
 	ConfigClass saveConfigClass(ConfigClassDTO configClassDTO);
 	ConfigClass getConfigByClassId(Long classId);
+	void deleteConfigClassByClassId(Long classId);
 }
