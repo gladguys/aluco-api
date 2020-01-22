@@ -16,7 +16,8 @@ public class StudentAbsenceDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int quantity;
+	private int qtAbsences;
+	private int qtJustifiedAbsences;
 	private Long studentId;
 	private Long classId;
 
