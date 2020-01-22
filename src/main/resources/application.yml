@@ -26,4 +26,4 @@ spring:
 
 jwt:
   secret: aluco
-  expiration: 604800
+  expiration: 20
