@@ -63,7 +63,7 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	public List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT class_id as classId, student_id as studentId, quantity ");
+		sql.append("SELECT class_id as classId, student_id as studentId, qt_absences, qt_justified_absences");
 		sql.append("FROM student_absences WHERE class_id = ?");
 
 		if (studentId != null) {
