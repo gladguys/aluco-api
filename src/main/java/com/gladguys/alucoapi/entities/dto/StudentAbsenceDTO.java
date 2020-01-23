@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
-@Entity
-@Table(name = "student_absences")
+@Entity(name = "student_absences")
 public class StudentAbsenceDTO {
 
 	@Id
