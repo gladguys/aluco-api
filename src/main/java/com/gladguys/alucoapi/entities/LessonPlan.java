@@ -21,6 +21,8 @@ public class LessonPlan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String notificationId;
+
 	private String content;
 
 	@Column(columnDefinition = "text")
@@ -45,6 +47,7 @@ public class LessonPlan {
 	public LessonPlanDTO toDTO() {
 		LessonPlanDTO dto = new LessonPlanDTO();
 		dto.setId(id);
+		dto.setNotificationId(notificationId);
 		dto.setContent(content);
 		dto.setMetodology(metodology);
 		dto.setHomework(homework);
