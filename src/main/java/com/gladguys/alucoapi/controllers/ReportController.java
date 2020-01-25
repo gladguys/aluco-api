@@ -41,7 +41,7 @@ public class ReportController {
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 
         reportGenerate.addParameter("class_id", classId);
-        reportGenerate.addParameter("teacher_id", 6L);
+        reportGenerate.addParameter("teacher_id", teacherId);
         byte[] report = reportGenerate.generate("rel_alunos_ausentes_por_dia.jasper");
         return reportGenerate.exportPDF(report, "rel_alunos_ausentes_por_dia");
     }
