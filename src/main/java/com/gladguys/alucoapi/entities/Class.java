@@ -29,7 +29,16 @@ public class Class {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome deve ser informado.")
+    private boolean isFromSchool;
+
+    private String schoolName;
+
+    private String shift;
+
+    private String subject;
+
+    private String gradeSchool;
+
     private String name;
 
     private String description;
@@ -53,6 +62,11 @@ public class Class {
         dto.setName(name);
         dto.setDescription(description);
         dto.setCreationDate(creationDate);
+        dto.setFromSchool(isFromSchool);
+        dto.setSchoolName(schoolName);
+        dto.setSubject(subject);
+        dto.setShift(shift);
+        dto.setGradeSchool(gradeSchool);
 
         return dto;
     }

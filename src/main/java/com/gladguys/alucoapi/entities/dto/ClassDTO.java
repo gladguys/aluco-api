@@ -16,6 +16,16 @@ public class ClassDTO {
 
 	private String description;
 
+	private boolean isFromSchool;
+
+	private String schoolName;
+
+	private String shift;
+
+	private String subject;
+
+	private String gradeSchool;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate creationDate;
 
@@ -35,6 +45,11 @@ public class ClassDTO {
 		c.setName(name);
 		c.setDescription(description);
 		c.setCreationDate(creationDate);
+		c.setFromSchool(isFromSchool);
+		c.setSchoolName(schoolName);
+		c.setGradeSchool(gradeSchool);
+		c.setShift(shift);
+		c.setSubject(subject);
 
 		Teacher teacher = new Teacher();
 		teacher.setId(teacherId);
