@@ -169,7 +169,7 @@ order by s.name]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["  " + $F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="100" height="20" uuid="1d959db4-bfea-45d3-8c2b-68b5b9628b1b">
@@ -187,7 +187,7 @@ order by s.name]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fj} == false ? "F" : "FJ" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fj} == false ? "  F" : "  FJ" ]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
