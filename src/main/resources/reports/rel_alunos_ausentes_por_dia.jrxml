@@ -155,7 +155,7 @@ order by s.name]]>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10" isBold="true"/>
 					</textElement>
-					<text><![CDATA[  Falta Justificada]]></text>
+					<text><![CDATA[  Tipo de Falta]]></text>
 				</staticText>
 			</frame>
 		</band>
