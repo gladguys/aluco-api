@@ -187,7 +187,7 @@ order by s.name]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fj}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fj} == false ? "F" : "FJ" ]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
