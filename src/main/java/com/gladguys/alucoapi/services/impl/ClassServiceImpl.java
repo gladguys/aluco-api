@@ -72,7 +72,7 @@ public class ClassServiceImpl implements ClassService {
 		this.configClassService.deleteConfigClassByClassId(id);
 		this.callService.deleteAllByClassId(id);
 		this.observationService.deleteByClassId(id);
-		this.classRepository.deleteById(id);
+		this.classRepository.deleteClassById(id);
 	}
 
 	@Override
