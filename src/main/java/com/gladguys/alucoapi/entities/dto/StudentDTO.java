@@ -27,6 +27,7 @@ public class StudentDTO {
     private String address;
     private String previousSchool;
     private String observation;
+    private boolean isAEE;
     private GenderEnum gender;
 
     public Student toEntity() {
@@ -43,6 +44,7 @@ public class StudentDTO {
         student.setResponsiblePhone(responsiblePhone);
         student.setPreviousSchool(previousSchool);
         student.setObservation(observation);
+        student.setAEE(isAEE);
         student.setGender(gender);
 
         Teacher teacher = new Teacher();
