@@ -37,6 +37,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 		if (examFilter.getTeacherId() != null)
 			sql.append(" AND c.teacher_id = "+examFilter.getTeacherId());
 
+		sql.append(" ORDER BY e.exam_date ");
 
 		List<ExamDTO> result = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper(ExamDTO.class));
 		return result;
