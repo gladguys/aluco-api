@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -18,11 +19,17 @@ public class ReportGenerate {
 
     @Autowired
     private DataSource dataSource;
+    Map<String, Object> parameters;
 
     public ReportGenerate() {
+        this.parameters = new HashMap<>();
     }
 
-    public byte[] generate(String reportName, Map<String, Object> parameters) throws JRException, SQLException {
+    public void addParameter(String key, Object value) {
+        parameters.put(key, value);
+    }
+
+    public byte[] generate(String reportName) throws JRException, SQLException {
         InputStream inputStream = this.getClass().getResourceAsStream("/reports/" + reportName);
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(inputStream);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource.getConnection());
