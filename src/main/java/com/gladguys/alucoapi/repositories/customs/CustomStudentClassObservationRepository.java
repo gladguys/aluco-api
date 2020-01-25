@@ -9,4 +9,5 @@ public interface CustomStudentClassObservationRepository {
 
 	List<StudentClassObservationDTO> getStudentObservation(Long idStudent);
 
+	void deleteByClassId(Long classId);
 }

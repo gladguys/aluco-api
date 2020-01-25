@@ -24,4 +24,8 @@ public class ConfigClassServiceImpl implements ConfigClassService {
 	public ConfigClass getConfigByClassId(Long classId) {
 		return this.configClassRepository.getByClassId(classId);
 	}
+
+	public void deleteConfigClassByClassId(Long classId) {
+		this.configClassRepository.deleteConfigClassByClassId(classId);
+	}
 }

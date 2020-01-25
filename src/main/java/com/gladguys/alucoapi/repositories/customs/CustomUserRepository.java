@@ -1,6 +1,9 @@
 package com.gladguys.alucoapi.repositories.customs;
 
+import com.gladguys.alucoapi.entities.dto.UserDTO;
+
 public interface CustomUserRepository {
 
-	public Long getTeacherIdByUsername(String username);
+	Long getTeacherIdByUsername(String username);
+	UserDTO getUserTeacherByEmail(String email);
 }

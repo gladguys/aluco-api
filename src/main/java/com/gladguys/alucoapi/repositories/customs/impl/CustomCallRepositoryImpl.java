@@ -64,4 +64,10 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
+
+	public void deleteByClassId(Long classId) {
+		this.jdbcTemplate.update(
+				"DELETE FROM call WHERE class_id = ? ",
+				new Object[]{classId});
+	}
 }

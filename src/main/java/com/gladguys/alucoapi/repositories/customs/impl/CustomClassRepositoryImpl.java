@@ -36,6 +36,23 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	}
 
 	@Override
+	public void deleteClassById(Long classId) {
+
+		this.jdbcTemplate.update(
+				"DELETE FROM student_class WHERE class_id = ? ",
+				new Object[]{classId});
+
+		this.jdbcTemplate.update(
+				"DELETE FROM student_absences WHERE class_id = ? ",
+				new Object[]{classId});
+
+		this.jdbcTemplate.update(
+				"DELETE FROM class WHERE id = ? ",
+				new Object[]{classId});
+
+	}
+
+	@Override
 	public void deleteStudentFromClass(Long studentId, Long classId, Set<Long> examsId) {
 		NamedParameterJdbcTemplate template =
 				new NamedParameterJdbcTemplate(Objects.requireNonNull(this.jdbcTemplate.getDataSource()));
@@ -47,6 +64,7 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 					"DELETE FROM exam_grade WHERE student_id = :studentId AND exam_id IN (:examsId) ",
 					parameters);
 		}
+
 		this.jdbcTemplate.update(
 				"DELETE FROM student_class WHERE student_id = ? AND class_id = ?",
 				new Object[]{studentId, classId});
@@ -63,8 +81,8 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	public List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT class_id as classId, student_id as studentId, qt_absences, qt_justified_absences");
-		sql.append("FROM student_absences WHERE class_id = ?");
+		sql.append(" SELECT class_id as classId, student_id as studentId, qt_absences, qt_justified_absences ");
+		sql.append(" FROM student_absences WHERE class_id = ? ");
 
 		if (studentId != null) {
 			sql.append("AND student_id = ").append(studentId);
