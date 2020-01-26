@@ -29,6 +29,7 @@ public class StudentDTO {
     private String observation;
     private boolean isAEE;
     private GenderEnum gender;
+    private boolean aee;
 
     public Student toEntity() {
         Student student = new Student();
@@ -46,6 +47,7 @@ public class StudentDTO {
         student.setObservation(observation);
         student.setAEE(isAEE);
         student.setGender(gender);
+        student.setAee(aee);
 
         Teacher teacher = new Teacher();
         teacher.setId(teacherId);
