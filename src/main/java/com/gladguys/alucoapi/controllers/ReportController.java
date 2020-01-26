@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.component.ReportGenerate;
 import com.gladguys.alucoapi.exception.ApiResponseException;
+import com.gladguys.alucoapi.exception.internalservererror.ReportInternalServerErrorException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import net.sf.jasperreports.engine.*;
@@ -33,14 +34,18 @@ public class ReportController {
 
     @ApiOperation(value = "Gerar relatório diário de alunos ausentes")
     @GetMapping("/dailyabsence/class/{classId}")
-    public ResponseEntity<byte[]> save(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) throws IOException, JRException, SQLException {
+    public ResponseEntity<byte[]> save(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) {
         if (classId == null) throw new ApiResponseException("Turma é obrigatória");
 
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 
-        reportGenerate.addParameter("class_id", classId);
-        reportGenerate.addParameter("teacher_id", teacherId);
-        byte[] report = reportGenerate.generate("rel_alunos_ausentes_por_dia.jasper");
-        return reportGenerate.exportPDF(report, "rel_alunos_ausentes_por_dia");
+        try {
+            reportGenerate.addParameter("class_id", classId);
+            reportGenerate.addParameter("teacher_id", teacherId);
+            byte[] report = reportGenerate.generate("rel_alunos_ausentes_por_dia.jasper");
+            return reportGenerate.exportPDF(report, "rel_alunos_ausentes_por_dia");
+        } catch (SQLException | JRException exception) {
+            throw new ReportInternalServerErrorException("Alunos ausentes por dia");
+        }
     }
 }
