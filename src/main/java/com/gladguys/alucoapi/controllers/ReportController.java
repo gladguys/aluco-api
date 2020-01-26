@@ -48,4 +48,21 @@ public class ReportController {
             throw new ReportInternalServerErrorException("Alunos ausentes por dia");
         }
     }
+
+    @ApiOperation(value = "Gerar relatório diário de turma")
+    @PostMapping("/dailyclass/class/{classId}")
+    public ResponseEntity<byte[]> dailyClass(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) {
+        if (classId == null) throw new ApiResponseException("Turma é obrigatória");
+
+        Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+
+        try {
+            reportGenerate.addParameter("class_id", classId);
+            reportGenerate.addParameter("teacher_id", teacherId);
+            byte[] report = reportGenerate.generate("rel_diario_turma.jasper");
+            return reportGenerate.exportPDF(report, "rel_diario_turma");
+        } catch (SQLException | JRException exception) {
+            throw new ReportInternalServerErrorException("Diário de turma");
+        }
+    }
 }
