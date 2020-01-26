@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.exception;
 
+import com.gladguys.alucoapi.exception.internalservererror.ReportInternalServerErrorException;
 import com.gladguys.alucoapi.exception.notfound.CallNotFoundException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
@@ -63,4 +64,11 @@ public class ApiExceptionHandler {
 		return new ResponseEntity<>(exception, notFound);
 	}
 
+	@ExceptionHandler(value = {ReportInternalServerErrorException.class})
+	public ResponseEntity<Object> handleReportException(Exception e) {
+		HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+		ApiException exception = new ApiException(e.getMessage(), internalServerError, new Date());
+
+		return new ResponseEntity<>(exception, internalServerError);
+	}
 }
