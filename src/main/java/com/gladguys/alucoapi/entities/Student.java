@@ -61,6 +61,8 @@ public class Student {
 
 	private String observation;
 
+	private boolean aee;
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
