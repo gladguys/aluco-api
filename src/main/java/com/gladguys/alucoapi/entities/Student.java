@@ -61,7 +61,7 @@ public class Student {
 
 	private String observation;
 
-	private boolean isAEE;
+	private boolean aee;
 
 	@JsonIgnore
 	@ManyToOne
