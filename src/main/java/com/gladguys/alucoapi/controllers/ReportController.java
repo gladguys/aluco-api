@@ -34,7 +34,7 @@ public class ReportController {
 
     @ApiOperation(value = "Gerar relatório diário de alunos ausentes")
     @PostMapping("/dailyabsence/class/{classId}")
-    public ResponseEntity<byte[]> save(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) {
+    public ResponseEntity<byte[]> dailyAbsenceStudents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) {
         if (classId == null) throw new ApiResponseException("Turma é obrigatória");
 
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
