@@ -20,7 +20,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 	@Override
 	public List<StudentDTO> getAllByClassId(Long id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT s.id, s.gender, s.name, s.aee FROM student s ");
+		sql.append("SELECT s.id, s.gender, s.name, s.aee, s.registration_number as registrationNumber FROM student s ");
 		sql.append("INNER JOIN student_class sc ON sc.student_id = s.id ");
 		sql.append("WHERE sc.class_id = ? ");
 		sql.append("ORDER BY (s.name) ");
