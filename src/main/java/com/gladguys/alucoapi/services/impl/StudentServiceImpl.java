@@ -42,7 +42,6 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<StudentDTO> getAllByTeacher(Long teacherId) {
-
 		return this.studentRepository.getAllByTeacherId(teacherId);
 	}
 
@@ -66,12 +65,6 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public boolean existsById(Long id) {
 		return this.studentRepository.existsById(id);
-	}
-
-	@Override
-	public boolean isStudentFromTeacher(Long id, Long teacherId) {
-
-
 	}
 
 }
