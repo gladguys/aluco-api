@@ -44,11 +44,20 @@ public class LessonPlanServiceImpl implements LessonPlanService {
 
 	@Override
 	public LessonPlanDTO getLatestEdited(Long id) {
-		return this.repository.getLatestEdited(id);
+		try {
+		  return this.repository.getLatestEdited(id);
+		} catch (EmptyResultDataAccessException e) {
+		  return null;
+		}
+		
 	}
 
 	@Override
 	public LessonPlanDTO getNextLesson(Long id) {
-		return this.repository.getNextLesson(id);
+		try {
+		  return this.repository.getNextLesson(id);
+		} catch (EmptyResultDataAccessException e) {
+		  return null;
+		}
 	}
 }
