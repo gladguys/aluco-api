@@ -6,6 +6,7 @@ import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.LessonPlanRepository;
 import com.gladguys.alucoapi.services.LessonPlanService;
 import org.springframework.stereotype.Service;
+impoty org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Date;
 import java.util.List;
