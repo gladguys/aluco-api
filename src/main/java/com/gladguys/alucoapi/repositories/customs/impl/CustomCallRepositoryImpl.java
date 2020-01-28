@@ -80,7 +80,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 		sql.append(" inner join student s on s.id = c.student_id ");
 		sql.append(" inner join teacher t on t.id = s.teacher_id ");
 		sql.append("where c.class_id = ").append(classId);
-		sql.append(" and c.date = ").append(new Date().toString());
+		sql.append(" and c.date = current_date ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
