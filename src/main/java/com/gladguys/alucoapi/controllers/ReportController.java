@@ -96,7 +96,7 @@ public class ReportController {
                     InternetAddress.parse(email)
             );
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date();
 
             message.setSubject("Chamada de Prof. "+ callsForDay.get(0).getTeacherName() +" para dia " + dateFormat.format(date));
@@ -112,7 +112,6 @@ public class ReportController {
             });
             message.setText(msg.toString());
             Transport.send(message);
-            System.out.println("Done");
 
         } catch (MessagingException e) {
             e.printStackTrace();
