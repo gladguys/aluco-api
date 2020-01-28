@@ -19,6 +19,7 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/api/report")
 public class ReportController {
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
