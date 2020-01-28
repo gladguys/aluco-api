@@ -64,7 +64,19 @@ public class LessonPlanController {
 	@ApiOperation("get plano de aula por id")
 	public ResponseEntity<LessonPlanDTO> get(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(this.lessonPlanService.getById(id));
+	}
 
+	@GetMapping(value = "/class/{id}/latest-edited")
+	@ApiOperation("get plano de aula ultimo editado")
+	public ResponseEntity<LessonPlanDTO> latestEdited(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(this.lessonPlanService.getLatestEdited(id));
+
+	}
+
+	@GetMapping(value = "/class/{id}/next-lesson")
+	@ApiOperation("get plano de aula proximo")
+	public ResponseEntity<LessonPlanDTO> nextLesson(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(this.lessonPlanService.getNextLesson(id));
 	}
 
 	@PostMapping

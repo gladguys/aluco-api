@@ -11,5 +11,7 @@ public interface LessonPlanService {
 	LessonPlanDTO getById(Long id);
 	LessonPlanDTO save(LessonPlanDTO lessonPlanDTO);
 	void delete(Long id);
+	LessonPlanDTO getLatestEdited(Long id);
+	LessonPlanDTO getNextLesson(Long id);
 
 }

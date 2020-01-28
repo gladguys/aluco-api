@@ -6,6 +6,7 @@ import com.gladguys.alucoapi.entities.LessonPlan;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class LessonPlanDTO {
@@ -18,6 +19,7 @@ public class LessonPlanDTO {
 	private String notes;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate lessonDate;
+	private Date modificationDate;
 	private Long classId;
 	private Long teacherId;
 	private String notificationId;
@@ -31,6 +33,7 @@ public class LessonPlanDTO {
 		lessonPlan.setMetodology(metodology);
 		lessonPlan.setNotes(notes);
 		lessonPlan.setLessonDate(lessonDate);
+		lessonPlan.setModificationDate(modificationDate);
 		lessonPlan.setNotificationId(notificationId);
 
 		Class aclass = new Class();
