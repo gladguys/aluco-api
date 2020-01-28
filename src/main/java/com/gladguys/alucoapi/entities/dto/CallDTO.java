@@ -19,6 +19,9 @@ public class CallDTO {
 	private StatusEnum status;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate date;
+	private String teacherName;
+	private String registrationNumber;
+	private String className;
 
 	public Call toEntity() {
 		Call call = new Call();

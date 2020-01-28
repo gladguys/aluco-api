@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -70,4 +71,22 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 				"DELETE FROM call WHERE class_id = ? ",
 				new Object[]{classId});
 	}
+
+	@Override
+	public List<CallDTO> getCallsForDailyReport(Long classId) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT s.registration_number as registrationNumber, s.name as studentName, ");
+		sql.append(" c.status, t.name as teacherName, cl.name as className FROM call c  ");
+		sql.append(" inner join student s on s.id = c.student_id ");
+		sql.append(" inner join teacher t on t.id = s.teacher_id ");
+		sql.append(" inner join class cl on cl.id = c.class_id ");
+		sql.append(" WHERE c.class_id = ").append(classId);
+		sql.append(" AND c.date = current_date ");
+
+		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
+	}
+
+
+
 }
