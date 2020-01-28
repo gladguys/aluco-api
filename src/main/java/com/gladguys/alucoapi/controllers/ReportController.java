@@ -44,7 +44,7 @@ public class ReportController {
     }
 
     @ApiOperation(value = "Gerar relatório diário de alunos ausentes")
-    @PostMapping("/dailyabsence/class/{classId}")
+    @GetMapping("/dailyabsence/class/{classId}")
     public ResponseEntity<byte[]> dailyAbsenceStudents(HttpServletRequest request,
                                                        HttpServletResponse response,
                                                        @PathVariable Long classId,
