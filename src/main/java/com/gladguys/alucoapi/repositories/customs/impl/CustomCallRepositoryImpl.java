@@ -23,10 +23,11 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 	public List<CallDTO> getCallsByClassIdAndDate(Long classId, LocalDate date) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName, c.class_id as classId, c.status, c.date ")
-				.append(" FROM call c ")
-				.append(" INNER JOIN student s ON s.id = c.student_id ")
-				.append(" WHERE 1=1 ");
+		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName ");
+		sql.append(" c.class_id as classId, c.status, c.date ");
+		sql.append(" FROM call c ");
+		sql.append(" INNER JOIN student s ON s.id = c.student_id ");
+		sql.append(" WHERE 1=1 ");
 
 		if (classId != null)
 			sql.append(" AND c.class_id = ").append(classId);
@@ -76,11 +77,13 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 	public List<CallDTO> getCallsForDailyReport(Long classId) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" select s.registration_number as registrationNumber, s.name as studentName, c.status, t.name as teacherName from call c ");
+		sql.append(" SELECT s.registration_number as registrationNumber, s.name as studentName, ");
+		sql.append(" c.status, t.name as teacherName, cl.name as className FROM call c  ");
 		sql.append(" inner join student s on s.id = c.student_id ");
 		sql.append(" inner join teacher t on t.id = s.teacher_id ");
-		sql.append("where c.class_id = ").append(classId);
-		sql.append(" and c.date = current_date ");
+		sql.append(" inner join class cl on cl.id = c.class_id ");
+		sql.append(" WHERE c.class_id = ").append(classId);
+		sql.append(" AND c.date = current_date ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}

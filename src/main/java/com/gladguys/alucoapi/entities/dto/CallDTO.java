@@ -21,6 +21,7 @@ public class CallDTO {
 	private LocalDate date;
 	private String teacherName;
 	private String registrationNumber;
+	private String className;
 
 	public Call toEntity() {
 		Call call = new Call();

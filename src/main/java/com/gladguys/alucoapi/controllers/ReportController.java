@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -43,12 +45,15 @@ public class ReportController {
 
     @ApiOperation(value = "Gerar relatório diário de alunos ausentes")
     @PostMapping("/dailyabsence/class/{classId}")
-    public ResponseEntity<byte[]> dailyAbsenceStudents(HttpServletRequest request, HttpServletResponse response, @PathVariable Long classId) {
+    public ResponseEntity<byte[]> dailyAbsenceStudents(HttpServletRequest request,
+                                                       HttpServletResponse response,
+                                                       @PathVariable Long classId,
+                                                       @RequestParam("email") String email) {
         if (classId == null) throw new ApiResponseException("Turma é obrigatória");
 
         Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
         List<CallDTO> callsForDay = this.callService.getCallsForDailyReport(classId);
-        sendEmail(callsForDay);
+        sendEmail(callsForDay, email);
 
         return null;
 
@@ -64,7 +69,7 @@ public class ReportController {
        * */
     }
 
-    void sendEmail(List<CallDTO> callsForDay) {
+    void sendEmail(List<CallDTO> callsForDay, String email) {
 
         final String username = "alucoapp@gmail.com";
         final String password = "aluco@123";
@@ -88,13 +93,20 @@ public class ReportController {
             message.setFrom(new InternetAddress("from@gmail.com"));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("dineresc@gmail.com")
+                    InternetAddress.parse(email)
             );
-            message.setSubject("Chamada de Prof."+ callsForDay.get(0).getTeacherName() +" para dia " + new Date().toString());
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
+
+            message.setSubject("Chamada de Prof. "+ callsForDay.get(0).getTeacherName() +" para dia " + dateFormat.format(date));
 
             StringBuilder msg = new StringBuilder();
             msg.append(" Olá, ");
-            msg.append(" segue abaixo a lista de chamadas para o dia ").append(new Date().toString()).append("\n");
+            msg.append(" segue abaixo a lista de chamadas feita para o dia ").append(dateFormat.format(date)).append("\n");
+            msg.append("Professor: " + callsForDay.get(0).getTeacherName()).append("\n");
+            msg.append("Turma: " + callsForDay.get(0).getClassName()).append("\n\n");
+
             callsForDay.stream().forEach(callDTO -> {
                 msg.append(callDTO.getRegistrationNumber() + " - " + callDTO.getStudentName() + ": " + callDTO.getStatus() + "\n");
             });
