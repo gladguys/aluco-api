@@ -43,6 +43,9 @@ public class ReportController {
         try {
             reportGenerate.addParameter("class_id", classId);
             reportGenerate.addParameter("teacher_id", teacherId);
+            JasperCompileManager.compileReportToFile(
+                    "rel_alunos_ausentes_por_dia.jrxml",
+                    "rel_alunos_ausentes_por_dia.jasper");
             byte[] report = reportGenerate.generate("rel_alunos_ausentes_por_dia.jasper");
             return reportGenerate.exportPDF(report, "rel_alunos_ausentes_por_dia");
         } catch (SQLException | JRException exception) {
