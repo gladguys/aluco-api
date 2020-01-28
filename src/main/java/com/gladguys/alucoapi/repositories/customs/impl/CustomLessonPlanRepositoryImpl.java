@@ -70,7 +70,8 @@ public class CustomLessonPlanRepositoryImpl implements CustomLessonPlanRepositor
 		sql.append(" INNER JOIN class c ON c.id = l.class_id ");
 		sql.append(" INNER JOIN teacher t ON t.id = c.teacher_id ");
 		sql.append(" WHERE l.class_id = ? ");
-		sql.append(" ORDER BY l.lesson_date DESC ");
+		sql.append(" AND l.lesson_date >= current_date ");
+		sql.append(" ORDER BY l.lesson_date ");
 		sql.append(" LIMIT 1 ");
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(LessonPlanDTO.class));
