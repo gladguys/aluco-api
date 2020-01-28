@@ -23,11 +23,10 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 	public List<CallDTO> getCallsByClassIdAndDate(Long classId, LocalDate date) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName ");
-		sql.append(" c.class_id as classId, c.status, c.date ");
-		sql.append(" FROM call c ");
-		sql.append(" INNER JOIN student s ON s.id = c.student_id ");
-		sql.append(" WHERE 1=1 ");
+		sql.append(" SELECT c.id, c.student_id as studentId, s.name as studentName, c.class_id as classId, c.status, c.date ")
+				.append(" FROM call c ")
+				.append(" INNER JOIN student s ON s.id = c.student_id ")
+				.append(" WHERE 1=1 ");
 
 		if (classId != null)
 			sql.append(" AND c.class_id = ").append(classId);
