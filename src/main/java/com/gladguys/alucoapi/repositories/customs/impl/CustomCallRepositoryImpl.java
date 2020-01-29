@@ -33,6 +33,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		if ( date != null)
 			sql.append(" AND c.date = '" +date + "' ");
+		sql.append(" ORDER BY s.name ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
@@ -83,6 +84,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 		sql.append(" inner join class cl on cl.id = c.class_id ");
 		sql.append(" WHERE c.class_id = ").append(classId);
 		sql.append(" AND c.date = current_date ");
+		sql.append(" ORDER BY s.name ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
