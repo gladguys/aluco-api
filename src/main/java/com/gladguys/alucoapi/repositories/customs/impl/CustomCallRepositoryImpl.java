@@ -33,6 +33,7 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		if ( date != null)
 			sql.append(" AND c.date = '" +date + "' ");
+		sql.append(" ORDER BY s.name ");
 
 		return this.jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper<>(CallDTO.class));
 	}
