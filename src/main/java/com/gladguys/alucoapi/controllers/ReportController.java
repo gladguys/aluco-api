@@ -7,6 +7,7 @@ import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.CallService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,11 @@ public class ReportController {
     @Autowired
     private CallService callService;
 
+    @Value( "${alucoapp.email}" )
+    private String alucoEmail;
+
+    @Value( "${alucoapp.email.pwd}" )
+    private String alucoEmailPwd;
     public ReportController(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
     }
@@ -71,9 +77,6 @@ public class ReportController {
 
     void sendEmail(List<CallDTO> callsForDay, String email) {
 
-        final String username = "alucoapp@gmail.com";
-        final String password = "aluco@123";
-
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
@@ -83,7 +86,7 @@ public class ReportController {
         Session session = Session.getInstance(prop,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(alucoEmail, alucoEmailPwd);
                     }
                 });
 
