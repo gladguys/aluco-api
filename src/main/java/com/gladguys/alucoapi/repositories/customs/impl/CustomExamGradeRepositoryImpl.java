@@ -69,6 +69,8 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 			sql.append(" AND e.class_id  = ").append(classId);
 		}
 
+		sql.append(" ORDER BY e.exam_date ");
+
 		return jdbcTemplate.query(sql.toString(),
 				new Object[]{studentId},
 				new BeanPropertyRowMapper<>(ExamGradeDTO.class));
