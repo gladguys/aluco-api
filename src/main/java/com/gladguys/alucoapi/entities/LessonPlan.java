@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -40,6 +41,8 @@ public class LessonPlan {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate lessonDate;
 
+	private Date modificationDate;
+
 	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private Class classPlan;
@@ -53,6 +56,7 @@ public class LessonPlan {
 		dto.setHomework(homework);
 		dto.setClasswork(classwork);
 		dto.setLessonDate(lessonDate);
+		dto.setModificationDate(modificationDate);
 		dto.setNotes(notes);
 		if (classPlan != null) {
 			dto.setClassId(classPlan.getId());

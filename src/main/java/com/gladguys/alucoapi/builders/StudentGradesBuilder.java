@@ -60,7 +60,8 @@ public class StudentGradesBuilder {
 			if (recExam != null && average < 8.0) {
 				Double gradeRec = Objects.requireNonNull(recExam)
 						.getGrade();
-				average = (average + gradeRec) / 2;
+				if (gradeRec != null)
+					average = (average + gradeRec) / 2;
 			}
 		} else {
 			average = null;

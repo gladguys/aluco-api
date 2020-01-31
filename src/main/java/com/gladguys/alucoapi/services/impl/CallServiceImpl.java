@@ -57,6 +57,11 @@ public class CallServiceImpl implements CallService {
 		return callSaved.toDTO();
 	}
 
+	@Override
+	public List<CallDTO> getCallsForDailyReport(Long classId) {
+		return this.callRepository.getCallsForDailyReport(classId);
+	}
+
 	public void deleteAllByClassId(Long classId) {
 		this.callRepository.deleteByClassId(classId);
 	}

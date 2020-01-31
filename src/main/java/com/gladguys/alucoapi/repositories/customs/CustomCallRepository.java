@@ -12,4 +12,6 @@ public interface CustomCallRepository {
 	CallDTO getById(Long id);
 	List<CallDTO> getAllByStudentIdAndClassId(Long studentId, Long classId);
 	void deleteByClassId(Long classId);
+
+	List<CallDTO> getCallsForDailyReport(Long classId);
 }
