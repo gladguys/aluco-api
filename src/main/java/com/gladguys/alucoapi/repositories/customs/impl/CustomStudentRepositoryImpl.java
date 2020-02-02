@@ -42,6 +42,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 	public void deleteStudentFromAllClasses(Long studentId) {
 		this.jdbcTemplate.update("DELETE FROM exam_grade WHERE student_id = ?", new Object[]{studentId});
 		this.jdbcTemplate.update("DELETE FROM student_class WHERE student_id = ? ", new Object[]{studentId});
+		this.jdbcTemplate.update("DELETE FROM student_absences student_id = ? ", new Object[]{studentId});
 	}
 
 	@Override
