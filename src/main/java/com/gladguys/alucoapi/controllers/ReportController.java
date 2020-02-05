@@ -2,9 +2,11 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.component.ReportGenerate;
 import com.gladguys.alucoapi.entities.dto.CallDTO;
+import com.gladguys.alucoapi.entities.enums.StatusEnum;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.CallService;
+import com.gladguys.alucoapi.services.MailService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,38 +30,33 @@ import javax.sql.DataSource;
 @RequestMapping("/api/report")
 public class ReportController {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private ReportGenerate reportGenerate;
+    private final ReportGenerate reportGenerate;
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    @Autowired
-    private CallService callService;
+    private final CallService callService;
 
-    @Value( "${alucoapp.email}" )
-    private String alucoEmail;
+    private final MailService mailService;
 
-    @Value( "${alucoapp.email.pwd}" )
-    private String alucoEmailPwd;
-    public ReportController(JwtTokenUtil jwtTokenUtil) {
+    public ReportController(JwtTokenUtil jwtTokenUtil, ReportGenerate reportGenerate, DataSource dataSource, CallService callService, MailService mailService) {
         this.jwtTokenUtil = jwtTokenUtil;
+        this.reportGenerate = reportGenerate;
+        this.dataSource = dataSource;
+        this.callService = callService;
+        this.mailService = mailService;
     }
 
     @ApiOperation(value = "Gerar relatório diário de alunos ausentes")
     @GetMapping("/dailyabsence/class/{classId}")
     public ResponseEntity<byte[]> dailyAbsenceStudents(HttpServletRequest request,
-                                                       HttpServletResponse response,
                                                        @PathVariable Long classId,
-                                                       @RequestParam("email") String email) {
+                                                       @RequestParam("email") String email) throws MessagingException {
         if (classId == null) throw new ApiResponseException("Turma é obrigatória");
 
-        Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
         List<CallDTO> callsForDay = this.callService.getCallsForDailyReport(classId);
-        sendEmail(callsForDay, email);
+        this.mailService.sendEmail(callsForDay, email);
 
         return null;
 
@@ -75,50 +72,4 @@ public class ReportController {
        * */
     }
 
-    void sendEmail(List<CallDTO> callsForDay, String email) {
-
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
-
-        Session session = Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(alucoEmail, alucoEmailPwd);
-                    }
-                });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("from@gmail.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(email)
-            );
-
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date();
-
-            message.setSubject("Chamada de Prof. "+ callsForDay.get(0).getTeacherName() +" para dia " + dateFormat.format(date));
-
-            StringBuilder msg = new StringBuilder();
-            msg.append(" Olá, ");
-            msg.append(" segue abaixo a lista de chamadas feita para o dia ").append(dateFormat.format(date)).append("\n");
-            msg.append("Professor: " + callsForDay.get(0).getTeacherName()).append("\n");
-            msg.append("Turma: " + callsForDay.get(0).getClassName()).append("\n\n");
-
-            callsForDay.stream().forEach(callDTO -> {
-                msg.append(callDTO.getRegistrationNumber() + " - " + callDTO.getStudentName() + ": " + callDTO.getStatus() + "\n");
-            });
-            message.setText(msg.toString());
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
