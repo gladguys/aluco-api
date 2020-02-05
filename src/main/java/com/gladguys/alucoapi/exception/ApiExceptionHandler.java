@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.mail.MessagingException;
+
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -66,6 +68,14 @@ public class ApiExceptionHandler {
 
 	@ExceptionHandler(value = {ReportInternalServerErrorException.class})
 	public ResponseEntity<Object> handleReportException(Exception e) {
+		HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+		ApiException exception = new ApiException(e.getMessage(), internalServerError, new Date());
+
+		return new ResponseEntity<>(exception, internalServerError);
+	}
+
+	@ExceptionHandler(value = {MessagingException.class})
+	public ResponseEntity<Object> handleEmailException(Exception e) {
 		HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
 		ApiException exception = new ApiException(e.getMessage(), internalServerError, new Date());
 
