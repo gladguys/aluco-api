@@ -56,8 +56,9 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	public int getGreatestNumberCall(Long classId) {
 
 		String sql = "SELECT max(number) FROM number_call WHERE class_id = ? ";
-		return this.jdbcTemplate.queryForObject(sql, new Object[] { classId }, Integer.class);
-
+		Integer number = this.jdbcTemplate.queryForObject(sql, new Object[] { classId }, Integer.class);
+		if (number == null) return 0;
+		return number;
 	}
 
 	@Override
