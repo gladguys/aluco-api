@@ -53,6 +53,14 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	}
 
 	@Override
+	public int getGreatestNumberCall(Long classId) {
+
+		String sql = "SELECT max(number) FROM number_call WHERE class_id = ? ";
+		return this.jdbcTemplate.queryForObject(sql, new Object[] { classId }, Integer.class);
+
+	}
+
+	@Override
 	public void deleteStudentFromClass(Long studentId, Long classId, Set<Long> examsId) {
 		NamedParameterJdbcTemplate template =
 				new NamedParameterJdbcTemplate(Objects.requireNonNull(this.jdbcTemplate.getDataSource()));
