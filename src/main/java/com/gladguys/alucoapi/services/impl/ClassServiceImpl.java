@@ -16,6 +16,7 @@ import com.gladguys.alucoapi.services.ConfigClassService;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.ExamService;
 import com.gladguys.alucoapi.services.StudentClassObservationService;
+import com.gladguys.alucoapi.services.StudentService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,19 +35,21 @@ public class ClassServiceImpl implements ClassService {
 	private StudentClassObservationService observationService;
 	private CallService callService;
 	private ExamGradeService examGradeService;
+	private StudentService studentService;
 	private NumberCallRepository numberCallRepository;
 
 	public ClassServiceImpl(ClassRepository classRepository,
 							ExamService examService,
 							ConfigClassService configClassService,
 							StudentClassObservationService observationService,
-							CallService callService, ExamGradeService examGradeService, NumberCallRepository numberCallRepository) {
+							CallService callService, ExamGradeService examGradeService, StudentService studentService, NumberCallRepository numberCallRepository) {
 		this.classRepository = classRepository;
 		this.examService = examService;
 		this.configClassService = configClassService;
 		this.observationService = observationService;
 		this.callService = callService;
 		this.examGradeService = examGradeService;
+		this.studentService = studentService;
 		this.numberCallRepository = numberCallRepository;
 	}
 
@@ -83,6 +86,25 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
+	public void defineNumberCalls(Long classId) {
+
+		List<NumberCall> numberCalls = new ArrayList<>();
+		List<StudentDTO> studentsForClass = this.studentService.getAllByClassId(classId);
+
+		int lastNumberCall = 0;
+		for(StudentDTO dto: studentsForClass) {
+			lastNumberCall++;
+			NumberCall numberCall = new NumberCall();
+			numberCall.setClassId(classId);
+			numberCall.setStudentId(dto.getId());
+			numberCall.setNumber(lastNumberCall);
+			numberCalls.add(numberCall);
+		}
+
+		this.numberCallRepository.saveAll(numberCalls);
+	}
+
+	@Override
 	@Transactional
 	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
 
@@ -92,22 +114,7 @@ public class ClassServiceImpl implements ClassService {
 		if(studentDTOS.size() > 0) {
 			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
-
-			int lastNumberCall = this.classRepository.getGreatestNumberCall(id);
-			List<NumberCall> numberCalls = new ArrayList<>();
-			for(StudentDTO dto: studentDTOS) {
-				lastNumberCall++;
-				NumberCall numberCall = new NumberCall();
-				numberCall.setClassId(id);
-				numberCall.setStudentId(dto.getId());
-				numberCall.setNumber(lastNumberCall);
-				numberCalls.add(numberCall);
-			}
-
-			this.numberCallRepository.saveAll(numberCalls);
 		}
-
-
 	}
 
 	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {

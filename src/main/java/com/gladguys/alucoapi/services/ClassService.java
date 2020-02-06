@@ -22,6 +22,8 @@ public interface ClassService {
 
 	void deleteById(Long id);
 
+	void defineNumberCalls(Long classId);
+
 	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id);
 
 	void deleteStudentFromClass(Long studentId, Long classId);
