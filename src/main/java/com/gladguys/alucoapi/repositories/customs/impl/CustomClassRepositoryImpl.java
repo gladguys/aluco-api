@@ -27,7 +27,7 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 	public List<ClassDTO> getAllByTeacherId(Long teacherId) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name FROM class WHERE teacher_id = ?");
+		sql.append("SELECT id, name, class_status as classStatus FROM class WHERE teacher_id = ?");
 
 		return this.jdbcTemplate.query(
 				sql.toString(),

@@ -5,6 +5,7 @@ import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
+import com.gladguys.alucoapi.entities.enums.ClassStatus;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.repositories.ClassRepository;
 import com.gladguys.alucoapi.services.CallService;
@@ -57,6 +58,7 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public ClassDTO saveOrUpdate(ClassDTO classDTO) {
+		classDTO.setClassStatus(ClassStatus.CREATED);
 		Class classSaved = this.classRepository.save(classDTO.toEntity());
 		return classSaved.toDTO();
 	}
