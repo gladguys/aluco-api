@@ -87,27 +87,13 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	public void defineNumberCalls(Long classId) {
-
-		List<NumberCall> numberCalls = new ArrayList<>();
 		List<StudentDTO> studentsForClass = this.studentService.getAllByClassId(classId);
-
-		int lastNumberCall = 0;
-		for(StudentDTO dto: studentsForClass) {
-			lastNumberCall++;
-			NumberCall numberCall = new NumberCall();
-			numberCall.setClassId(classId);
-			numberCall.setStudentId(dto.getId());
-			numberCall.setNumber(lastNumberCall);
-			numberCalls.add(numberCall);
-		}
-
-		this.numberCallRepository.saveAll(numberCalls);
+		saveNumberCalls(studentsForClass,classId,0);
 	}
 
 	@Override
 	@Transactional
-	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
-
+	public void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id) {
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
@@ -115,9 +101,11 @@ public class ClassServiceImpl implements ClassService {
 			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
+		int greatestNumberCall = this.classRepository.getGreatestNumberCall(id);
+		saveNumberCalls(studentDTOS,id,greatestNumberCall);
 	}
 
-	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
+	private void attachStudentsIntoExams(List<StudentDTO> studentDTOS, Class classToAddStudent) {
 
 		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
 
@@ -144,5 +132,19 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId) {
 		return this.classRepository.getAbsences(classId,studentId);
+	}
+
+	private void saveNumberCalls(List<StudentDTO> students, Long classId, int lastNumberCall) {
+		List<NumberCall> numberCalls = new ArrayList<>();
+		for(StudentDTO dto: students) {
+			lastNumberCall++;
+			NumberCall numberCall = new NumberCall();
+			numberCall.setClassId(classId);
+			numberCall.setStudentId(dto.getId());
+			numberCall.setNumber(lastNumberCall);
+			numberCalls.add(numberCall);
+		}
+
+		this.numberCallRepository.saveAll(numberCalls);
 	}
 }

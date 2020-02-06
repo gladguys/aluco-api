@@ -1,13 +1,11 @@
 package com.gladguys.alucoapi.services;
 
-import com.gladguys.alucoapi.entities.ConfigClass;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public interface ClassService {
@@ -24,7 +22,7 @@ public interface ClassService {
 
 	void defineNumberCalls(Long classId);
 
-	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id);
+	void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id);
 
 	void deleteStudentFromClass(Long studentId, Long classId);
 
