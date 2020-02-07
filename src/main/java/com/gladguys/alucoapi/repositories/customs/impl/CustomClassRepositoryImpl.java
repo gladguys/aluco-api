@@ -1,8 +1,8 @@
 package com.gladguys.alucoapi.repositories.customs.impl;
 
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
-import com.gladguys.alucoapi.entities.dto.ExamGradeDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
+import com.gladguys.alucoapi.entities.enums.ClassStatus;
 import com.gladguys.alucoapi.repositories.customs.CustomClassRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -59,6 +59,13 @@ public class CustomClassRepositoryImpl implements CustomClassRepository {
 		Integer number = this.jdbcTemplate.queryForObject(sql, new Object[] { classId }, Integer.class);
 		if (number == null) return 0;
 		return number;
+	}
+
+	@Override
+	public boolean isCallNumbersAlreadyDefined(Long id) {
+		String sql = "SELECT class_status FROM class WHERE id = ?";
+		int class_status = this.jdbcTemplate.queryForObject(sql, new Object[] { id }, Integer.class);
+		return class_status == ClassStatus.getId(ClassStatus.STARTED);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -86,7 +87,11 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public void defineNumberCalls(Long classId) {
+	public void defineNumberCalls(Long classId) throws Exception {
+		Class theClass = this.classRepository.findById(classId).orElseThrow(Exception::new);
+		theClass.setClassStatus(ClassStatus.STARTED);
+		this.classRepository.save(theClass);
+
 		List<StudentDTO> studentsForClass = this.studentService.getAllByClassId(classId);
 		saveNumberCalls(studentsForClass,classId,0);
 	}
@@ -101,8 +106,11 @@ public class ClassServiceImpl implements ClassService {
 			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
-		int greatestNumberCall = this.classRepository.getGreatestNumberCall(id);
-		saveNumberCalls(studentDTOS,id,greatestNumberCall);
+
+		if (this.classRepository.isCallNumbersAlreadyDefined(id)) {
+			int greatestNumberCall = this.classRepository.getGreatestNumberCall(id);
+			saveNumberCalls(studentDTOS,id,greatestNumberCall);
+		}
 	}
 
 	private void attachStudentsIntoExams(List<StudentDTO> studentDTOS, Class classToAddStudent) {

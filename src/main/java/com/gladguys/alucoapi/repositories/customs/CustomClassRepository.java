@@ -14,4 +14,5 @@ public interface CustomClassRepository {
 	List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId);
 	void deleteClassById(Long id);
 	int getGreatestNumberCall(Long id);
+	boolean isCallNumbersAlreadyDefined(Long id);
 }

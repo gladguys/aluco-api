@@ -20,7 +20,7 @@ public interface ClassService {
 
 	void deleteById(Long id);
 
-	void defineNumberCalls(Long classId);
+	void defineNumberCalls(Long classId) throws Exception;
 
 	void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id);
 

@@ -1,5 +1,7 @@
 package com.gladguys.alucoapi.entities.enums;
 
+import com.gladguys.alucoapi.entities.Class;
+
 public enum ClassStatus {
 	CREATED(0),
 	STARTED(1),
@@ -18,5 +20,9 @@ public enum ClassStatus {
 			case 2: return CLOSED;
 			default: return null;
 		}
+	}
+
+	public static int getId(ClassStatus classStatus) {
+		return classStatus.id;
 	}
 }
