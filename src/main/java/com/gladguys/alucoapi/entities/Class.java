@@ -42,7 +42,7 @@ public class Class {
 
     @ManyToMany
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private List<Student> students;
+    private Set<Student> students;
 
     @JsonIgnore
     @ManyToOne
@@ -62,7 +62,7 @@ public class Class {
         return dto;
     }
 
-	public void addStudents(List<Student> students) {
+	public void addStudents(Set<Student> students) {
         this.students.addAll(students);
     }
 }

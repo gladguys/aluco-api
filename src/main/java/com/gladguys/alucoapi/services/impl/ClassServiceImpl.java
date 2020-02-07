@@ -98,12 +98,13 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	@Transactional
-	public void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id) {
+	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
+
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
 		if(studentDTOS.size() > 0) {
-			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
+			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
 			this.classRepository.save(classToAddStudent);
 		}
 
@@ -113,7 +114,7 @@ public class ClassServiceImpl implements ClassService {
 		}*/
 	}
 
-	private void attachStudentsIntoExams(List<StudentDTO> studentDTOS, Class classToAddStudent) {
+	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
 
 		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
 
