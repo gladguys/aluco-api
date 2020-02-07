@@ -186,7 +186,7 @@ public class ClassController {
 
 	@ApiOperation(" Ativa a definição de numeros de chamadas para os alunos de forma definitiva")
 	@PostMapping("/{id}/number-calls")
-	public ResponseEntity generateNumberCalls(@PathVariable("id") Long classId, HttpServletRequest request) {
+	public ResponseEntity generateNumberCalls(@PathVariable("id") Long classId, HttpServletRequest request) throws Exception {
 
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		this.classService.defineNumberCalls(classId);
