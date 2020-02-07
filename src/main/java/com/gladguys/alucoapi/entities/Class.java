@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "class")
@@ -41,7 +42,7 @@ public class Class {
 
     @ManyToMany
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private Set<Student> students;
+    private List<Student> students;
 
     @JsonIgnore
     @ManyToOne
@@ -61,7 +62,7 @@ public class Class {
         return dto;
     }
 
-	public void addStudents(Set<Student> students) {
+	public void addStudents(List<Student> students) {
         this.students.addAll(students);
     }
 }

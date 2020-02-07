@@ -103,7 +103,7 @@ public class ClassServiceImpl implements ClassService {
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
 		if(studentDTOS.size() > 0) {
-			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toSet()));
+			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
 			this.classRepository.save(classToAddStudent);
 		}
 
