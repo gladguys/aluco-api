@@ -103,11 +103,16 @@ public class ClassServiceImpl implements ClassService {
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
 		if(studentDTOS.size() > 0) {
+			System.out.println("teste entrou");
 			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
+			System.out.println(classToAddStudent.getStudents().get(0).getId() + " é o id do student 0");
 			this.classRepository.save(classToAddStudent);
+			System.out.println("teste fechou");
+
 		}
 
 		if (this.classRepository.isCallNumbersAlreadyDefined(id)) {
+			System.out.println("teste entrou onde n devia");
 			int greatestNumberCall = this.classRepository.getGreatestNumberCall(id);
 			saveNumberCalls(studentDTOS,id,greatestNumberCall);
 		}
