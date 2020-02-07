@@ -97,16 +97,13 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	@Transactional
 	public void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id) {
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
 
 		if(studentDTOS.size() > 0) {
 			classToAddStudent.addStudents(studentDTOS.stream().map(StudentDTO::toEntity).collect(Collectors.toList()));
-			System.out.println(classToAddStudent.getStudents().get(0).getId() + " é o id do student 0");
 			this.classRepository.save(classToAddStudent);
-
 		}
 
 	/*	if (this.classRepository.isCallNumbersAlreadyDefined(id)) {
