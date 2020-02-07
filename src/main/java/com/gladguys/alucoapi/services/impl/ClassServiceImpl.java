@@ -97,6 +97,7 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
+	@Transactional
 	public void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id) {
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
