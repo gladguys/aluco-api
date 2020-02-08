@@ -9,5 +9,5 @@ import java.util.Set;
 @Data
 public class StudentWrapper {
 
-	private Set<StudentDTO> studentDTOS;
+	private List<StudentDTO> studentDTOS;
 }

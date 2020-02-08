@@ -98,7 +98,7 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	@Transactional
-	public void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id) {
+	public void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id) {
 
 		Class classToAddStudent = this.classRepository.findById(id).orElseThrow(() -> new ClassNotFoundException(id));
 		attachStudentsIntoExams(studentDTOS, classToAddStudent);
@@ -108,13 +108,13 @@ public class ClassServiceImpl implements ClassService {
 			this.classRepository.save(classToAddStudent);
 		}
 
-	/*	if (this.classRepository.isCallNumbersAlreadyDefined(id)) {
+		if (this.classRepository.isCallNumbersAlreadyDefined(id)) {
 			int greatestNumberCall = this.classRepository.getGreatestNumberCall(id);
 			saveNumberCalls(studentDTOS,id,greatestNumberCall);
-		}*/
+		}
 	}
 
-	private void attachStudentsIntoExams(Set<StudentDTO> studentDTOS, Class classToAddStudent) {
+	private void attachStudentsIntoExams(List<StudentDTO> studentDTOS, Class classToAddStudent) {
 
 		Set<Long> exams = this.examService.getAllByClassId(classToAddStudent.getId());
 
