@@ -23,7 +23,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 		sql.append("SELECT s.id, s.gender, s.name, s.aee, s.registration_number as registrationNumber, ");
 		sql.append(" nc.number as numberCall FROM student s ");
 		sql.append(" INNER JOIN student_class sc ON sc.student_id = s.id ");
-		sql.append(" INNER JOIN number_call nc ON nc.student_id = s.id and nc.class_id = ? ");
+		sql.append(" LEFT JOIN number_call nc ON nc.student_id = s.id and nc.class_id = ? ");
 		sql.append(" WHERE sc.class_id = ? ");
 		sql.append(" ORDER BY (s.name) ");
 
