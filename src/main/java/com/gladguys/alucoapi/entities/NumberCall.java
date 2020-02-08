@@ -15,5 +15,5 @@ public class NumberCall {
 	private Long id;
 	private Long classId;
 	private Long studentId;
-	private int number;
+	private Integer number;
 }
