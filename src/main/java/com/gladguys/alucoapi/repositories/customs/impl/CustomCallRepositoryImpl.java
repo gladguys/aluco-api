@@ -78,10 +78,11 @@ public class CustomCallRepositoryImpl implements CustomCallRepository {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT s.registration_number as registrationNumber, s.name as studentName, ");
-		sql.append(" c.status, t.name as teacherName, cl.name as className FROM call c  ");
+		sql.append(" c.status, t.name as teacherName, cl.name as className, nc.number as numberCall FROM call c  ");
 		sql.append(" inner join student s on s.id = c.student_id ");
 		sql.append(" inner join teacher t on t.id = s.teacher_id ");
 		sql.append(" inner join class cl on cl.id = c.class_id ");
+		sql.append(" inner join number_call nc on nc.student_id = s.id AND nc.class_id = ").append(classId);
 		sql.append(" WHERE c.class_id = ").append(classId);
 		sql.append(" AND c.date = current_date ");
 		sql.append(" ORDER BY s.name ");

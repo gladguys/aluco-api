@@ -13,4 +13,6 @@ public interface CustomClassRepository {
 	boolean isClassFromTeacher(Long classId, Long teacherId);
 	List<StudentAbsenceDTO> getAbsences(Long classId, Long studentId);
 	void deleteClassById(Long id);
+	int getGreatestNumberCall(Long id);
+	boolean isCallNumbersAlreadyDefined(Long id);
 }

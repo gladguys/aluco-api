@@ -3,6 +3,7 @@ package com.gladguys.alucoapi.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.enums.ClassStatus;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "class")
@@ -47,12 +49,15 @@ public class Class {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
+    private ClassStatus classStatus;
+
     public ClassDTO toDTO() {
         ClassDTO dto = new ClassDTO();
         dto.setId(id);
         dto.setName(name);
         dto.setDescription(description);
         dto.setCreationDate(creationDate);
+        dto.setClassStatus(classStatus);
 
         return dto;
     }

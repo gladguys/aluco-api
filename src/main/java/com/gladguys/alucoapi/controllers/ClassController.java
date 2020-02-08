@@ -183,4 +183,15 @@ public class ClassController {
 		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
 		return ResponseEntity.ok(this.classService.getAbsences(id, studentId));
 	}
+
+	@ApiOperation(" Ativa a definição de numeros de chamadas para os alunos de forma definitiva")
+	@PostMapping("/{id}/number-calls")
+	public ResponseEntity generateNumberCalls(@PathVariable("id") Long classId, HttpServletRequest request) throws Exception {
+
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		this.classService.defineNumberCalls(classId);
+		return ResponseEntity.ok("");
+
+
+	}
 }

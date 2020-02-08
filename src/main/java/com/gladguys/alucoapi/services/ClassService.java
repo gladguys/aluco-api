@@ -1,6 +1,5 @@
 package com.gladguys.alucoapi.services;
 
-import com.gladguys.alucoapi.entities.ConfigClass;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
 import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
@@ -22,7 +21,9 @@ public interface ClassService {
 
 	void deleteById(Long id);
 
-	void addStudentsIntoClass(Set<StudentDTO> studentDTOS, Long id);
+	void defineNumberCalls(Long classId) throws Exception;
+
+	void addStudentsIntoClass(List<StudentDTO> studentDTOS, Long id);
 
 	void deleteStudentFromClass(Long studentId, Long classId);
 

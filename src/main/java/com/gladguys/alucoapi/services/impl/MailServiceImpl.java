@@ -77,7 +77,8 @@ public class MailServiceImpl implements MailService {
 		msg.append("Turma: " + callsForDay.get(0).getClassName()).append("\n\n");
 
 		callsForDay.stream().filter(filter -> filter.getStatus().equals(StatusEnum.FALTA) || filter.getStatus().equals(StatusEnum.FALTA_JUSTIFICADA))
-				.forEach(callDTO -> msg.append(callDTO.getRegistrationNumber() + " - " + callDTO.getStudentName() + ": " + callDTO.getStatus() + "\n"));
+				.forEach(callDTO -> msg.append( "Num. chamada: " + callDTO.getNumberCall() +
+						" | Nome: "  + callDTO.getStudentName() + " | situação:" + callDTO.getStatus() + "\n"));
 		message.setText(msg.toString());
 		Transport.send(message);
 	}

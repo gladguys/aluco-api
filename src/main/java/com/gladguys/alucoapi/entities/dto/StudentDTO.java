@@ -29,6 +29,7 @@ public class StudentDTO {
     private String observation;
     private GenderEnum gender;
     private boolean aee;
+    private Integer numberCall;
 
     public Student toEntity() {
         Student student = new Student();
