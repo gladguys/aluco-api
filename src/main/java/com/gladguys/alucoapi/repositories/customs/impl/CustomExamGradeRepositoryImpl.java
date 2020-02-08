@@ -29,15 +29,19 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		return jdbcTemplate.query(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
 
-	public List<ExamGradeDTO> getGradesBoard(Long classId) {
+	public List<ExamGradeDTO> getGradesBoard(Long classId, Long studentId) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, ");
-		sql.append(" e.name as examName, e.exam_date as examDate, ");
+		sql.append(" e.name as examName, e.exam_date as examDate, e.rec_exam as recExam, e.period_year as periodYear, ");
 		sql.append(" eg.grade as grade FROM exam_grade eg ");
 		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
 		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
 		sql.append(" WHERE e.class_id = ? ");
+		if (studentId != null) {
+			sql.append(" AND s.id = ").append(studentId);
+		}
+
 
 		return jdbcTemplate.query(sql.toString(), new Object[]{classId}, new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
@@ -47,8 +51,28 @@ public class CustomExamGradeRepositoryImpl implements CustomExamGradeRepository 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" DELETE FROM exam_grade eg ");
 		sql.append("WHERE eg.exam_id IN (SELECT id FROM exam e WHERE e.class_id = ?); ");
-		sql.append(" DELETE FROM exam e WHERE e.class_id = " + id );
+		sql.append(" DELETE FROM exam e WHERE e.class_id = ").append(id);
 
-		this.jdbcTemplate.update(sql.toString(), new Object[]{id});
+		this.jdbcTemplate.update(sql.toString(), id);
+	}
+
+	@Override
+	public List<ExamGradeDTO> getGradesByStudentId(Long classId, Long studentId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT s.id as studentId, s.name as studentName, e.id as examId, e.weight as weight, ");
+		sql.append(" e.name as examName, e.exam_date as examDate, e.rec_exam as recExam, e.period_year as periodYear,");
+		sql.append(" eg.grade as grade FROM exam_grade eg ");
+		sql.append(" INNER JOIN student s ON  s.id = eg.student_id ");
+		sql.append(" INNER JOIN exam e ON e.id = eg.exam_id\n");
+		sql.append(" WHERE s.id = ? ");
+		if (classId != null) {
+			sql.append(" AND e.class_id  = ").append(classId);
+		}
+
+		sql.append(" ORDER BY e.exam_date ");
+
+		return jdbcTemplate.query(sql.toString(),
+				new Object[]{studentId},
+				new BeanPropertyRowMapper<>(ExamGradeDTO.class));
 	}
 }

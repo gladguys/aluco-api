@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -20,6 +21,8 @@ public class LessonPlan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	private String notificationId;
 
 	private String content;
 
@@ -38,6 +41,8 @@ public class LessonPlan {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate lessonDate;
 
+	private Date modificationDate;
+
 	@ManyToOne
 	@JoinColumn(name = "class_id")
 	private Class classPlan;
@@ -45,11 +50,13 @@ public class LessonPlan {
 	public LessonPlanDTO toDTO() {
 		LessonPlanDTO dto = new LessonPlanDTO();
 		dto.setId(id);
+		dto.setNotificationId(notificationId);
 		dto.setContent(content);
 		dto.setMetodology(metodology);
 		dto.setHomework(homework);
 		dto.setClasswork(classwork);
 		dto.setLessonDate(lessonDate);
+		dto.setModificationDate(modificationDate);
 		dto.setNotes(notes);
 		if (classPlan != null) {
 			dto.setClassId(classPlan.getId());

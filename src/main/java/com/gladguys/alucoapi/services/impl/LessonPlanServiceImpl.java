@@ -6,7 +6,9 @@ import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.repositories.LessonPlanRepository;
 import com.gladguys.alucoapi.services.LessonPlanService;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,12 +34,31 @@ public class LessonPlanServiceImpl implements LessonPlanService {
 	public LessonPlanDTO save(LessonPlanDTO lessonPlanDTO) {
 		if (lessonPlanDTO.getClassId() == null)
 			throw new ApiResponseException("id da turma não informado para o plano de aula");
-
+		lessonPlanDTO.setModificationDate(new Date());
 		return this.repository.save(lessonPlanDTO.toEntity()).toDTO();
 	}
 
 	@Override
 	public void delete(Long id) {
 		this.repository.deleteById(id);
+	}
+
+	@Override
+	public LessonPlanDTO getLatestEdited(Long id) {
+		try {
+		  return this.repository.getLatestEdited(id);
+		} catch (EmptyResultDataAccessException e) {
+		  return null;
+		}
+		
+	}
+
+	@Override
+	public LessonPlanDTO getNextLesson(Long id) {
+		try {
+		  return this.repository.getNextLesson(id);
+		} catch (EmptyResultDataAccessException e) {
+		  return null;
+		}
 	}
 }

@@ -46,13 +46,13 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 	}
 
 	@Override
-	public List<StudentGrades> getGradeBoardFromClass(Long classId) {
+	public List<StudentGrades> getGradeBoardFromClass(Long classId, Long studentId) {
 
 		List<StudentGrades> studentsGrades = new ArrayList<>();
 
 		Map<Long, List<ExamGradeDTO>> examsGradesPerStudent =
 				this.repository
-						.getGradesBoard(classId)
+						.getGradesBoard(classId, studentId)
 						.parallelStream()
 						.collect(Collectors.groupingBy(ExamGradeDTO::getStudentId));
 
@@ -68,5 +68,11 @@ public class ExamGradeServiceImpl implements ExamGradeService {
 
 	public void deleteByClassId(Long id) {
 		this.repository.deleteByClassId(id);
+	}
+
+	@Override
+	public List<ExamGradeDTO> getGradesByStudentId(Long classId, Long studentId) {
+
+		return this.repository.getGradesByStudentId(classId,studentId);
 	}
 }

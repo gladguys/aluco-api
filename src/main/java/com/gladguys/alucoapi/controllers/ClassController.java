@@ -1,13 +1,17 @@
 package com.gladguys.alucoapi.controllers;
 
+import com.gladguys.alucoapi.entities.ConfigClass;
 import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.StudentWrapper;
 import com.gladguys.alucoapi.entities.dto.ClassDTO;
+import com.gladguys.alucoapi.entities.dto.ConfigClassDTO;
+import com.gladguys.alucoapi.entities.dto.StudentAbsenceDTO;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
 import com.gladguys.alucoapi.services.ClassService;
+import com.gladguys.alucoapi.services.ConfigClassService;
 import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +36,17 @@ import java.util.List;
 public class ClassController {
 
 	private ClassService classService;
+	private ConfigClassService configClassService;
 	private StudentService studentService;
 	private ExamGradeService examGradeService;
 	private JwtTokenUtil jwtTokenUtil;
 
-	public ClassController(ClassService classService, StudentService studentService, ExamGradeService examGradeService, JwtTokenUtil jwtTokenUtil) {
+	public ClassController(ClassService classService,
+						   ConfigClassService configClassService,
+						   StudentService studentService,
+						   ExamGradeService examGradeService,
+						   JwtTokenUtil jwtTokenUtil) {
+		this.configClassService = configClassService;
 		this.examGradeService = examGradeService;
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.classService = classService;
@@ -136,11 +147,51 @@ public class ClassController {
 	@ApiOperation("Retorna quadro de notas da turma")
 	@GetMapping("/{id}/grades")
 	public ResponseEntity<List<StudentGrades>> getGradesBoard(@PathVariable("id") Long id) {
-		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id);
+		List<StudentGrades> gradeBoardFromClass = this.examGradeService.getGradeBoardFromClass(id, null);
 		return ResponseEntity.ok(gradeBoardFromClass);
+	}
+
+	@ApiOperation("Salva configurações parâmetros da turma")
+	@PostMapping("/{id}/config")
+	public ResponseEntity<ConfigClass> setConfigClass(@PathVariable("id") Long id,
+													  @RequestBody ConfigClassDTO configClassDTO) {
+
+		configClassDTO.setClassId(id);
+		return ResponseEntity.ok(this.configClassService.saveConfigClass(configClassDTO));
+
+	}
+
+	@ApiOperation("Salva configurações parâmetros da turma")
+	@GetMapping("/{id}/config")
+	public ResponseEntity<ConfigClass> getConfigClass(@PathVariable("id") Long id) {
+
+		return ResponseEntity.ok(this.configClassService.getConfigByClassId(id));
+
 	}
 
 	private void validateClassData(ClassDTO dto) {
 		if (dto == null) throw new ApiResponseException("Turma nao informada");
+	}
+
+	@ApiOperation("Retorna uma lista de numero de faltas por aluno da turma")
+	@GetMapping("/{id}/absences")
+	public ResponseEntity<List<StudentAbsenceDTO>> getAbsences(HttpServletRequest request,
+															   @PathVariable("id") Long id,
+															   @RequestParam(required = false,
+																	   value = "studentId") Long studentId) {
+
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		return ResponseEntity.ok(this.classService.getAbsences(id, studentId));
+	}
+
+	@ApiOperation(" Ativa a definição de numeros de chamadas para os alunos de forma definitiva")
+	@PostMapping("/{id}/number-calls")
+	public ResponseEntity generateNumberCalls(@PathVariable("id") Long classId, HttpServletRequest request) throws Exception {
+
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		this.classService.defineNumberCalls(classId);
+		return ResponseEntity.ok("");
+
+
 	}
 }

@@ -24,7 +24,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 	public List<ExamDTO> getByFilters(ExamFilter examFilter) {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT e.id, e.name, e.exam_date, e.weight, e.description FROM exam e ");
+		sql.append(" SELECT e.id, e.name, e.exam_date, e.weight, e.description, e.rec_exam, e.period_year FROM exam e ");
 		sql.append(" INNER JOIN class c on c.id = e.class_id ");
 		sql.append(" INNER JOIN teacher t on t.id = c.teacher_id ");
 		sql.append(" WHERE e.id IS NOT NULL ");
@@ -37,6 +37,7 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 		if (examFilter.getTeacherId() != null)
 			sql.append(" AND c.teacher_id = "+examFilter.getTeacherId());
 
+		sql.append(" ORDER BY e.exam_date ");
 
 		List<ExamDTO> result = jdbcTemplate.query(sql.toString(), new BeanPropertyRowMapper(ExamDTO.class));
 		return result;
@@ -55,11 +56,12 @@ public class CustomExamRepositoryImpl implements CustomExamRepository {
 	@Override
 	public ExamDTO getById(Long id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT e.id, e.name, e.description, e.creation_date, e.exam_date, e.weight as weight, " +
-				"c.name as className, t.id as teacherId FROM exam e " +
-				" INNER JOIN class c ON c.id = e.class_id "+
-				" INNER JOIN teacher t ON t.id = c.teacher_id "+
-				" WHERE e.id = ? ");
+		sql.append("SELECT e.id, e.name, e.description, e.creation_date, e.exam_date, e.rec_exam, e.period_year ");
+		sql.append(" e.weight as weight ");
+		sql.append(	"c.name as className, t.id as teacherId FROM exam e ");
+		sql.append(" INNER JOIN class c ON c.id = e.class_id ");
+		sql.append(" INNER JOIN teacher t ON t.id = c.teacher_id ");
+		sql.append(" WHERE e.id = ? ");
 
 		return jdbcTemplate.queryForObject(sql.toString(), new Object[]{id}, new BeanPropertyRowMapper<>(ExamDTO.class));
 	}

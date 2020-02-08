@@ -9,4 +9,6 @@ public interface CustomLessonPlanRepository {
 
 	List<LessonPlanDTO> getAllByFilters(LessonPlanFilter filter);
 	LessonPlanDTO getById(Long id);
+	LessonPlanDTO getLatestEdited(Long id);
+	LessonPlanDTO getNextLesson(Long id);
 }

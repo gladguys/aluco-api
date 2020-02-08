@@ -1,8 +1,10 @@
 package com.gladguys.alucoapi.services.impl;
 
 import com.gladguys.alucoapi.entities.User;
+import com.gladguys.alucoapi.entities.dto.UserDTO;
 import com.gladguys.alucoapi.repositories.UserRepository;
 import com.gladguys.alucoapi.services.UserService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Long getTeacherIdByUsername(String username) {
 		return this.userRepository.getTeacherIdByUsername(username);
+	}
+
+	public UserDTO getUserTeacherByEmail(String email) {
+		return userRepository.getUserTeacherByEmail(email);
 	}
 
 	@Override

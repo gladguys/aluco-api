@@ -28,6 +28,8 @@ public class StudentDTO {
     private String previousSchool;
     private String observation;
     private GenderEnum gender;
+    private boolean aee;
+    private Integer numberCall;
 
     public Student toEntity() {
         Student student = new Student();
@@ -44,6 +46,7 @@ public class StudentDTO {
         student.setPreviousSchool(previousSchool);
         student.setObservation(observation);
         student.setGender(gender);
+        student.setAee(aee);
 
         Teacher teacher = new Teacher();
         teacher.setId(teacherId);

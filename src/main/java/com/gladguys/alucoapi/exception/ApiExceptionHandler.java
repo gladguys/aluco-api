@@ -1,5 +1,6 @@
 package com.gladguys.alucoapi.exception;
 
+import com.gladguys.alucoapi.exception.internalservererror.ReportInternalServerErrorException;
 import com.gladguys.alucoapi.exception.notfound.CallNotFoundException;
 import com.gladguys.alucoapi.exception.notfound.ClassNotFoundException;
 import com.gladguys.alucoapi.exception.notfound.ExamNotFoundException;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.mail.MessagingException;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -63,4 +66,19 @@ public class ApiExceptionHandler {
 		return new ResponseEntity<>(exception, notFound);
 	}
 
+	@ExceptionHandler(value = {ReportInternalServerErrorException.class})
+	public ResponseEntity<Object> handleReportException(Exception e) {
+		HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+		ApiException exception = new ApiException(e.getMessage(), internalServerError, new Date());
+
+		return new ResponseEntity<>(exception, internalServerError);
+	}
+
+	@ExceptionHandler(value = {MessagingException.class})
+	public ResponseEntity<Object> handleEmailException(Exception e) {
+		HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+		ApiException exception = new ApiException(e.getMessage(), internalServerError, new Date());
+
+		return new ResponseEntity<>(exception, internalServerError);
+	}
 }

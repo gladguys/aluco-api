@@ -1,10 +1,12 @@
 package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.Student;
+import com.gladguys.alucoapi.entities.StudentGrades;
 import com.gladguys.alucoapi.entities.dto.StudentDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.exception.notfound.StudentNotFoundException;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
+import com.gladguys.alucoapi.services.ExamGradeService;
 import com.gladguys.alucoapi.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +34,12 @@ public class StudentController {
 	private JwtTokenUtil jwtTokenUtil;
 
 	private StudentService studentService;
+	private ExamGradeService examGradeService;
 
-	public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil) {
+	public StudentController(StudentService studentService, JwtTokenUtil jwtTokenUtil, ExamGradeService examGradeService) {
 		this.studentService = studentService;
 		this.jwtTokenUtil = jwtTokenUtil;
+		this.examGradeService = examGradeService;
 	}
 
 	@ApiOperation(value = "Retorna estudante por id")
@@ -94,4 +99,21 @@ public class StudentController {
 		this.studentService.deleteById(studentId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
+
+	@ApiOperation(value = "Retorna todos os resultados de provas por aluno")
+	@GetMapping("/{id}/grades")
+	public ResponseEntity<List<StudentGrades>> getAllExamGradesFromStudent(HttpServletRequest request,
+																		   @PathVariable("id") Long studentId,
+																		   @RequestParam(required = false) Long classId) {
+
+		Long teacherId = jwtTokenUtil.getTeacherIdFromToken(request).longValue();
+		if (teacherId == null) throw new ApiResponseException("Não encontrado identificacao do professor na requisição");
+
+		List<StudentGrades> studentGrades = this.examGradeService.getGradeBoardFromClass(classId, studentId);
+
+		return ResponseEntity.ok(studentGrades);
+	}
+
+
+
 }

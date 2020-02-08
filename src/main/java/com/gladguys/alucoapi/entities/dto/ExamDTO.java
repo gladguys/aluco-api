@@ -31,6 +31,10 @@ public class ExamDTO {
 
     private Long teacherId;
 
+    private boolean recExam;
+
+    private int periodYear;
+
     public ExamDTO() {}
 
     public Exam toEntity() {
@@ -41,6 +45,8 @@ public class ExamDTO {
         exam.setCreationDate(creationDate);
         exam.setExamDate(examDate);
         exam.setWeight(weight);
+        exam.setPeriodYear(periodYear);
+        exam.setRecExam(recExam);
 
         Class c = new Class();
         c.setId(classId);

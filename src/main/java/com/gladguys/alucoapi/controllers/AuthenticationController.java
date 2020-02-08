@@ -2,6 +2,7 @@ package com.gladguys.alucoapi.controllers;
 
 import com.gladguys.alucoapi.entities.CurrentUser;
 import com.gladguys.alucoapi.entities.User;
+import com.gladguys.alucoapi.entities.dto.UserDTO;
 import com.gladguys.alucoapi.exception.ApiResponseException;
 import com.gladguys.alucoapi.security.jwt.JwtAuthenticationRequest;
 import com.gladguys.alucoapi.security.jwt.JwtTokenUtil;
@@ -47,8 +48,7 @@ public class AuthenticationController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		final User user = userService.findByEmail(authenticationRequest.getEmail());
-		user.setPassword(null);
+		final UserDTO user = userService.getUserTeacherByEmail(authenticationRequest.getEmail());
 		return ResponseEntity.ok(new CurrentUser(token, user));
 	}
 
